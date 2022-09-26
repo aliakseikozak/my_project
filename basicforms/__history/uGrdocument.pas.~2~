@@ -1,0 +1,53 @@
+unit uGrdocument;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseGrid, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
+  dxLayoutControlAdapters, cxStyles, cxCustomData, cxFilter, cxData,
+  cxDataStorage, cxNavigator, Data.DB, cxDBData, Vcl.Menus, System.Actions,
+  Vcl.ActnList, dxBar, cxClasses, cxSplitter, cxGridLevel, cxGridCustomView,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
+  dxLayoutContainer, Vcl.StdCtrls, dxLayoutControl, cxLabel, Vcl.ExtCtrls,
+  uGrdocumentAdd, uResource;
+
+type
+  TfmGrdocument = class(TfmBaseGrid)
+    procedure actEditExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmGrdocument: TfmGrdocument;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfmGrdocument.actEditExecute(Sender: TObject);
+var
+  fm: TfmGrdocumentAdd;
+begin
+  if dbBase.DataSet.IsEmpty then
+    Exit;
+
+  fm := TfmGrdocumentAdd(CreateForm('TfmGrdocumentAdd', 'fmGrdocumentAdd', Self, false));
+  try
+  //  fm.ListDepId := ListDepId;
+  //  fm.ListCuttingAreaId := ListCuttingArea;
+    fm.SetData(dbBase, 1, ginformation);
+    if ( fm.ShowModal() = mrOk ) then begin
+
+      dbBase.DataSetReQuery;
+
+    end;
+  finally
+    fm.Free;
+end;
+
+end.

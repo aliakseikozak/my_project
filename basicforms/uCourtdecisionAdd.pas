@@ -1,0 +1,189 @@
+unit uCourtdecisionAdd;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, Data.DB,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, System.Actions, Vcl.ActnList,
+  dxBar, cxClasses, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.ComCtrls, dxCore, cxDateUtils,
+  dxLayoutcxEditAdapters, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
+  cxDBLookupComboBox, dxLayoutContainer, cxTextEdit, cxMaskEdit, cxCalendar,
+  dxLayoutControl, Vcl.StdCtrls, Vcl.ExtCtrls, uKartUtils, uResource, uExchDB,
+  uExchDBData, cxStyles, cxCustomData, cxFilter, cxData, cxDataStorage,
+  cxNavigator, cxDBData, cxGridLevel, cxGridCustomView, cxGridCustomTableView,
+  cxGridTableView, cxGridDBTableView, cxGrid;
+
+type
+  TfmCourtdecisionAdd = class(TfmBaseForm)
+    Panel2: TPanel;
+    btnOk: TButton;
+    btnCancel: TButton;
+    dxLayoutControl1: TdxLayoutControl;
+    cxDateEdit1: TcxDateEdit;
+    cxDateEdit2: TcxDateEdit;
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutItem2: TdxLayoutItem;
+    dxLayoutItem3: TdxLayoutItem;
+    dxLayoutItem1: TdxLayoutItem;
+    cxDateEdit3: TcxDateEdit;
+    dxLayoutItem5: TdxLayoutItem;
+    cxLookupComboBox2: TcxLookupComboBox;
+    dxLayoutItem6: TdxLayoutItem;
+    cxTextEdit2: TcxTextEdit;
+    dxLayoutItem9: TdxLayoutItem;
+    cxLookupComboBox4: TcxLookupComboBox;
+    dxLayoutItem4: TdxLayoutItem;
+    cxDateEdit4: TcxDateEdit;
+    dsDecision: TDataSource;
+    dsOrganization: TDataSource;
+    Panel1: TPanel;
+    cxGrid1: TcxGrid;
+    cxGrid1DBTableView1: TcxGridDBTableView;
+    cxGrid1Level1: TcxGridLevel;
+    Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    function GenParams(): string;
+    procedure FormShow(Sender: TObject);
+    procedure btnOkClick(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
+  private
+    { Private declarations }
+    FMode: integer;
+    FID: Variant;
+    FDB: TDBData;
+    FEdit: Boolean;
+    dbIU: TDBData;
+    dbDecision: TDBData;
+    dbOrganization: TDBData;
+    procedure InitForm;
+    function GetLcbValue(pLcb: TcxLookupComboBox): string; overload;
+    function GetLcbValue(pLcb: TcxDateEdit): string; overload;
+    function GetLcbValue(pLcb: TcxComboBox): string; overload;
+  public
+    { Public declarations }
+    procedure SetData(pDb: TDBData; pMode: integer; pID: Variant);
+  end;
+
+var
+  fmCourtdecisionAdd: TfmCourtdecisionAdd;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfmCourtdecisionAdd.SetData(pDb: TDBData; pMode: integer; pID: Variant);
+begin
+  FDB := pDb;
+  FID := pID;
+  FMode := pMode;
+ // FEdit := pedit;
+end;
+
+
+function TfmCourtdecisionAdd.GetLcbValue(pLcb: TcxLookupComboBox): string;
+begin
+  if VarIsNull(pLcb.EditValue) then
+    result := 'NULL'
+  else
+    result := VarToStr(pLcb.EditValue);
+end;
+
+function TfmCourtdecisionAdd.GetLcbValue(pLcb: TcxDateEdit): string;
+begin
+  if VarIsNull(pLcb.EditValue) then
+    result := 'NULL'
+  else
+    result := DateToStr(pLcb.EditValue{, Resource.JsonFormatSettings});
+end;
+
+function TfmCourtdecisionAdd.GetLcbValue(pLcb: TcxComboBox): string;
+begin
+  case (pLcb.ItemIndex) of
+    0:
+      result := 'true';
+    1:
+      result := 'false';
+  end;
+end;
+
+procedure TfmCourtdecisionAdd.btnCancelClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfmCourtdecisionAdd.btnOkClick(Sender: TObject);
+begin
+  if FMode = 0 then
+  begin
+    dbIU := DataSetQuery('courtdecision_set', ['0', VarToStr(FMode), Resource.sessionInfo.token_id, GenParams()]);
+  end
+  else
+  begin
+    dbIU := DataSetQuery('courtdecision_set', [FDB.DataSet.FieldByName('id').Value, VarToStr(FMode), Resource.sessionInfo.token_id, GenParams()]);
+  end;
+  Close;
+
+end;
+
+function TfmCourtdecisionAdd.GenParams(): string;
+begin
+  result := '';
+  result := result + GetLcbValue(cxDateEdit1) + '~';
+  result := result + GetLcbValue(cxDateEdit2) + '~';
+  result := result + GetLcbValue(cxDateEdit3) + '~';
+  result := result + GetLcbValue(cxLookupComboBox2) + '~';
+  result := result + GetLcbValue(cxDateEdit4) + '~';
+  IF cxTextEdit2.Text <> '' then
+    result := result + cxTextEdit2.Text + '~'
+  else
+    result := result + 'NULL' + '~';
+  result := result + GetLcbValue(cxLookupComboBox4) + '~';
+  //result := result + cxbedtNameShort.Text + '~';
+
+  result := result + '1' + '~';
+
+end;
+
+procedure TfmCourtdecisionAdd.FormShow(Sender: TObject);
+var
+  Columns: string;
+  Params: string;
+  Operations: string;
+begin
+  InitForm;
+   if (FMode = 1) and (not FDB.DataSet.IsEmpty) then
+   begin
+      with FDB.DataSet do
+      begin
+        cxDateEdit1.EditValue := FieldByName('date_referral').Value;
+        cxDateEdit2.EditValue := FieldByName('date_decision').Value;
+        cxDateEdit3.EditValue := FieldByName('date_effective').Value;
+        cxLookupComboBox2.EditValue := FieldByName('court_decision').Value;
+        cxDateEdit4.EditValue := FieldByName('length_stay').Value;
+        cxTextEdit2.Text := FieldByName('court_information').Value;
+        cxLookupComboBox4.EditValue := FieldByName('company_directory_ltp_id').Value;
+      end;
+   end;
+ //  EnabledEdData(Self, FEdit);
+end;
+
+procedure TfmCourtdecisionAdd.InitForm;
+begin
+
+  dbDecision := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+   '   FROM v_court_decision AS s  ', []);
+  dsDecision.DataSet := dbDecision.DataSet;
+
+  dbOrganization := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+   '   FROM company_directory_organization AS s  '+
+   '  where s.type_org = 3', []);
+  dsOrganization.DataSet := dbOrganization.DataSet;
+end;
+
+end.
+

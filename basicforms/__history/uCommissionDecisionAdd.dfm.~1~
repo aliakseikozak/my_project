@@ -1,0 +1,21 @@
+inherited fmCommissionDecisionAdd: TfmCommissionDecisionAdd
+  Caption = #1056#1077#1096#1077#1085#1080#1077' '#1082#1086#1084#1080#1089#1089#1080#1080
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited BarManager: TdxBarManager
+    DockControlHeights = (
+      0
+      0
+      45
+      0)
+  end
+  inherited qryBase: TZQuery
+    AfterOpen = nil
+    AfterApplyUpdates = nil
+    AfterInsert = nil
+    AfterEdit = nil
+    AfterPost = nil
+    AfterCancel = nil
+    AfterDelete = nil
+  end
+end

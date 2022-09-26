@@ -1,0 +1,280 @@
+unit uGrdocumentAdd;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, System.Actions,
+  Vcl.ActnList, dxBar, cxClasses, Data.DB, uExchDBData, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.ComCtrls,
+  dxCore, cxDateUtils, dxLayoutcxEditAdapters, dxLayoutControlAdapters,
+  Vcl.StdCtrls, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
+  cxDBLookupComboBox, dxLayoutContainer, cxTextEdit, cxMaskEdit, cxCalendar,
+  Vcl.ExtCtrls, dxLayoutControl, uResource, uExchDB, uBlobFile, cxStyles,
+  cxCustomData, cxFilter, cxData, cxDataStorage, cxNavigator, cxDBData,
+  cxGridLevel, cxGridCustomView, cxGridCustomTableView, cxGridTableView,
+  cxGridDBTableView, cxGrid, Vcl.Menus, ZAbstractRODataset, ZAbstractDataset,
+  ZDataset;
+
+type
+  TfmGrdocumentAdd = class(TfmBaseForm)
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutControl1: TdxLayoutControl;
+    Panel1: TPanel;
+    cxDateEdit1: TcxDateEdit;
+    dxLayoutItem1: TdxLayoutItem;
+    cxDateEdit2: TcxDateEdit;
+    dxLayoutItem2: TdxLayoutItem;
+    cxTextEdit1: TcxTextEdit;
+    dxLayoutItem3: TdxLayoutItem;
+    dxLayoutAutoCreatedGroup1: TdxLayoutAutoCreatedGroup;
+    cxTextEdit2: TcxTextEdit;
+    dxLayoutItem4: TdxLayoutItem;
+    dxLayoutAutoCreatedGroup2: TdxLayoutAutoCreatedGroup;
+    cxTextEdit3: TcxTextEdit;
+    dxLayoutItem5: TdxLayoutItem;
+    cxLookupComboBox1: TcxLookupComboBox;
+    dxLayoutItem6: TdxLayoutItem;
+    CheckBox1: TCheckBox;
+    dxLayoutItem7: TdxLayoutItem;
+    dsDocType: TDataSource;
+    Panel2: TPanel;
+    btnOk: TButton;
+    btnCancel: TButton;
+    cxGrid1DBTableView1: TcxGridDBTableView;
+    cxGrid1Level1: TcxGridLevel;
+    cxGrid1: TcxGrid;
+    PopupMenu1: TPopupMenu;
+    Upload: TMenuItem;
+    OpenDialog1: TOpenDialog;
+    Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    function UpLoadOnServer: Boolean; virtual;
+    function OpenDialogLoad: string; virtual;
+    function GenParams(): string;
+    procedure btnOkClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure UploadClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
+  private
+    { Private declarations }
+    dbDocType: TDBData;
+    dbIU: TDBData;
+    dbfile: TDBData;
+    FMode: integer;
+    FID: Variant;
+    FDB: TDBData;
+    FEdit: Boolean;
+    procedure InitForm;
+    function GetLcbValue(pLcb: TcxLookupComboBox): string; overload;
+    function GetLcbValue(pLcb: TcxDateEdit): string; overload;
+    function GetLcbValue(pLcb: TcxComboBox): string; overload;
+  public
+    { Public declarations }
+    procedure SetData(pDb: TDBData; pMode: integer; pID: Variant);
+  end;
+
+var
+  fmGrdocumentAdd: TfmGrdocumentAdd;
+
+implementation
+  uses
+  uResourceForms, uOVDAdd, uKartUtils;
+
+{$R *.dfm}
+const
+   SQL_PARAM_IDOBJECT = 'IDOBJECT';
+   SQL_PARAM_PIDIMAGE = 'pidimage';
+   SQL_PARAM_PFILE = 'pfile';
+   SQL_PARAM_FILENAME = 'FILENAME';
+
+   SQL_FIELD_IDOBJECT = SQL_PARAM_IDOBJECT;
+   SQL_FIELD_IDIMAGE = 'idimage';
+   SQL_FIELD_FILENAME = SQL_PARAM_FILENAME;
+   SQL_FIELD_HASFILE = 'hasfile';
+
+   SQL_PROC_UPLOAD_ON_SERVER_FILE = 'SELECT gf.upload_on_server_file (:'
+    + SQL_PARAM_PIDIMAGE
+    + ', :' + SQL_PARAM_FILENAME
+    + ', '''''
+    + ', :' + SQL_PARAM_PFILE + ')';
+
+procedure TfmGrdocumentAdd.SetData(pDb: TDBData; pMode: integer; pID: Variant);
+begin
+  FDB := pDb;
+  FID := pID;
+  FMode := pMode;
+end;
+
+
+function TfmGrdocumentAdd.GetLcbValue(pLcb: TcxLookupComboBox): string;
+begin
+  if VarIsNull(pLcb.EditValue) then
+    result := 'NULL'
+  else
+    result := VarToStr(pLcb.EditValue);
+end;
+
+function TfmGrdocumentAdd.GetLcbValue(pLcb: TcxDateEdit): string;
+begin
+  if VarIsNull(pLcb.EditValue) then
+    result := 'NULL'
+  else
+    result := FormatDateTime('mm-dd-yyyy',pLcb.EditValue{, Resource.JsonFormatSettings});
+end;
+
+procedure TfmGrdocumentAdd.UploadClick(Sender: TObject);
+var
+  IDImage: Variant;
+  FileName: string;
+  fileb : string;
+begin
+ // fileb := LoadFile(OpenDialog1.FileName);
+ // FileName := ExtractFileName(LoadFile(OpenDialog1.FileName));
+
+  dbIU := DataSetQuery('insert_document_image', [VarToStr(FID), FileName, GenParams()]);
+  //присваиваем RevisionID
+
+//      IDImage := Resource.qryRun.FieldByName('idimage').AsVariant;
+//    qryBImage.Refresh;
+//    qryBImage.Locate('idimage', IDImage, []);
+
+end;
+
+procedure TfmGrdocumentAdd.btnCancelClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfmGrdocumentAdd.btnOkClick(Sender: TObject);
+begin
+  if FMode = 0 then
+  begin
+    dbIU := DataSetQuery('document_set', ['0', VarToStr(FMode), Resource.sessionInfo.token_id, GenParams()]);
+  end
+  else
+  begin
+    dbIU := DataSetQuery('document_set', [FDB.DataSet.FieldByName('id').Value, VarToStr(FMode), Resource.sessionInfo.token_id, GenParams()]);
+  end;
+  Close;
+end;
+
+function TfmGrdocumentAdd.GetLcbValue(pLcb: TcxComboBox): string;
+begin
+  case (pLcb.ItemIndex) of
+    0:
+      result := 'true';
+    1:
+      result := 'false';
+  end;
+end;
+
+function TfmGrdocumentAdd.OpenDialogLoad: string;
+ var
+  OpenDialog: TOpenDialog;
+begin
+  Result:= EmptyStr;
+   OpenDialog := TOpenDialog.Create(Self);
+  try
+    OpenDialog.DefaultExt := '*';
+    OpenDialog.Filter :=
+    'Изображения (*.bmp;*.jpg;*.gif)|*.bmp;*.jpg;*.gif|' +
+    'PDF-файлы (*.pdf)|*.pdf|' +
+    'Документы Word (*.doc)|*.doc|' +
+    'Документы Excel (*.xls)|*.xls|' +
+    'Текстовые файлы (*.txt)|*.txt|' +
+    'Все файлы (*.*)|*.*';
+
+    if OpenDialog.Execute
+     then Result:= OpenDialog.FileName;
+
+  finally
+    FreeAndNil(OpenDialog);
+  end;
+end;
+
+function TfmGrdocumentAdd.UpLoadOnServer: Boolean;
+ var
+  FilePath: string;
+begin
+ Result:= False;
+ FilePath:= OpenDialogLoad;
+  if CompareStr(FilePath, EmptyStr) <> 0 then
+  begin
+     MessageInfo('Ждите... Выполняется загрузка файла ' + FilePath);
+    try
+
+    finally
+     MessageInfo;
+    end;
+     DialogInfo('Файл "' + ExtractFileName(FilePath) +'" успешно загружен на сервер', 'Информация');
+  end;
+ Result:= True;
+end;
+
+procedure TfmGrdocumentAdd.Button1Click(Sender: TObject);
+begin
+  UpLoadOnServer;
+end;
+
+procedure TfmGrdocumentAdd.FormShow(Sender: TObject);
+begin
+  InitForm;
+   if (FMode = 1) and (not FDB.DataSet.IsEmpty) then
+   begin
+      with FDB.DataSet do
+      begin
+        cxDateEdit1.EditValue := FieldByName('begin_date').Value;
+        cxDateEdit2.EditValue := FieldByName('end_date').Value;
+        cxTextEdit1.EditValue := FieldByName('series_doc').AsString;
+        cxTextEdit2.EditValue := FieldByName('number_doc').AsString;
+        cxTextEdit3.EditValue := FieldByName('issuing_authority').AsString;
+        cxLookupComboBox1.EditValue := FieldByName('doc_type_id').Value;
+        CheckBox1.Checked := FieldByName('active').AsBoolean;
+      end;
+   end;
+   EnabledEdData(Self, FEdit);
+end;
+
+function TfmGrdocumentAdd.GenParams(): string;
+begin
+  result := '';
+  result := result + GetLcbValue(cxDateEdit1) + '~';
+  result := result + GetLcbValue(cxDateEdit2) + '~';
+  //result := result + cxbedtNameShort.Text + '~';
+
+  IF cxTextEdit1.Text <> '' then
+    result := result + cxTextEdit1.Text + '~'
+  else
+    result := result + 'NULL' + '~';
+
+  IF cxTextEdit2.Text <> '' then
+    result := result + cxTextEdit2.Text + '~'
+  else
+    result := result + 'NULL' + '~';
+
+  IF cxTextEdit3.Text <> '' then
+    result := result + cxTextEdit3.Text + '~'
+  else
+    result := result + 'NULL' + '~';
+
+  result := result + GetLcbValue(cxLookupComboBox1) + '~';
+  Result := Result + BoolToStr(CheckBox1.Checked, True) + '~';
+
+  result := result + VarToStr(FID) + '~';
+
+end;
+
+procedure TfmGrdocumentAdd.InitForm;
+begin
+
+  dbDocType := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+   '   FROM directory_documenttype AS s  ', []);
+  dsDocType.DataSet := dbDocType.DataSet;
+
+end;
+
+end.

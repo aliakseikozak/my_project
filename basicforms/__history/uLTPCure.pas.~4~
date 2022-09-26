@@ -1,0 +1,115 @@
+unit uLTPCure;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseGrid, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
+  dxLayoutControlAdapters, cxStyles, cxCustomData, cxFilter, cxData,
+  cxDataStorage, cxNavigator, Data.DB, cxDBData, Vcl.Menus, System.Actions,
+  Vcl.ActnList, dxBar, cxClasses, cxSplitter, cxGridLevel, cxGridCustomView,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
+  dxLayoutContainer, Vcl.StdCtrls, dxLayoutControl, cxLabel, Vcl.ExtCtrls;
+
+type
+  TfmLTPCure = class(TfmBaseGrid)
+    grBaseDBTableViewColumn1: TcxGridDBColumn;
+    grBaseDBTableViewColumn2: TcxGridDBColumn;
+    grBaseDBTableViewColumn3: TcxGridDBColumn;
+    grBaseDBTableViewColumn4: TcxGridDBColumn;
+    grBaseDBTableViewColumn5: TcxGridDBColumn;
+    grBaseDBTableViewColumn7: TcxGridDBColumn;
+    grBaseDBTableViewColumn8: TcxGridDBColumn;
+    grBaseDBTableViewColumn9: TcxGridDBColumn;
+    grBaseDBTableViewColumn10: TcxGridDBColumn;
+    procedure actEditExecute(Sender: TObject);
+    procedure actGetDataExecute(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure actNewExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmLTPCure: TfmLTPCure;
+
+implementation
+uses
+  uLTPCureAdd, uOVDAdd, uKartUtils, uResource;
+
+{$R *.dfm}
+
+procedure TfmLTPCure.actEditExecute(Sender: TObject);
+var
+  fm: TfmLTPCureAdd;
+begin
+  fm := TfmLTPCureAdd(CreateForm('TfmLTPCureAdd', 'fmLTPCureAdd', Self, false));
+  try
+                          //FDB.DataSet.FieldByName('id').Value
+    fm.SetData(dbBase, 1,  dsBase.DataSet.FieldByName('id').value);
+    if ( fm.ShowModal() = mrOk ) then
+    begin
+
+      dbBase.DataSetReQuery;
+
+    end;
+  finally
+    actGetData.Execute;
+    fm.Free;
+  end;
+end;
+
+procedure TfmLTPCure.actGetDataExecute(Sender: TObject);
+var
+  Columns: string;
+  Params: string;
+  Operations: string;
+begin
+  pnParam.Visible := false;
+  cxspltrParam.Visible:= False;
+
+  with Filtered(Self) do
+  begin
+    Columns := Column;
+    Params := Param;
+    Operations := Operation;
+  end;
+
+  FreeAndNil(dbBase);
+
+  dbBase := DataSetQuery('ltpcure_get', [Resource.sessionInfo.token_id, '1', '', '', ''], GetFieldsArray(), true);
+  dsBase.DataSet := dbBase.DataSet;
+
+
+end;
+
+procedure TfmLTPCure.actNewExecute(Sender: TObject);
+var
+  fm: TfmLTPCureAdd;
+begin
+  fm := TfmLTPCureAdd(CreateForm('TfmLTPCureAdd', 'fmLTPCureAdd', Self, false));
+  try
+
+    fm.SetData(dbBase, 0, ginformation);
+    if ( fm.ShowModal() = mrOk ) then
+    begin
+
+      dbBase.DataSetReQuery;
+
+    end;
+  finally
+    actGetData.Execute;
+    fm.Free;
+  end;
+
+end;
+
+procedure TfmLTPCure.FormShow(Sender: TObject);
+begin
+  actGetData.Execute;
+end;
+
+end.

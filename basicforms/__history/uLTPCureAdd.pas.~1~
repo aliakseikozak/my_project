@@ -1,0 +1,44 @@
+unit uLTPCureAdd;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.ComCtrls,
+  dxCore, cxDateUtils, dxLayoutcxEditAdapters, Vcl.StdCtrls, Vcl.ExtCtrls,
+  dxLayoutContainer, cxDropDownEdit, cxCalendar, cxMaskEdit, cxLookupEdit,
+  cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit, dxLayoutControl,
+  System.Actions, Vcl.ActnList, dxBar, cxClasses, Data.DB;
+
+type
+  TfmLTPCureAdd = class(TfmBaseForm)
+    dxLayoutControl1: TdxLayoutControl;
+    cxTextEdit3: TcxTextEdit;
+    cxLookupComboBox2: TcxLookupComboBox;
+    cxTextEdit1: TcxTextEdit;
+    cxDateEdit1: TcxDateEdit;
+    cxDateEdit2: TcxDateEdit;
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutItem6: TdxLayoutItem;
+    dxLayoutItem3: TdxLayoutItem;
+    dxLayoutItem2: TdxLayoutItem;
+    dxLayoutItem4: TdxLayoutItem;
+    dxLayoutItem5: TdxLayoutItem;
+    Panel2: TPanel;
+    btnOk: TButton;
+    btnCancel: TButton;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmLTPCureAdd: TfmLTPCureAdd;
+
+implementation
+
+{$R *.dfm}
+
+end.

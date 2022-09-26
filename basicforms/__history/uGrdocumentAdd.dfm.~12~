@@ -1,0 +1,288 @@
+inherited fmGrdocumentAdd: TfmGrdocumentAdd
+  Caption = #1044#1086#1082#1091#1084#1077#1085#1090#1099
+  ClientHeight = 512
+  ClientWidth = 636
+  ExplicitWidth = 652
+  ExplicitHeight = 551
+  PixelsPerInch = 96
+  TextHeight = 13
+  object dxLayoutControl1: TdxLayoutControl [0]
+    Left = 0
+    Top = 0
+    Width = 636
+    Height = 239
+    Align = alClient
+    TabOrder = 4
+    ExplicitTop = 45
+    ExplicitHeight = 194
+    object cxDateEdit1: TcxDateEdit
+      Left = 94
+      Top = 10
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 0
+      Width = 121
+    end
+    object cxDateEdit2: TcxDateEdit
+      Left = 304
+      Top = 10
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 1
+      Width = 121
+    end
+    object cxTextEdit1: TcxTextEdit
+      Left = 94
+      Top = 37
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      TabOrder = 2
+      Width = 57
+    end
+    object cxTextEdit2: TcxTextEdit
+      Left = 199
+      Top = 37
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      TabOrder = 3
+      Width = 121
+    end
+    object cxTextEdit3: TcxTextEdit
+      Left = 94
+      Top = 64
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      TabOrder = 4
+      Width = 121
+    end
+    object cxLookupComboBox1: TcxLookupComboBox
+      Left = 94
+      Top = 91
+      Properties.KeyFieldNames = 'id'
+      Properties.ListColumns = <
+        item
+          Caption = #1058#1080#1087' '#1076#1086#1082#1091#1084#1077#1085#1090#1072
+          FieldName = 'name'
+        end>
+      Properties.ListSource = dsDocType
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 5
+      Width = 223
+    end
+    object CheckBox1: TCheckBox
+      Left = 10
+      Top = 118
+      Width = 141
+      Height = 17
+      Caption = #1044#1077#1081#1089#1090#1074#1091#1102#1097#1080#1081
+      TabOrder = 6
+    end
+    object dxLayoutControl1Group_Root: TdxLayoutGroup
+      AlignHorz = ahLeft
+      AlignVert = avTop
+      ButtonOptions.Buttons = <>
+      Hidden = True
+      ShowBorder = False
+      Index = -1
+    end
+    object dxLayoutItem1: TdxLayoutItem
+      Parent = dxLayoutAutoCreatedGroup1
+      AlignHorz = ahLeft
+      AlignVert = avTop
+      CaptionOptions.Text = #1044#1072#1090#1072' '#1074#1099#1076#1072#1095#1080':'
+      Control = cxDateEdit1
+      ControlOptions.ShowBorder = False
+      Index = 0
+    end
+    object dxLayoutItem2: TdxLayoutItem
+      Parent = dxLayoutAutoCreatedGroup1
+      AlignVert = avTop
+      CaptionOptions.Text = #1057#1088#1086#1082' '#1076#1077#1081#1089#1090#1074#1080#1103':'
+      Control = cxDateEdit2
+      ControlOptions.ShowBorder = False
+      Index = 1
+    end
+    object dxLayoutItem3: TdxLayoutItem
+      Parent = dxLayoutAutoCreatedGroup2
+      AlignHorz = ahLeft
+      CaptionOptions.Text = #1057#1077#1088#1080#1103':'
+      Control = cxTextEdit1
+      ControlOptions.ShowBorder = False
+      Index = 0
+    end
+    object dxLayoutAutoCreatedGroup1: TdxLayoutAutoCreatedGroup
+      Parent = dxLayoutControl1Group_Root
+      LayoutDirection = ldHorizontal
+      Index = 0
+      AutoCreated = True
+    end
+    object dxLayoutItem4: TdxLayoutItem
+      Parent = dxLayoutAutoCreatedGroup2
+      AlignVert = avClient
+      CaptionOptions.Text = #1053#1086#1084#1077#1088':'
+      Control = cxTextEdit2
+      ControlOptions.ShowBorder = False
+      Index = 1
+    end
+    object dxLayoutAutoCreatedGroup2: TdxLayoutAutoCreatedGroup
+      Parent = dxLayoutControl1Group_Root
+      LayoutDirection = ldHorizontal
+      Index = 1
+      AutoCreated = True
+    end
+    object dxLayoutItem5: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      CaptionOptions.Text = #1050#1077#1084' '#1074#1099#1076#1072#1085':'
+      Control = cxTextEdit3
+      ControlOptions.ShowBorder = False
+      Index = 2
+    end
+    object dxLayoutItem6: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      CaptionOptions.Text = #1058#1080#1087' '#1076#1086#1082#1091#1084#1077#1085#1090#1072':'
+      Control = cxLookupComboBox1
+      ControlOptions.ShowBorder = False
+      Index = 3
+    end
+    object dxLayoutItem7: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      CaptionOptions.Text = 'CheckBox1'
+      CaptionOptions.Visible = False
+      Control = CheckBox1
+      ControlOptions.AutoColor = True
+      ControlOptions.ShowBorder = False
+      Index = 4
+    end
+  end
+  object Panel1: TPanel [1]
+    Left = 0
+    Top = 239
+    Width = 636
+    Height = 232
+    Align = alBottom
+    TabOrder = 5
+    object cxGrid1: TcxGrid
+      Left = 10
+      Top = 6
+      Width = 431
+      Height = 200
+      PopupMenu = PopupMenu1
+      TabOrder = 0
+      object cxGrid1DBTableView1: TcxGridDBTableView
+        Navigator.Buttons.CustomButtons = <>
+        DataController.Summary.DefaultGroupSummaryItems = <>
+        DataController.Summary.FooterSummaryItems = <>
+        DataController.Summary.SummaryGroups = <>
+      end
+      object cxGrid1Level1: TcxGridLevel
+        GridView = cxGrid1DBTableView1
+      end
+    end
+    object Button1: TButton
+      Left = 447
+      Top = 6
+      Width = 130
+      Height = 25
+      Caption = #1047#1072#1075#1088#1091#1079#1080#1090#1100' '#1076#1086#1082#1091#1084#1077#1085#1090
+      TabOrder = 1
+      OnClick = Button1Click
+    end
+    object Button2: TButton
+      Left = 447
+      Top = 37
+      Width = 130
+      Height = 25
+      Caption = #1055#1088#1086#1089#1084#1086#1090#1088#1077#1090#1100' '#1076#1086#1082#1091#1084#1077#1085#1090
+      TabOrder = 2
+      OnClick = Button1Click
+    end
+    object Button3: TButton
+      Left = 447
+      Top = 68
+      Width = 130
+      Height = 25
+      Caption = #1059#1076#1072#1083#1080#1090#1100' '#1076#1086#1082#1091#1084#1077#1085#1090
+      TabOrder = 3
+      OnClick = Button1Click
+    end
+  end
+  object Panel2: TPanel [2]
+    Left = 0
+    Top = 471
+    Width = 636
+    Height = 41
+    Align = alBottom
+    TabOrder = 6
+    DesignSize = (
+      636
+      41)
+    object btnOk: TButton
+      Tag = 6
+      Left = 362
+      Top = 6
+      Width = 160
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1080' '#1079#1072#1082#1088#1099#1090#1100
+      ImageIndex = 14
+      Images = Resource.ImageList
+      TabOrder = 0
+      OnClick = btnOkClick
+    end
+    object btnCancel: TButton
+      Left = 528
+      Top = 6
+      Width = 90
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = #1054#1090#1084#1077#1085#1072
+      ImageIndex = 16
+      Images = Resource.ImageList
+      TabOrder = 1
+      OnClick = btnCancelClick
+    end
+  end
+  inherited BarManager: TdxBarManager
+    DockControlHeights = (
+      0
+      0
+      0
+      0)
+    inherited BarManagerMainMenu: TdxBar
+      Visible = False
+    end
+    inherited BarManagerMainBar: TdxBar
+      DockedTop = 0
+      Visible = False
+    end
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 576
+    Top = 279
+    object Upload: TMenuItem
+      Caption = #1047#1072#1075#1088#1091#1079#1080#1090#1100' '#1092#1072#1081#1083
+      OnClick = UploadClick
+    end
+  end
+  object OpenDialog1: TOpenDialog
+    Left = 536
+    Top = 367
+  end
+  object dsDocType: TDataSource
+    Left = 544
+    Top = 197
+  end
+end

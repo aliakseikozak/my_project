@@ -1,0 +1,45 @@
+unit uEducationAdd;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, System.Actions,
+  Vcl.ActnList, dxBar, cxClasses, Data.DB, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.ComCtrls,
+  dxCore, cxDateUtils, dxLayoutcxEditAdapters, dxLayoutContainer,
+  cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit,
+  cxMaskEdit, cxCalendar, dxLayoutControl, Vcl.StdCtrls, Vcl.ExtCtrls;
+
+type
+  TfmEducationAdd = class(TfmBaseForm)
+    Panel1: TPanel;
+    btnOk: TButton;
+    btnCancel: TButton;
+    dxLayoutControl1: TdxLayoutControl;
+    dtBirthdate: TcxDateEdit;
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutItem4: TdxLayoutItem;
+    cxLookupComboBox1: TcxLookupComboBox;
+    dxLayoutItem1: TdxLayoutItem;
+    dxLayoutItem2: TdxLayoutItem;
+    cxDateEdit1: TcxDateEdit;
+    dxLayoutAutoCreatedGroup1: TdxLayoutAutoCreatedGroup;
+    cxLookupComboBox2: TcxLookupComboBox;
+    dxLayoutItem3: TdxLayoutItem;
+    dxLayoutItem5: TdxLayoutItem;
+    cxLookupComboBox3: TcxLookupComboBox;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmEducationAdd: TfmEducationAdd;
+
+implementation
+
+{$R *.dfm}
+
+end.

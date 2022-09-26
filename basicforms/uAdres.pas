@@ -1,0 +1,199 @@
+unit uAdres;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxLayoutContainer,
+  dxLayoutControlAdapters, Vcl.StdCtrls, Vcl.Buttons, cxTextEdit, cxMaskEdit,
+  cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxLabel,
+  dxLayoutControl, System.Actions, Vcl.ActnList, dxBar, cxClasses, Data.DB, uExchDBData,
+  uResource, uExchDB, ZAbstractRODataset, ZAbstractDataset, ZDataset;
+
+type
+  TfmAdres = class(TfmBaseForm)
+    dxLayoutControl2: TdxLayoutControl;
+    GroupBox1: TGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label14: TLabel;
+    cxLabel1: TcxLabel;
+    cxLookupComboBox9: TcxLookupComboBox;
+    cxLookupComboBox10: TcxLookupComboBox;
+    cxLookupComboBox11: TcxLookupComboBox;
+    cxLookupComboBox12: TcxLookupComboBox;
+    cxTextEdit4: TcxTextEdit;
+    cxTextEdit5: TcxTextEdit;
+    cxTextEdit6: TcxTextEdit;
+    cxLookupComboBox3: TcxLookupComboBox;
+    GroupBox2: TGroupBox;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    Label10: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
+    cxLabel2: TcxLabel;
+    cxLookupComboBox5: TcxLookupComboBox;
+    cxLookupComboBox7: TcxLookupComboBox;
+    cxLookupComboBox8: TcxLookupComboBox;
+    cxLookupComboBox1: TcxLookupComboBox;
+    cxTextEdit1: TcxTextEdit;
+    cxTextEdit2: TcxTextEdit;
+    cxTextEdit3: TcxTextEdit;
+    cxLookupComboBox2: TcxLookupComboBox;
+    BitBtn2: TBitBtn;
+    dxLayoutControl2Group_Root: TdxLayoutGroup;
+    dxLayoutItem16: TdxLayoutItem;
+    dxLayoutItem17: TdxLayoutItem;
+    dxLayoutItem20: TdxLayoutItem;
+    dsCityRegion: TDataSource;
+    dsStreet: TDataSource;
+    dsCity: TDataSource;
+    dsArea: TDataSource;
+    dsRegion: TDataSource;
+    dsRegion_p: TDataSource;
+    dsArea_p: TDataSource;
+    dsCity_p: TDataSource;
+    dsStreet_p: TDataSource;
+    dsCityRegion_p: TDataSource;
+
+    procedure InitForm;
+    procedure FormShow(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
+    procedure cxLookupComboBox5PropertiesEditValueChanged(Sender: TObject);
+    procedure cxLookupComboBox1PropertiesEditValueChanged(Sender: TObject);
+    procedure cxLookupComboBox7PropertiesEditValueChanged(Sender: TObject);
+    procedure cxLookupComboBox9PropertiesEditValueChanged(Sender: TObject);
+    procedure cxLookupComboBox10PropertiesEditValueChanged(Sender: TObject);
+    procedure cxLookupComboBox11PropertiesEditValueChanged(Sender: TObject);
+  private
+    { Private declarations }
+    dbArea: TDBData;
+    dbArea_p: TDBData;
+    dbRegion: TDBData;
+    dbStreet: TDBData;
+    dbCityRegion_p: TDBData;
+    dbCityRegion: TDBData;
+    dbRegion_p: TDBData;
+    dbCity: TDBData;
+    dbStreet_p: TDBData;
+    dbCity_p: TDBData;
+  public
+    { Public declarations }
+  end;
+
+var
+  fmAdres: TfmAdres;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfmAdres.BitBtn2Click(Sender: TObject);
+begin
+  cxLookupComboBox9.EditValue := cxLookupComboBox5.EditValue;
+  cxLookupComboBox10.EditValue := cxLookupComboBox1.EditValue;
+  cxLookupComboBox11.EditValue := cxLookupComboBox7.EditValue;
+  cxLookupComboBox12.EditValue := cxLookupComboBox8.EditValue;
+  cxTextEdit4.Text := cxTextEdit1.Text;
+  cxTextEdit5.Text := cxTextEdit2.Text;
+  cxTextEdit6.Text := cxTextEdit3.Text;
+
+end;
+
+procedure TfmAdres.cxLookupComboBox10PropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  dbCity_p := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+     '   FROM directory_city AS s  '+
+   ' where s.region_id = '+ VarToStr(cxLookupComboBox1.EditValue), []);
+  dsCity_p.DataSet := dbCity_p.DataSet;
+end;
+
+procedure TfmAdres.cxLookupComboBox11PropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  dbStreet_p := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+     '   FROM directory_street AS s  '+
+   ' where s.city_id = '+ VarToStr(cxLookupComboBox7.EditValue), []);
+  dsStreet_p.DataSet := dbStreet_p.DataSet;
+
+  dbCityRegion_p := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+     '   FROM directory_city_region AS s  '+
+   ' where s.city_id = '+ VarToStr(cxLookupComboBox7.EditValue), []);
+  dsCityRegion.DataSet := dbCityRegion_p.DataSet;
+end;
+
+procedure TfmAdres.cxLookupComboBox1PropertiesEditValueChanged(Sender: TObject);
+begin
+  dbCity := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+     '   FROM directory_city AS s  '+
+   ' where s.region_id = '+ VarToStr(cxLookupComboBox1.EditValue), []);
+  dsCity.DataSet := dbCity.DataSet;
+end;
+
+procedure TfmAdres.cxLookupComboBox5PropertiesEditValueChanged(Sender: TObject);
+begin
+  dbRegion := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+   '   FROM directory_region AS s  '+
+   '  where s.area_id = '+ VarToStr(cxLookupComboBox5.EditValue), []);
+  dsRegion.DataSet := dbRegion.DataSet;
+end;
+
+procedure TfmAdres.cxLookupComboBox7PropertiesEditValueChanged(Sender: TObject);
+begin
+  dbStreet := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+     '   FROM directory_street AS s  '+
+   ' where s.city_id = '+ VarToStr(cxLookupComboBox7.EditValue), []);
+  dsStreet.DataSet := dbStreet.DataSet;
+
+  dbCityRegion := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+     '   FROM directory_city_region AS s  '+
+   ' where s.city_id = '+ VarToStr(cxLookupComboBox7.EditValue), []);
+  dsCityRegion.DataSet := dbCityRegion.DataSet;
+end;
+
+procedure TfmAdres.cxLookupComboBox9PropertiesEditValueChanged(Sender: TObject);
+begin
+  dbRegion_p := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+     '   FROM directory_region AS s  '+
+   ' where s.area_id = '+ VarToStr(cxLookupComboBox5.EditValue), []);
+  dsRegion_p.DataSet := dbRegion_p.DataSet;
+end;
+
+procedure TfmAdres.FormShow(Sender: TObject);
+begin
+  InitForm;
+
+end;
+
+procedure TfmAdres.InitForm;
+begin
+
+  dbArea := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+   '   FROM directory_area AS s  ', []);
+  dsArea.DataSet := dbArea.DataSet;
+
+  dbArea_p := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+   '   FROM directory_area AS s  ', []);
+  dsArea_p.DataSet := dbArea_p.DataSet;
+end;
+
+end.

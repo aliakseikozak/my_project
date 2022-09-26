@@ -1,0 +1,100 @@
+inherited fmGrdocument: TfmGrdocument
+  Caption = #1044#1086#1082#1091#1084#1077#1085#1090#1099
+  ClientHeight = 523
+  ExplicitHeight = 562
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited pnParam: TPanel
+    TabOrder = 2
+    inherited lbParam: TcxLabel
+      Style.IsFontAssigned = True
+    end
+  end
+  inherited pnSelect: TPanel
+    Top = 475
+    TabOrder = 4
+    ExplicitTop = 475
+    inherited dxLCPnlSelect: TdxLayoutControl
+      inherited dxLCPnlSelectGroup_Root: TdxLayoutGroup
+        Index = -1
+      end
+      inherited dxLIbtnCancel: TdxLayoutItem
+        Index = 1
+      end
+      inherited dxLIbtnSelect: TdxLayoutItem
+        Index = 0
+      end
+    end
+  end
+  inherited gbGridBase: TPanel
+    Height = 321
+    ExplicitWidth = 904
+    ExplicitHeight = 321
+    inherited grBase: TcxGrid
+      Height = 319
+      ExplicitWidth = 902
+      ExplicitHeight = 319
+      inherited grBaseDBTableView: TcxGridDBTableView
+        object grBaseDBTableViewColumn7: TcxGridDBColumn
+          Caption = 'ID'
+          DataBinding.FieldName = 'id'
+        end
+        object grBaseDBTableViewColumn1: TcxGridDBColumn
+          Caption = #1044#1072#1090#1072' '#1074#1099#1076#1072#1095#1080
+          DataBinding.FieldName = 'begin_date'
+          Width = 105
+        end
+        object grBaseDBTableViewColumn2: TcxGridDBColumn
+          Caption = #1057#1088#1086#1082' '#1076#1077#1081#1089#1090#1074#1080#1103
+          DataBinding.FieldName = 'end_date'
+          Width = 95
+        end
+        object grBaseDBTableViewColumn3: TcxGridDBColumn
+          Caption = #1058#1080#1087' '#1076#1086#1082#1091#1084#1077#1085#1090#1072
+          DataBinding.FieldName = 'doc_type_name'
+          Width = 119
+        end
+        object grBaseDBTableViewColumn4: TcxGridDBColumn
+          Caption = #1057#1077#1088#1080#1103
+          DataBinding.FieldName = 'series_doc'
+          Width = 110
+        end
+        object grBaseDBTableViewColumn5: TcxGridDBColumn
+          Caption = #1053#1086#1084#1077#1088' '#1076#1086#1082#1091#1084#1077#1085#1090#1072
+          DataBinding.FieldName = 'number_doc'
+          Width = 136
+        end
+        object grBaseDBTableViewColumn6: TcxGridDBColumn
+          DataBinding.FieldName = 'create_date'
+          Width = 84
+        end
+        object grBaseDBTableViewColumn8: TcxGridDBColumn
+          DataBinding.FieldName = 'change_date'
+          Width = 92
+        end
+        object grBaseDBTableViewColumn9: TcxGridDBColumn
+          DataBinding.FieldName = 'username'
+          Width = 70
+        end
+      end
+    end
+  end
+  inherited cxspltrParam: TcxSplitter
+    ExplicitWidth = 904
+  end
+  inherited BarManager: TdxBarManager
+    DockControlHeights = (
+      0
+      0
+      24
+      0)
+  end
+  inherited ActionList: TActionList
+    inherited actRefresh: TAction
+      OnExecute = actGetDataExecute
+    end
+    inherited actGetData: TAction
+      OnExecute = actGetDataExecute
+    end
+  end
+end

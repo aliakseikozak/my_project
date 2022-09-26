@@ -1,0 +1,168 @@
+unit uWorkAdd;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, System.Actions,
+  Vcl.ActnList, dxBar, cxClasses, Data.DB, uExchDBData, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.ComCtrls,
+  dxCore, cxDateUtils, dxLayoutcxEditAdapters, dxLayoutContainer,
+  cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit,
+  cxMaskEdit, cxCalendar, dxLayoutControl, Vcl.StdCtrls, Vcl.ExtCtrls, uResource, uExchDB,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset;
+
+type
+  TfmWorkAdd = class(TfmBaseForm)
+    Panel2: TPanel;
+    btnOk: TButton;
+    btnCancel: TButton;
+    dxLayoutControl1: TdxLayoutControl;
+    cxDateEdit1: TcxDateEdit;
+    cxTextEdit3: TcxTextEdit;
+    cxLookupComboBox1: TcxLookupComboBox;
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutItem2: TdxLayoutItem;
+    dxLayoutItem6: TdxLayoutItem;
+    dxLayoutItem7: TdxLayoutItem;
+    dxLayoutControl2: TdxLayoutControl;
+    cxDateEdit2: TcxDateEdit;
+    cxLookupComboBox2: TcxLookupComboBox;
+    dxLayoutGroup1: TdxLayoutGroup;
+    dxLayoutItem3: TdxLayoutItem;
+    dxLayoutItem5: TdxLayoutItem;
+    dxLayoutItem1: TdxLayoutItem;
+    cxDateEdit3: TcxDateEdit;
+    dxLayoutAutoCreatedGroup2: TdxLayoutAutoCreatedGroup;
+    dxLayoutItem4: TdxLayoutItem;
+    cxLookupComboBox3: TcxLookupComboBox;
+    dsWork: TDataSource;
+    dsPost: TDataSource;
+    procedure FormShow(Sender: TObject);
+    function GenParams(): string;
+    procedure btnOkClick(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
+  private
+    FMode: integer;
+    FID: Variant;
+    FDB: TDBData;
+    dbDirectoryArticle: TDBData;
+    dbIU: TDBData;
+    dbPost: TDBData;
+    dbWork: TDBData;
+    procedure InitForm;
+    function GetLcbValue(pLcb: TcxLookupComboBox): string; overload;
+    function GetLcbValue(pLcb: TcxDateEdit): string; overload;
+    function GetLcbValue(pLcb: TcxComboBox): string; overload;
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure SetData(pDb: TDBData; pMode: integer; pID: Variant);
+  end;
+
+var
+  fmWorkAdd: TfmWorkAdd;
+
+implementation
+uses
+  uKartUtils, uOVDAdd;
+
+{$R *.dfm}
+
+procedure TfmWorkAdd.SetData(pDb: TDBData; pMode: integer; pID: Variant);
+begin
+  FDB := pDb;
+  FID := pID;
+  FMode := pMode;
+end;
+
+function TfmWorkAdd.GetLcbValue(pLcb: TcxLookupComboBox): string;
+begin
+  if VarIsNull(pLcb.EditValue) then
+    result := 'NULL'
+  else
+    result := VarToStr(pLcb.EditValue);
+end;
+
+function TfmWorkAdd.GetLcbValue(pLcb: TcxDateEdit): string;
+begin
+  if VarIsNull(pLcb.EditValue) then
+    result := 'NULL'
+  else
+    result := FormatDateTime('mm-dd-yyyy',pLcb.EditValue{, Resource.JsonFormatSettings});
+end;
+
+function TfmWorkAdd.GetLcbValue(pLcb: TcxComboBox): string;
+begin
+  case (pLcb.ItemIndex) of
+    0:
+      result := 'true';
+    1:
+      result := 'false';
+  end;
+end;
+
+procedure TfmWorkAdd.InitForm;
+begin
+  dbWork := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+   '   FROM company_directory_organization AS s  ' , []);
+  dsWork.DataSet := dbWork.DataSet;
+
+  dbPost := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+   '   FROM directory_post AS s  ' , []);
+  dsPost.DataSet := dbPost.DataSet;
+end;
+
+function TfmWorkAdd.GenParams(): string;
+begin
+  result := '';
+  result := result + GetLcbValue(cxDateEdit3) + '~';
+  result := result + GetLcbValue(cxDateEdit2) + '~';
+
+  result := result + GetLcbValue(cxLookupComboBox2) + '~';
+  result := result + GetLcbValue(cxLookupComboBox3) + '~';
+  //result := result + cxbedtNameShort.Text + '~';
+
+  result := result + VarToStr(FID) + '~';
+
+end;
+
+procedure TfmWorkAdd.btnCancelClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfmWorkAdd.btnOkClick(Sender: TObject);
+begin
+  if FMode = 0 then
+  begin
+    dbIU := DataSetQuery('work_set', ['0', VarToStr(FMode), Resource.sessionInfo.token_id, GenParams()]);
+  end
+  else
+  begin
+    dbIU := DataSetQuery('work_set', [FDB.DataSet.FieldByName('id').Value, VarToStr(FMode), Resource.sessionInfo.token_id, GenParams()]);
+  end;
+  Close;
+ // dbIU := DataSetQuery('work_set', [FDB.DataSet.FieldByName('id').Value, VarToStr(FMode), Resource.sessionInfo.token_id, GenParams()]);
+//  Close;
+end;
+
+procedure TfmWorkAdd.FormShow(Sender: TObject);
+begin
+   InitForm;
+   if (FMode = 1) and (not FDB.DataSet.IsEmpty) then
+   begin
+      with FDB.DataSet do
+      begin
+        cxDateEdit3.EditValue := FieldByName('begin_work_date').Value;
+        cxDateEdit2.EditValue := FieldByName('end_work_date').Value;
+        cxLookupComboBox2.EditValue := FieldByName('place_work_id').Value;
+        cxLookupComboBox3.EditValue := FieldByName('post_work_id').Value;
+      end;
+   end;
+   EnabledEdData(Self, gNameForm, 'fmWorkAdd',  1);
+end;
+
+end.

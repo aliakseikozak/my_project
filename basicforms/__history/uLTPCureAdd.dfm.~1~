@@ -1,0 +1,171 @@
+inherited fmLTPCureAdd: TfmLTPCureAdd
+  Caption = #1044#1072#1085#1085#1099#1077' '#1086' '#1083#1077#1095#1077#1085#1080#1080' '#1074' '#1051#1058#1055
+  ClientHeight = 231
+  ClientWidth = 441
+  ExplicitWidth = 457
+  ExplicitHeight = 270
+  PixelsPerInch = 96
+  TextHeight = 13
+  object dxLayoutControl1: TdxLayoutControl [0]
+    Left = 0
+    Top = 0
+    Width = 441
+    Height = 190
+    Align = alClient
+    TabOrder = 4
+    object cxTextEdit3: TcxTextEdit
+      Left = 177
+      Top = 37
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      TabOrder = 1
+      Width = 223
+    end
+    object cxLookupComboBox2: TcxLookupComboBox
+      Left = 177
+      Top = 10
+      Properties.KeyFieldNames = 'id'
+      Properties.ListColumns = <
+        item
+          Caption = #1057' '#1082#1077#1084' '#1087#1088#1086#1074#1077#1076#1077#1085#1072' '#1073#1077#1089#1077#1076#1072
+          FieldName = 'name'
+        end>
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 0
+      Width = 223
+    end
+    object cxTextEdit1: TcxTextEdit
+      Left = 177
+      Top = 91
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      TabOrder = 3
+      Width = 223
+    end
+    object cxDateEdit1: TcxDateEdit
+      Left = 177
+      Top = 64
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 2
+      Width = 121
+    end
+    object cxDateEdit2: TcxDateEdit
+      Left = 177
+      Top = 118
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 4
+      Width = 121
+    end
+    object dxLayoutControl1Group_Root: TdxLayoutGroup
+      AlignHorz = ahLeft
+      AlignVert = avTop
+      ButtonOptions.Buttons = <>
+      Hidden = True
+      ShowBorder = False
+      Index = -1
+    end
+    object dxLayoutItem6: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      CaptionOptions.Text = #1055#1088#1086#1090#1086#1082#1086#1083' '#1087#1086#1089#1090#1072#1085#1086#1074#1082#1080':'
+      Control = cxTextEdit3
+      ControlOptions.ShowBorder = False
+      Index = 1
+    end
+    object dxLayoutItem3: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      CaptionOptions.Text = #1055#1088#1086#1093#1086#1076#1080#1090'/'#1087#1088#1086#1096#1077#1083' '#1050#1052#1057#1056' '#1074' '#1051#1058#1055':'
+      Control = cxLookupComboBox2
+      ControlOptions.ShowBorder = False
+      Index = 0
+    end
+    object dxLayoutItem2: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      CaptionOptions.Text = #1055#1088#1086#1090#1086#1082#1086#1083' '#1089#1085#1103#1090#1080#1103':'
+      Control = cxTextEdit1
+      ControlOptions.ShowBorder = False
+      Index = 3
+    end
+    object dxLayoutItem4: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      AlignVert = avTop
+      CaptionOptions.Text = #1044#1072#1090#1072' '#1085#1072#1095#1072#1083#1072' '#1083#1077#1095#1077#1085#1080#1103':'
+      Control = cxDateEdit1
+      ControlOptions.ShowBorder = False
+      Index = 2
+    end
+    object dxLayoutItem5: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      CaptionOptions.Text = #1044#1072#1090#1072' '#1086#1082#1086#1085#1095#1072#1085#1080#1103' '#1083#1077#1095#1077#1085#1080#1103':'
+      Control = cxDateEdit2
+      ControlOptions.ShowBorder = False
+      Index = 4
+    end
+  end
+  object Panel2: TPanel [1]
+    Left = 0
+    Top = 190
+    Width = 441
+    Height = 41
+    Align = alBottom
+    TabOrder = 5
+    DesignSize = (
+      441
+      41)
+    object btnOk: TButton
+      Tag = 6
+      Left = 167
+      Top = 6
+      Width = 160
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1080' '#1079#1072#1082#1088#1099#1090#1100
+      ImageIndex = 14
+      Images = Resource.ImageList
+      TabOrder = 0
+    end
+    object btnCancel: TButton
+      Left = 333
+      Top = 6
+      Width = 90
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = #1054#1090#1084#1077#1085#1072
+      ImageIndex = 16
+      Images = Resource.ImageList
+      TabOrder = 1
+    end
+  end
+  inherited BarManager: TdxBarManager
+    DockControlHeights = (
+      0
+      0
+      0
+      0)
+    inherited BarManagerMainMenu: TdxBar
+      Visible = False
+    end
+    inherited BarManagerMainBar: TdxBar
+      DockedTop = 0
+      Visible = False
+    end
+  end
+end

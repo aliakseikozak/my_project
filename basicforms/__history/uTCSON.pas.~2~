@@ -1,0 +1,57 @@
+unit uTCSON;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseGrid, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
+  dxLayoutControlAdapters, cxStyles, cxCustomData, cxFilter, cxData,
+  cxDataStorage, cxNavigator, Data.DB, cxDBData, Vcl.Menus, System.Actions,
+  Vcl.ActnList, dxBar, cxClasses, cxSplitter, cxGridLevel, cxGridCustomView,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
+  dxLayoutContainer, Vcl.StdCtrls, dxLayoutControl, cxLabel, Vcl.ExtCtrls,
+  dxLayoutcxEditAdapters, Vcl.ComCtrls, dxCore, cxDateUtils, cxDropDownEdit,
+  cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit, cxMaskEdit,
+  cxCalendar, Vcl.Buttons;
+
+type
+  TfmTCSON = class(TfmBaseGrid)
+    dxLayoutControl1: TdxLayoutControl;
+    Edit4: TEdit;
+    Edit2: TEdit;
+    btFind: TBitBtn;
+    btFindParamClear: TBitBtn;
+    cxDateEdit1: TcxDateEdit;
+    Edit3: TEdit;
+    Edit1: TEdit;
+    cxLookupComboBox1: TcxLookupComboBox;
+    cxLookupComboBox2: TcxLookupComboBox;
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutGroup2: TdxLayoutGroup;
+    dxLayoutItem6: TdxLayoutItem;
+    dxLayoutItem2: TdxLayoutItem;
+    dxLayoutGroup3: TdxLayoutGroup;
+    dxLayoutItem7: TdxLayoutItem;
+    dxLayoutItem8: TdxLayoutItem;
+    dxLayoutAutoCreatedGroup2: TdxLayoutAutoCreatedGroup;
+    dxLayoutItem3: TdxLayoutItem;
+    dxLayoutAutoCreatedGroup3: TdxLayoutAutoCreatedGroup;
+    dxLayoutItem5: TdxLayoutItem;
+    dxLayoutItem4: TdxLayoutItem;
+    dxLayoutItem9: TdxLayoutItem;
+    dxLayoutItem10: TdxLayoutItem;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmTCSON: TfmTCSON;
+
+implementation
+
+{$R *.dfm}
+
+end.

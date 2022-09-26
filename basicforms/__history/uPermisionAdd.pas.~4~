@@ -1,0 +1,149 @@
+unit uPermisionAdd;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, System.Actions,
+  Vcl.ActnList, dxBar, cxClasses, Data.DB, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
+  dxLayoutcxEditAdapters, Vcl.StdCtrls, Vcl.ExtCtrls, dxLayoutContainer,
+  cxTextEdit, cxMaskEdit, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
+  cxDBLookupComboBox, dxLayoutControl, dxLayoutControlAdapters, uExchDB, uExchDBData, uResource;
+
+type
+  TfmPermisionAdd = class(TfmBaseForm)
+    dxLayoutControl2: TdxLayoutControl;
+    cxLookupComboBox3: TcxLookupComboBox;
+    dxLayoutGroup1: TdxLayoutGroup;
+    dxLayoutItem4: TdxLayoutItem;
+    Panel2: TPanel;
+    btnOk: TButton;
+    btnCancel: TButton;
+    dxLayoutItem1: TdxLayoutItem;
+    cxLookupComboBox1: TcxLookupComboBox;
+    CheckBox1: TCheckBox;
+    dxLayoutItem2: TdxLayoutItem;
+    dxLayoutItem3: TdxLayoutItem;
+    CheckBox2: TCheckBox;
+    dxLayoutItem5: TdxLayoutItem;
+    CheckBox3: TCheckBox;
+    dsRole: TDataSource;
+    dsModules: TDataSource;
+    function GenParams(): string;
+    procedure btnCancelClick(Sender: TObject);
+    procedure btnOkClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    FMode: integer;
+    FID: Variant;
+    FDB: TDBData;
+    dbRole: TDBData;
+    dbModules: TDBData;
+    dbIU : TDBData;
+    procedure InitForm;
+    function GetLcbValue(pLcb: TcxLookupComboBox): string; overload;
+    function GetLcbValue(pLcb: TcxComboBox): string; overload;
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure SetData(pDb: TDBData; pMode: integer; pID: Variant);
+  end;
+
+var
+  fmPermisionAdd: TfmPermisionAdd;
+
+implementation
+
+{$R *.dfm}
+
+
+procedure TfmPermisionAdd.SetData(pDb: TDBData; pMode: integer; pID: Variant);
+begin
+  FDB := pDb;
+  FID := pID;
+  FMode := pMode;
+end;
+
+function TfmPermisionAdd.GetLcbValue(pLcb: TcxLookupComboBox): string;
+begin
+  if VarIsNull(pLcb.EditValue) then
+    result := 'NULL'
+  else
+    result := VarToStr(pLcb.EditValue);
+end;
+
+function TfmPermisionAdd.GetLcbValue(pLcb: TcxComboBox): string;
+begin
+  case (pLcb.ItemIndex) of
+    0:
+      result := 'true';
+    1:
+      result := 'false';
+  end;
+end;
+
+procedure TfmPermisionAdd.InitForm;
+begin
+
+  dbRole := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+   '   FROM role AS s  ' , []);
+  dsRole.DataSet := dbRole.DataSet;
+
+  dbModules := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.modules_id, s.name  '+
+   '   FROM modules AS s  ' , []);
+  dsModules.DataSet := dbModules.DataSet;
+
+end;
+
+procedure TfmPermisionAdd.btnCancelClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfmPermisionAdd.btnOkClick(Sender: TObject);
+begin
+  if FMode = 0 then
+  begin
+    dbIU := DataSetQuery('role_permissions_set', ['0', VarToStr(FMode), Resource.sessionInfo.token_id, GenParams()]);
+  end
+  else
+  begin
+    dbIU := DataSetQuery('role_permissions_set', [FDB.DataSet.FieldByName('id').Value, VarToStr(FMode), Resource.sessionInfo.token_id, GenParams()]);
+  end;
+  Close;
+
+end;
+
+procedure TfmPermisionAdd.FormShow(Sender: TObject);
+begin
+   InitForm;
+   if (FMode = 1) and (not FDB.DataSet.IsEmpty) then
+   begin
+      with FDB.DataSet do
+      begin
+        cxLookupComboBox1.EditValue := FieldByName('role_id').Value;
+        cxLookupComboBox3.EditValue := FieldByName('modules_id').Value;
+        CheckBox1.Checked := FieldByName('on_viewing').AsBoolean;
+        CheckBox3.Checked := FieldByName('on_edit').AsBoolean;
+        CheckBox2.Checked := FieldByName('on_deletion').AsBoolean;
+      end;
+   end;
+end;
+
+function TfmPermisionAdd.GenParams(): string;
+begin
+  result := '';
+
+  result := result + GetLcbValue(cxLookupComboBox1) + '~';
+  result := result + GetLcbValue(cxLookupComboBox3) + '~';
+  Result := Result + BoolToStr(checkbox1.Checked, True) + '~';
+  Result := Result + BoolToStr(checkbox3.Checked, True) + '~';
+  Result := Result + BoolToStr(checkbox2.Checked, True) + '~';
+
+
+end;
+
+end.

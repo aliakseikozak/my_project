@@ -1,0 +1,49 @@
+unit uFamilyComposition;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
+  dxLayoutcxEditAdapters, dxLayoutControlAdapters, Vcl.ComCtrls, dxCore,
+  cxDateUtils, Vcl.StdCtrls, cxMaskEdit, cxDropDownEdit, cxCalendar,
+  dxLayoutContainer, cxTextEdit, dxLayoutControl, Vcl.ExtCtrls, System.Actions,
+  Vcl.ActnList, dxBar, cxClasses, Data.DB;
+
+type
+  TfmFamilyComposition = class(TfmBaseForm)
+    Panel1: TPanel;
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutControl1: TdxLayoutControl;
+    btnOk: TButton;
+    btnCancel: TButton;
+    dxLayoutItem1: TdxLayoutItem;
+    edFam: TcxTextEdit;
+    dxLayoutItem2: TdxLayoutItem;
+    edName: TcxTextEdit;
+    dxLayoutItem3: TdxLayoutItem;
+    edPatronymic: TcxTextEdit;
+    dxLayoutItem4: TdxLayoutItem;
+    dtBirthdate: TcxDateEdit;
+    dxLayoutItem5: TdxLayoutItem;
+    cxTextEdit1: TcxTextEdit;
+    dxLayoutItem6: TdxLayoutItem;
+    cxTextEdit2: TcxTextEdit;
+    dxLayoutGroup1: TdxLayoutGroup;
+    CheckBox1: TCheckBox;
+    dxLayoutItem7: TdxLayoutItem;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmFamilyComposition: TfmFamilyComposition;
+
+implementation
+
+{$R *.dfm}
+
+end.

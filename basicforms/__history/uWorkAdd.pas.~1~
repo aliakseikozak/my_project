@@ -1,0 +1,25 @@
+unit uWorkAdd;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, System.Actions,
+  Vcl.ActnList, dxBar, cxClasses, Data.DB;
+
+type
+  TfmWorkAdd = class(TfmBaseForm)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmWorkAdd: TfmWorkAdd;
+
+implementation
+
+{$R *.dfm}
+
+end.

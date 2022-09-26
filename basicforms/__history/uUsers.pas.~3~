@@ -1,0 +1,201 @@
+unit uUsers;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseGrid, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
+  dxLayoutControlAdapters, dxLayoutContainer, dxLayoutcxEditAdapters, cxStyles,
+  cxCustomData, cxFilter, cxData, cxDataStorage, cxNavigator, Data.DB, cxDBData,
+  Vcl.Buttons, Vcl.StdCtrls, cxTextEdit, cxMaskEdit, cxDropDownEdit,
+  cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, Vcl.Menus, System.Actions,
+  Vcl.ActnList, dxBar, cxClasses, cxSplitter, cxGridLevel, cxGridCustomView,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
+  dxLayoutControl, cxLabel, Vcl.ExtCtrls, uUsersAdd, uResource, uKartUtils, uExchDB, uExchDBData,
+  uResourceForms;
+
+type
+  TfmUsers = class(TfmBaseGrid)
+    lcParams: TdxLayoutControl;
+    eLastName: TEdit;
+    eFirstName: TEdit;
+    eMiddleName: TEdit;
+    eLogin: TEdit;
+    cxOrg: TcxLookupComboBox;
+    cIsBlocked: TComboBox;
+    lcParamsGroup_Root: TdxLayoutGroup;
+    dxLayoutItem7: TdxLayoutItem;
+    dxLayoutAutoCreatedGroup5: TdxLayoutAutoCreatedGroup;
+    dxLayoutAutoCreatedGroup2: TdxLayoutAutoCreatedGroup;
+    dxLayoutItem6: TdxLayoutItem;
+    dxLayoutItem8: TdxLayoutItem;
+    dxLayoutItem2: TdxLayoutItem;
+    dxLayoutItem4: TdxLayoutItem;
+    dxLayoutItem5: TdxLayoutItem;
+    dxLayoutItem1: TdxLayoutItem;
+    btFind: TBitBtn;
+    dxLayoutItem3: TdxLayoutItem;
+    btFindParamClear: TBitBtn;
+    dxLayoutAutoCreatedGroup3: TdxLayoutAutoCreatedGroup;
+    dxLayoutAutoCreatedGroup1: TdxLayoutAutoCreatedGroup;
+    grBaseDBTableViewColumn1: TcxGridDBColumn;
+    grBaseDBTableViewColumn2: TcxGridDBColumn;
+    grBaseDBTableViewColumn3: TcxGridDBColumn;
+    grBaseDBTableViewColumn4: TcxGridDBColumn;
+    grBaseDBTableViewColumn5: TcxGridDBColumn;
+    grBaseDBTableViewColumn6: TcxGridDBColumn;
+    grBaseDBTableViewColumn7: TcxGridDBColumn;
+    grBaseDBTableViewColumn8: TcxGridDBColumn;
+    grBaseDBTableViewColumn9: TcxGridDBColumn;
+    dsorganization: TDataSource;
+    procedure actEditExecute(Sender: TObject);
+    procedure actGetDataExecute(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure actNewExecute(Sender: TObject);
+    procedure actParamClearExecute(Sender: TObject);
+    procedure actDelExecute(Sender: TObject);
+  private
+    { Private declarations }
+    dborganization : TDBData;
+    dbIU : TDBData;
+  public
+    { Public declarations }
+  end;
+
+var
+  fmUsers: TfmUsers;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfmUsers.actDelExecute(Sender: TObject);
+begin
+  if DialogQuest('Удалить запись? Вы уверены?', 'Удаление записи') then
+  begin
+    dbIU := DataSetQuery('users_del', [dbBase.DataSet.FieldByName('id').Value, Resource.sessionInfo.token_id]);
+    actGetData.Execute;
+  end;
+
+end;
+
+procedure TfmUsers.actEditExecute(Sender: TObject);
+var
+  fm: TfmUsersAdd;
+begin
+  if dbBase.DataSet.IsEmpty then
+    Exit;
+
+  fm := TfmUsersAdd(CreateForm('TfmUsersAdd', 'fmUsersAdd', Self, false));
+  try
+
+    fm.SetData(dbBase, 1);
+    if ( fm.ShowModal() = mrOk ) then
+    begin
+
+      dbBase.DataSetReQuery;
+
+    end;
+  finally
+    actGetData.Execute;
+    fm.Free;
+  end;
+end;
+
+procedure TfmUsers.actGetDataExecute(Sender: TObject);
+var
+  Columns: string;
+  Params: string;
+  Operations: string;
+begin
+
+  with Filtered(Self) do
+  begin
+    Columns := Column;
+    Params := Param;
+    Operations := Operation;
+  end;
+
+  if cIsBlocked.ItemIndex <> 0 then
+  begin
+    if Columns <> '' then
+    begin
+      Columns := Columns + '~';
+      Operations := Operations + '~';
+      Params := Params + '~';
+    end;
+
+
+    case cIsBlocked.ItemIndex of
+      1:
+        begin
+          Columns := Columns + 'bmf.is_active';
+          Operations := Operations + '=';
+          Params := Params + ' true ';
+        end;
+      2:
+        begin
+          Columns := Columns + 'bmf.is_active';
+          Operations := Operations + '=';
+          Params := Params + 'false';
+        end;
+    end;
+  end;
+
+  FreeAndNil(dbBase);
+ // if ginformation <> 0 then
+//  begin
+//    dbBase := DataSetQuery('work_get', [Resource.sessionInfo.token_id, '1', 'bmf.grinformation_id', VarToStr(ginformation), '='], GetFieldsArray(), true);
+    dbBase := DataSetQuery('members_user_get', [Resource.sessionInfo.token_id, '1', Columns, Params, Operations], GetFieldsArray(), true);
+    dsBase.DataSet := dbBase.DataSet;
+
+end;
+
+
+procedure TfmUsers.actNewExecute(Sender: TObject);
+var
+  fm: TfmUsersAdd;
+begin
+  if dbBase.DataSet.IsEmpty then
+    Exit;
+
+  fm := TfmUsersAdd(CreateForm('TfmUsersAdd', 'fmUsersAdd', Self, false));
+  try
+
+    fm.SetData(dbBase, 0);
+    if ( fm.ShowModal() = mrOk ) then
+    begin
+
+      dbBase.DataSetReQuery;
+
+    end;
+  finally
+    actGetData.Execute;
+    fm.Free;
+  end;
+end;
+
+procedure TfmUsers.actParamClearExecute(Sender: TObject);
+begin
+eLastName.Clear;
+eMiddleName.Clear;
+eFirstName.Clear;
+eLogin.Clear;
+cxOrg.Clear;
+
+end;
+
+procedure TfmUsers.FormShow(Sender: TObject);
+begin
+
+  dborganization := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+   '   FROM company_directory_organization AS s  ' , []);
+  dsorganization.DataSet := dborganization.DataSet;
+
+  actGetData.Execute;
+
+end;
+
+end.

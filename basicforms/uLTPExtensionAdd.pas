@@ -1,0 +1,152 @@
+unit uLTPExtensionAdd;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.ComCtrls,
+  dxCore, cxDateUtils, dxLayoutcxEditAdapters, Vcl.StdCtrls, Vcl.ExtCtrls,
+  dxLayoutContainer, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
+  cxDBLookupComboBox, cxMaskEdit, cxCalendar, cxTextEdit, dxLayoutControl,
+  System.Actions, Vcl.ActnList, dxBar, cxClasses, Data.DB,uKartUtils, uExchDB, uExchDBData,
+  uResource;
+
+type
+  TfmLTPExtensionAdd = class(TfmBaseForm)
+    dxLayoutControl1: TdxLayoutControl;
+    cxTextEdit3: TcxTextEdit;
+    cxDateEdit1: TcxDateEdit;
+    cxLookupComboBox2: TcxLookupComboBox;
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutItem6: TdxLayoutItem;
+    dxLayoutItem2: TdxLayoutItem;
+    dxLayoutItem3: TdxLayoutItem;
+    Panel2: TPanel;
+    btnOk: TButton;
+    btnCancel: TButton;
+    dsPeriodltpreason: TDataSource;
+    function GenParams(): string;
+    procedure btnCancelClick(Sender: TObject);
+    procedure btnOkClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    FMode: integer;
+    FID: Variant;
+    FDB: TDBData;
+    dbIU: TDBData;
+    Fedit: Boolean;
+    dbPost: TDBData;
+    dbViolations: TDBData;
+    dbPenaltytype: TDBData;
+    dbrewardtype: TDBData;
+    dbPeriodltpreason: TDBData;
+    function GetLcbValue(pLcb: TcxLookupComboBox): string; overload;
+    function GetLcbValue(pLcb: TcxDateEdit): string; overload;
+    function GetLcbValue(pLcb: TcxComboBox): string; overload;
+    procedure InitForm;
+  public
+    procedure SetData(pDb: TDBData; pMode: integer; pID: Variant; pedit: Boolean);
+  end;
+
+var
+  fmLTPExtensionAdd: TfmLTPExtensionAdd;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfmLTPExtensionAdd.btnCancelClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfmLTPExtensionAdd.btnOkClick(Sender: TObject);
+begin
+  if FMode = 0 then
+  begin
+    dbIU := DataSetQuery('ltpextension_set', ['0', VarToStr(FMode), Resource.sessionInfo.token_id, GenParams()]);
+  end
+  else
+  begin
+    dbIU := DataSetQuery('ltpextension_set', [FDB.DataSet.FieldByName('id').Value, VarToStr(FMode), Resource.sessionInfo.token_id, GenParams()]);
+  end;
+  Close;
+end;
+
+procedure TfmLTPExtensionAdd.FormShow(Sender: TObject);
+begin
+  InitForm;
+   if (FMode = 1) and (not FDB.DataSet.IsEmpty) then
+   begin
+      with FDB.DataSet do
+      begin
+        cxDateEdit1.EditValue := FieldByName('extension_date').Value;
+        cxLookupComboBox2.EditValue := FieldByName('extension_reason_id').Value;
+        cxTextEdit3.EditValue := FieldByName('court_decision').Value;
+      end;
+   end;
+   EnabledEdData(Self, FEdit);
+end;
+
+function TfmLTPExtensionAdd.GenParams(): string;
+begin
+  result := '';
+  result := result + GetLcbValue(cxDateEdit1) + '~';
+  IF cxTextEdit3.Text <> '' then
+    result := result + cxTextEdit3.Text + '~'
+  else
+    result := result + 'NULL' + '~';
+  result := result + GetLcbValue(cxLookupComboBox2) + '~';
+
+  result := result + '1' + '~';
+
+  //result := result + cxbedtNameShort.Text + '~';
+
+end;
+
+function TfmLTPExtensionAdd.GetLcbValue(pLcb: TcxLookupComboBox): string;
+begin
+  if VarIsNull(pLcb.EditValue) then
+    result := 'NULL'
+  else
+    result := VarToStr(pLcb.EditValue);
+end;
+
+function TfmLTPExtensionAdd.GetLcbValue(pLcb: TcxDateEdit): string;
+begin
+  if VarIsNull(pLcb.EditValue) then
+    result := 'NULL'
+  else
+    result := FormatDateTime('mm-dd-yyyy',pLcb.EditValue{, Resource.JsonFormatSettings});
+end;
+
+function TfmLTPExtensionAdd.GetLcbValue(pLcb: TcxComboBox): string;
+begin
+  case (pLcb.ItemIndex) of
+    0:
+      result := 'true';
+    1:
+      result := 'false';
+  end;
+end;
+
+procedure TfmLTPExtensionAdd.SetData(pDb: TDBData; pMode: integer; pID: Variant; pedit: Boolean);
+begin
+  FDB := pDb;
+  FID := pID;
+  FMode := pMode;
+  FEdit := pedit;
+end;
+
+procedure TfmLTPExtensionAdd.InitForm;
+begin
+
+  dbPeriodltpreason := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+   '   FROM directory_periodltpreason AS s  ' , []);
+  dsPeriodltpreason.DataSet := dbPeriodltpreason.DataSet;
+
+end;
+
+end.

@@ -1,0 +1,45 @@
+unit uLtpWorkAdd;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.ComCtrls,
+  dxCore, cxDateUtils, dxLayoutcxEditAdapters, dxLayoutContainer, Vcl.StdCtrls,
+  Vcl.ExtCtrls, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
+  cxDBLookupComboBox, cxTextEdit, cxMaskEdit, cxCalendar, dxLayoutControl,
+  System.Actions, Vcl.ActnList, dxBar, cxClasses, Data.DB;
+
+type
+  TfmLtpWorkAdd = class(TfmBaseForm)
+    dxLayoutControl1: TdxLayoutControl;
+    cxDateEdit1: TcxDateEdit;
+    cxTextEdit3: TcxTextEdit;
+    cxLookupComboBox1: TcxLookupComboBox;
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutItem2: TdxLayoutItem;
+    dxLayoutItem6: TdxLayoutItem;
+    dxLayoutItem7: TdxLayoutItem;
+    Panel2: TPanel;
+    btnOk: TButton;
+    btnCancel: TButton;
+    dxLayoutItem1: TdxLayoutItem;
+    cxDateEdit2: TcxDateEdit;
+    dxLayoutAutoCreatedGroup1: TdxLayoutAutoCreatedGroup;
+    dxLayoutItem4: TdxLayoutItem;
+    cxTextEdit1: TcxTextEdit;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmLtpWorkAdd: TfmLtpWorkAdd;
+
+implementation
+
+{$R *.dfm}
+
+end.

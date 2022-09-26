@@ -1,0 +1,35 @@
+unit uRolesAdd;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, dxLayoutContainer, Vcl.StdCtrls, Vcl.ExtCtrls,
+  cxClasses, dxLayoutControl;
+
+type
+  TfmRolesAdd = class(TForm)
+    dxLayoutControl2: TdxLayoutControl;
+    Edit1: TEdit;
+    dxLayoutGroup1: TdxLayoutGroup;
+    dxLayoutItem8: TdxLayoutItem;
+    Panel2: TPanel;
+    btnOk: TButton;
+    btnCancel: TButton;
+    Edit2: TEdit;
+    dxLayoutItem1: TdxLayoutItem;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmRolesAdd: TfmRolesAdd;
+
+implementation
+
+{$R *.dfm}
+
+end.

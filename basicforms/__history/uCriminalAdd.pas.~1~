@@ -1,0 +1,41 @@
+unit uCriminalAdd;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.ComCtrls,
+  dxCore, cxDateUtils, dxLayoutcxEditAdapters, dxLayoutContainer,
+  cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit,
+  cxMaskEdit, cxCalendar, dxLayoutControl, Vcl.StdCtrls, Vcl.ExtCtrls,
+  System.Actions, Vcl.ActnList, dxBar, cxClasses, Data.DB;
+
+type
+  TfmCriminalAdd = class(TfmBaseForm)
+    Panel2: TPanel;
+    btnOk: TButton;
+    btnCancel: TButton;
+    dxLayoutControl1: TdxLayoutControl;
+    cxDateEdit1: TcxDateEdit;
+    cxTextEdit3: TcxTextEdit;
+    cxLookupComboBox1: TcxLookupComboBox;
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutItem2: TdxLayoutItem;
+    dxLayoutItem6: TdxLayoutItem;
+    dxLayoutItem7: TdxLayoutItem;
+    dsDirectoryArticle: TDataSource;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmCriminalAdd: TfmCriminalAdd;
+
+implementation
+
+{$R *.dfm}
+
+end.

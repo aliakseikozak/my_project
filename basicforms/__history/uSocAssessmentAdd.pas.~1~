@@ -1,0 +1,51 @@
+unit uSocAssessmentAdd;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.ComCtrls,
+  dxCore, cxDateUtils, dxLayoutcxEditAdapters, Vcl.StdCtrls, Vcl.ExtCtrls,
+  dxLayoutContainer, cxDropDownEdit, cxCalendar, cxMaskEdit, cxLookupEdit,
+  cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit, dxLayoutControl, Data.DB,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, System.Actions, Vcl.ActnList,
+  dxBar, cxClasses;
+
+type
+  TfmSocAssessmentAdd = class(TfmBaseForm)
+    dxLayoutControl1: TdxLayoutControl;
+    cxTextEdit1: TcxTextEdit;
+    cxLookupComboBox3: TcxLookupComboBox;
+    cxLookupComboBox4: TcxLookupComboBox;
+    cxLookupComboBox5: TcxLookupComboBox;
+    cxLookupComboBox6: TcxLookupComboBox;
+    cxLookupComboBox2: TcxLookupComboBox;
+    cxLookupComboBox1: TcxLookupComboBox;
+    cxDateEdit1: TcxDateEdit;
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutItem4: TdxLayoutItem;
+    dxLayoutItem2: TdxLayoutItem;
+    dxLayoutItem6: TdxLayoutItem;
+    dxLayoutItem8: TdxLayoutItem;
+    dxLayoutItem9: TdxLayoutItem;
+    dxLayoutItem5: TdxLayoutItem;
+    dxLayoutItem7: TdxLayoutItem;
+    dxLayoutItem3: TdxLayoutItem;
+    Panel2: TPanel;
+    btnOk: TButton;
+    btnCancel: TButton;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmSocAssessmentAdd: TfmSocAssessmentAdd;
+
+implementation
+
+{$R *.dfm}
+
+end.

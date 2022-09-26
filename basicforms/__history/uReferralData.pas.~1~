@@ -1,0 +1,53 @@
+unit uReferralData;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseGrid, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
+  dxLayoutControlAdapters, cxStyles, cxCustomData, cxFilter, cxData,
+  cxDataStorage, cxNavigator, Data.DB, cxDBData, Vcl.Menus, cxButtons,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, System.Actions, Vcl.ActnList,
+  dxBar, cxClasses, cxSplitter, cxGridLevel, cxGridCustomView,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
+  dxLayoutContainer, Vcl.StdCtrls, dxLayoutControl, cxLabel, Vcl.ExtCtrls, uWarningcitizen;
+
+type
+  TfmReferralData = class(TfmBaseGrid)
+    cxButton1: TcxButton;
+    cxButton2: TcxButton;
+    cxButton3: TcxButton;
+    procedure cxButton1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmReferralData: TfmReferralData;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfmReferralData.cxButton1Click(Sender: TObject);
+var
+  fm: TfmWarningcitizen;
+begin
+
+  fm := TfmWarningcitizen(CreateForm('TfmWarningcitizen', 'fmWarningcitizen', Self, false));
+  try
+    fm.SetData(dbBase, 0, ginformation);
+    if ( fm.ShowModal() = mrOk ) then begin
+
+      dbBase.DataSetReQuery;
+
+    end;
+  finally
+    fm.Free;
+  end;
+end;
+
+end.

@@ -1,0 +1,51 @@
+unit uSocLegalAdd;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, Data.DB,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, System.Actions, Vcl.ActnList,
+  dxBar, cxClasses, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.ComCtrls, dxCore, cxDateUtils,
+  dxLayoutcxEditAdapters, Vcl.StdCtrls, Vcl.ExtCtrls, dxLayoutContainer,
+  cxTextEdit, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
+  cxMaskEdit, cxCalendar, dxLayoutControl;
+
+type
+  TfmSocLegalAdd = class(TfmBaseForm)
+    dxLayoutControl1: TdxLayoutControl;
+    cxDateEdit1: TcxDateEdit;
+    cxLookupComboBox1: TcxLookupComboBox;
+    cxTextEdit1: TcxTextEdit;
+    cxLookupComboBox2: TcxLookupComboBox;
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutItem2: TdxLayoutItem;
+    dxLayoutItem7: TdxLayoutItem;
+    dxLayoutItem4: TdxLayoutItem;
+    dxLayoutItem5: TdxLayoutItem;
+    Panel2: TPanel;
+    btnOk: TButton;
+    btnCancel: TButton;
+    dxLayoutItem1: TdxLayoutItem;
+    cxLookupComboBox3: TcxLookupComboBox;
+    dxLayoutItem6: TdxLayoutItem;
+    cxLookupComboBox4: TcxLookupComboBox;
+    dxLayoutItem8: TdxLayoutItem;
+    cxLookupComboBox5: TcxLookupComboBox;
+    dxLayoutItem9: TdxLayoutItem;
+    cxLookupComboBox6: TcxLookupComboBox;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmSocLegalAdd: TfmSocLegalAdd;
+
+implementation
+
+{$R *.dfm}
+
+end.

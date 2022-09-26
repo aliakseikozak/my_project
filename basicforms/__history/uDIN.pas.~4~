@@ -1,0 +1,98 @@
+unit uDIN;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseGrid, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
+  dxLayoutControlAdapters, cxStyles, cxCustomData, cxFilter, cxData,
+  cxDataStorage, cxNavigator, Data.DB, cxDBData, Vcl.Menus, System.Actions,
+  Vcl.ActnList, dxBar, cxClasses, cxSplitter, cxGridLevel, cxGridCustomView,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
+  dxLayoutContainer, Vcl.StdCtrls, dxLayoutControl, cxLabel, Vcl.ExtCtrls,
+  dxLayoutcxEditAdapters, Vcl.ComCtrls, dxCore, cxDateUtils, cxDropDownEdit,
+  cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit, cxMaskEdit,
+  cxCalendar, Vcl.Buttons, uKartUtils, uResource, uOVDAdd, uExchDB, uExchDBData;
+
+type
+  TfmDIN = class(TfmBaseGrid)
+    dxLayoutControl2: TdxLayoutControl;
+    Edit5: TEdit;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
+    Edit6: TEdit;
+    Edit7: TEdit;
+    Edit8: TEdit;
+    cxLookupComboBox7: TcxLookupComboBox;
+    cxLookupComboBox8: TcxLookupComboBox;
+    cxDateEdit2: TcxDateEdit;
+    cxLookupComboBox9: TcxLookupComboBox;
+    cxLookupComboBox10: TcxLookupComboBox;
+    dxLayoutGroup1: TdxLayoutGroup;
+    dxLayoutGroup5: TdxLayoutGroup;
+    dxLayoutItem11: TdxLayoutItem;
+    dxLayoutItem12: TdxLayoutItem;
+    dxLayoutItem13: TdxLayoutItem;
+    dxLayoutAutoCreatedGroup4: TdxLayoutAutoCreatedGroup;
+    dxLayoutAutoCreatedGroup5: TdxLayoutAutoCreatedGroup;
+    dxLayoutItem19: TdxLayoutItem;
+    dxLayoutItem20: TdxLayoutItem;
+    dxLayoutItem21: TdxLayoutItem;
+    dxLayoutItem22: TdxLayoutItem;
+    dxLayoutAutoCreatedGroup6: TdxLayoutAutoCreatedGroup;
+    dxLayoutItem23: TdxLayoutItem;
+    dxLayoutItem24: TdxLayoutItem;
+    dxLayoutItem25: TdxLayoutItem;
+    dxLayoutItem27: TdxLayoutItem;
+    CheckBox2: TCheckBox;
+    dxLayoutItem1: TdxLayoutItem;
+    dxLayoutItem2: TdxLayoutItem;
+    CheckBox1: TCheckBox;
+    dxLayoutItem3: TdxLayoutItem;
+    CheckBox3: TCheckBox;
+    dxLayoutItem4: TdxLayoutItem;
+    CheckBox4: TCheckBox;
+    procedure FormShow(Sender: TObject);
+    procedure actEditExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmDIN: TfmDIN;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfmDIN.actEditExecute(Sender: TObject);
+var
+  fm: TfmOVDAdd;
+begin
+  if dbBase.DataSet.IsEmpty then
+    Exit;
+
+  fm := TfmOVDAdd(CreateForm('TfmOVDAdd', 'fmOVDAdd', Self, false));
+  try
+    fm.SetData(dbBase, 1, dbBase.DataSet.FieldByName('grinformation_id').Value);
+    if ( fm.ShowModal() = mrOk ) then
+    begin
+      dbBase.DataSetReQuery;
+    end;
+  finally
+    fm.Free;
+    actGetData.Execute;
+  end;
+
+end;
+
+procedure TfmDIN.FormShow(Sender: TObject);
+begin
+  gNameForm := 'fmOZ';
+
+end;
+
+end.

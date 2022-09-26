@@ -1,0 +1,73 @@
+unit uLtpinformationAdd;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.ComCtrls,
+  dxCore, cxDateUtils, dxLayoutcxEditAdapters, dxLayoutContainer,
+  dxLayoutControlAdapters, Vcl.StdCtrls, cxTextEdit, Vcl.ExtCtrls,
+  cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxMaskEdit,
+  cxCalendar, dxLayoutControl, System.Actions, Vcl.ActnList, dxBar, cxClasses,
+  Data.DB;
+
+type
+  TfmLtpinformationAdd = class(TfmBaseForm)
+    dxLayoutControl1: TdxLayoutControl;
+    cxDateEdit2: TcxDateEdit;
+    cxLookupComboBox2: TcxLookupComboBox;
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutItem4: TdxLayoutItem;
+    dxLayoutItem5: TdxLayoutItem;
+    Panel1: TPanel;
+    btnOk: TButton;
+    btnCancel: TButton;
+    GroupBox1: TGroupBox;
+    dxLayoutItem1: TdxLayoutItem;
+    dxLayoutControl2Group_Root: TdxLayoutGroup;
+    dxLayoutControl2: TdxLayoutControl;
+    dxLayoutItem8: TdxLayoutItem;
+    cxDateEdit3: TcxDateEdit;
+    dxLayoutItem9: TdxLayoutItem;
+    cxTextEdit2: TcxTextEdit;
+    CheckBox1: TCheckBox;
+    dxLayoutItem10: TdxLayoutItem;
+    dxLayoutItem11: TdxLayoutItem;
+    CheckBox2: TCheckBox;
+    dxLayoutItem12: TdxLayoutItem;
+    CheckBox3: TCheckBox;
+    dxLayoutItem13: TdxLayoutItem;
+    CheckBox4: TCheckBox;
+    GroupBox2: TGroupBox;
+    dxLayoutItem14: TdxLayoutItem;
+    dxLayoutControl3Group_Root: TdxLayoutGroup;
+    dxLayoutControl3: TdxLayoutControl;
+    dxLayoutItem16: TdxLayoutItem;
+    cxDateEdit4: TcxDateEdit;
+    dxLayoutItem17: TdxLayoutItem;
+    cxTextEdit3: TcxTextEdit;
+    GroupBox4: TGroupBox;
+    dxLayoutControl5: TdxLayoutControl;
+    cxTextEdit4: TcxTextEdit;
+    cxDateEdit7: TcxDateEdit;
+    dxLayoutGroup1: TdxLayoutGroup;
+    dxLayoutItem22: TdxLayoutItem;
+    dxLayoutItem23: TdxLayoutItem;
+    dxLayoutItem21: TdxLayoutItem;
+    dxLayoutItem2: TdxLayoutItem;
+    cxLookupComboBox4: TcxLookupComboBox;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmLtpinformationAdd: TfmLtpinformationAdd;
+
+implementation
+
+{$R *.dfm}
+
+end.

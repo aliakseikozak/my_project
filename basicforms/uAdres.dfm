@@ -1,0 +1,448 @@
+inherited fmAdres: TfmAdres
+  Caption = 'fmAdres'
+  ClientHeight = 497
+  ExplicitHeight = 536
+  PixelsPerInch = 96
+  TextHeight = 13
+  object dxLayoutControl2: TdxLayoutControl [0]
+    Left = 0
+    Top = 45
+    Width = 912
+    Height = 452
+    Align = alClient
+    TabOrder = 4
+    object GroupBox1: TGroupBox
+      Left = 376
+      Top = 10
+      Width = 279
+      Height = 247
+      Caption = #1040#1076#1088#1077#1089' '#1087#1088#1086#1078#1080#1074#1072#1085#1080#1103':'
+      TabOrder = 2
+      object Label1: TLabel
+        Left = 16
+        Top = 58
+        Width = 34
+        Height = 13
+        Caption = #1056#1072#1081#1086#1085':'
+      end
+      object Label2: TLabel
+        Left = 16
+        Top = 82
+        Width = 33
+        Height = 13
+        Caption = #1043#1086#1088#1086#1076':'
+      end
+      object Label3: TLabel
+        Left = 16
+        Top = 136
+        Width = 35
+        Height = 13
+        Caption = #1059#1083#1080#1094#1072':'
+      end
+      object Label4: TLabel
+        Left = 16
+        Top = 163
+        Width = 39
+        Height = 13
+        Caption = #1050#1086#1088#1087#1091#1089':'
+      end
+      object Label5: TLabel
+        Left = 16
+        Top = 190
+        Width = 66
+        Height = 13
+        Caption = #1053#1086#1084#1077#1088' '#1076#1086#1084#1072':'
+      end
+      object Label6: TLabel
+        Left = 16
+        Top = 217
+        Width = 51
+        Height = 13
+        Caption = #1050#1074#1072#1088#1090#1080#1088#1072':'
+      end
+      object Label14: TLabel
+        Left = 16
+        Top = 109
+        Width = 81
+        Height = 13
+        Caption = #1056#1072#1081#1086#1085' '#1074' '#1075#1086#1088#1086#1076#1077':'
+      end
+      object cxLabel1: TcxLabel
+        Left = 16
+        Top = 29
+        Caption = #1054#1073#1083#1072#1089#1090#1100':'
+      end
+      object cxLookupComboBox9: TcxLookupComboBox
+        Left = 102
+        Top = 28
+        Properties.KeyFieldNames = 'id'
+        Properties.ListColumns = <
+          item
+            Caption = #1054#1073#1083#1072#1089#1090#1100
+            FieldName = 'name'
+          end>
+        Properties.ListSource = dsArea_p
+        Properties.OnEditValueChanged = cxLookupComboBox9PropertiesEditValueChanged
+        Style.BorderColor = clWindowFrame
+        Style.BorderStyle = ebs3D
+        Style.HotTrack = False
+        Style.ButtonStyle = bts3D
+        Style.PopupBorderStyle = epbsFrame3D
+        TabOrder = 1
+        Width = 145
+      end
+      object cxLookupComboBox10: TcxLookupComboBox
+        Left = 102
+        Top = 55
+        Properties.KeyFieldNames = 'id'
+        Properties.ListColumns = <
+          item
+            Caption = #1056#1072#1081#1086#1085
+            FieldName = 'name'
+          end>
+        Properties.ListSource = dsRegion_p
+        Properties.OnEditValueChanged = cxLookupComboBox10PropertiesEditValueChanged
+        Style.BorderColor = clWindowFrame
+        Style.BorderStyle = ebs3D
+        Style.HotTrack = False
+        Style.ButtonStyle = bts3D
+        Style.PopupBorderStyle = epbsFrame3D
+        TabOrder = 2
+        Width = 145
+      end
+      object cxLookupComboBox11: TcxLookupComboBox
+        Left = 102
+        Top = 82
+        Properties.KeyFieldNames = 'id'
+        Properties.ListColumns = <
+          item
+            Caption = #1053#1072#1089#1077#1083#1077#1085#1085#1099#1081' '#1087#1091#1085#1082#1090
+            FieldName = 'name'
+          end>
+        Properties.ListSource = dsCity_p
+        Properties.OnEditValueChanged = cxLookupComboBox11PropertiesEditValueChanged
+        Style.BorderColor = clWindowFrame
+        Style.BorderStyle = ebs3D
+        Style.HotTrack = False
+        Style.ButtonStyle = bts3D
+        Style.PopupBorderStyle = epbsFrame3D
+        TabOrder = 3
+        Width = 145
+      end
+      object cxLookupComboBox12: TcxLookupComboBox
+        Left = 102
+        Top = 134
+        Properties.KeyFieldNames = 'id'
+        Properties.ListColumns = <
+          item
+            Caption = #1059#1083#1080#1094#1072
+            FieldName = 'name'
+          end>
+        Properties.ListSource = dsStreet_p
+        Style.BorderColor = clWindowFrame
+        Style.BorderStyle = ebs3D
+        Style.HotTrack = False
+        Style.ButtonStyle = bts3D
+        Style.PopupBorderStyle = epbsFrame3D
+        TabOrder = 4
+        Width = 145
+      end
+      object cxTextEdit4: TcxTextEdit
+        Left = 102
+        Top = 161
+        TabOrder = 5
+        Width = 145
+      end
+      object cxTextEdit5: TcxTextEdit
+        Left = 102
+        Top = 188
+        TabOrder = 6
+        Width = 145
+      end
+      object cxTextEdit6: TcxTextEdit
+        Left = 102
+        Top = 215
+        TabOrder = 7
+        Width = 145
+      end
+      object cxLookupComboBox3: TcxLookupComboBox
+        Left = 102
+        Top = 107
+        Properties.KeyFieldNames = 'id'
+        Properties.ListColumns = <
+          item
+            Caption = #1056#1072#1081#1086#1085
+            FieldName = 'name'
+          end>
+        Properties.ListSource = dsCityRegion_p
+        TabOrder = 8
+        Width = 145
+      end
+    end
+    object GroupBox2: TGroupBox
+      Left = 10
+      Top = 10
+      Width = 279
+      Height = 247
+      Caption = #1040#1076#1088#1077#1089' '#1088#1077#1075#1080#1089#1090#1088#1072#1094#1080#1080':'
+      TabOrder = 0
+      object Label7: TLabel
+        Left = 16
+        Top = 58
+        Width = 34
+        Height = 13
+        Caption = #1056#1072#1081#1086#1085':'
+      end
+      object Label8: TLabel
+        Left = 16
+        Top = 82
+        Width = 33
+        Height = 13
+        Caption = #1043#1086#1088#1086#1076':'
+      end
+      object Label9: TLabel
+        Left = 16
+        Top = 137
+        Width = 35
+        Height = 13
+        Caption = #1059#1083#1080#1094#1072':'
+      end
+      object Label10: TLabel
+        Left = 16
+        Top = 164
+        Width = 39
+        Height = 13
+        Caption = #1050#1086#1088#1087#1091#1089':'
+      end
+      object Label11: TLabel
+        Left = 16
+        Top = 191
+        Width = 66
+        Height = 13
+        Caption = #1053#1086#1084#1077#1088' '#1076#1086#1084#1072':'
+      end
+      object Label12: TLabel
+        Left = 16
+        Top = 218
+        Width = 51
+        Height = 13
+        Caption = #1050#1074#1072#1088#1090#1080#1088#1072':'
+      end
+      object Label13: TLabel
+        Left = 16
+        Top = 109
+        Width = 81
+        Height = 13
+        Caption = #1056#1072#1081#1086#1085' '#1074' '#1075#1086#1088#1086#1076#1077':'
+      end
+      object cxLabel2: TcxLabel
+        Left = 16
+        Top = 29
+        Caption = #1054#1073#1083#1072#1089#1090#1100':'
+      end
+      object cxLookupComboBox5: TcxLookupComboBox
+        Left = 102
+        Top = 28
+        Properties.KeyFieldNames = 'id'
+        Properties.ListColumns = <
+          item
+            Caption = #1054#1073#1083#1072#1089#1090#1100
+            FieldName = 'name'
+          end>
+        Properties.ListSource = dsArea
+        Properties.OnEditValueChanged = cxLookupComboBox5PropertiesEditValueChanged
+        Style.BorderColor = clWindowFrame
+        Style.BorderStyle = ebs3D
+        Style.HotTrack = False
+        Style.ButtonStyle = bts3D
+        Style.PopupBorderStyle = epbsFrame3D
+        TabOrder = 1
+        Width = 145
+      end
+      object cxLookupComboBox7: TcxLookupComboBox
+        Left = 102
+        Top = 82
+        Properties.KeyFieldNames = 'id'
+        Properties.ListColumns = <
+          item
+            Caption = #1053#1072#1089#1077#1083#1077#1085#1085#1099#1081' '#1087#1091#1085#1082#1090
+            FieldName = 'name'
+          end>
+        Properties.ListSource = dsCity
+        Properties.OnEditValueChanged = cxLookupComboBox7PropertiesEditValueChanged
+        Style.BorderColor = clWindowFrame
+        Style.BorderStyle = ebs3D
+        Style.HotTrack = False
+        Style.ButtonStyle = bts3D
+        Style.PopupBorderStyle = epbsFrame3D
+        TabOrder = 2
+        Width = 145
+      end
+      object cxLookupComboBox8: TcxLookupComboBox
+        Left = 102
+        Top = 134
+        Properties.KeyFieldNames = 'id'
+        Properties.ListColumns = <
+          item
+            Caption = #1059#1083#1080#1094#1072
+            FieldName = 'name'
+          end>
+        Properties.ListSource = dsStreet
+        Style.BorderColor = clWindowFrame
+        Style.BorderStyle = ebs3D
+        Style.HotTrack = False
+        Style.ButtonStyle = bts3D
+        Style.PopupBorderStyle = epbsFrame3D
+        TabOrder = 3
+        Width = 145
+      end
+      object cxLookupComboBox1: TcxLookupComboBox
+        Left = 102
+        Top = 55
+        Properties.KeyFieldNames = 'id'
+        Properties.ListColumns = <
+          item
+            Caption = #1056#1072#1081#1086#1085
+            FieldName = 'name'
+          end>
+        Properties.ListSource = dsRegion
+        Properties.OnEditValueChanged = cxLookupComboBox1PropertiesEditValueChanged
+        TabOrder = 4
+        Width = 145
+      end
+      object cxTextEdit1: TcxTextEdit
+        Left = 102
+        Top = 161
+        TabOrder = 5
+        Width = 145
+      end
+      object cxTextEdit2: TcxTextEdit
+        Left = 102
+        Top = 188
+        TabOrder = 6
+        Width = 145
+      end
+      object cxTextEdit3: TcxTextEdit
+        Left = 102
+        Top = 215
+        TabOrder = 7
+        Width = 145
+      end
+      object cxLookupComboBox2: TcxLookupComboBox
+        Left = 102
+        Top = 107
+        Properties.KeyFieldNames = 'id'
+        Properties.ListColumns = <
+          item
+            Caption = #1056#1072#1081#1086#1085
+            FieldName = 'name'
+          end>
+        Properties.ListSource = dsCityRegion
+        TabOrder = 8
+        Width = 145
+      end
+    end
+    object BitBtn2: TBitBtn
+      Left = 295
+      Top = 10
+      Width = 75
+      Height = 25
+      Caption = '>>'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -21
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 1
+      OnClick = BitBtn2Click
+    end
+    object dxLayoutControl2Group_Root: TdxLayoutGroup
+      AlignHorz = ahLeft
+      AlignVert = avTop
+      ButtonOptions.Buttons = <>
+      Hidden = True
+      LayoutDirection = ldHorizontal
+      ShowBorder = False
+      Index = -1
+    end
+    object dxLayoutItem16: TdxLayoutItem
+      Parent = dxLayoutControl2Group_Root
+      AlignHorz = ahLeft
+      AlignVert = avTop
+      CaptionOptions.Text = 'GroupBox1'
+      CaptionOptions.Visible = False
+      Control = GroupBox1
+      ControlOptions.AutoColor = True
+      ControlOptions.ShowBorder = False
+      Index = 2
+    end
+    object dxLayoutItem17: TdxLayoutItem
+      Parent = dxLayoutControl2Group_Root
+      AlignHorz = ahLeft
+      AlignVert = avTop
+      CaptionOptions.Visible = False
+      Control = GroupBox2
+      ControlOptions.AutoColor = True
+      ControlOptions.ShowBorder = False
+      Index = 0
+    end
+    object dxLayoutItem20: TdxLayoutItem
+      Parent = dxLayoutControl2Group_Root
+      AlignHorz = ahLeft
+      AlignVert = avClient
+      CaptionOptions.Text = 'BitBtn2'
+      CaptionOptions.Visible = False
+      Control = BitBtn2
+      ControlOptions.ShowBorder = False
+      Index = 1
+    end
+  end
+  inherited BarManager: TdxBarManager
+    DockControlHeights = (
+      0
+      0
+      45
+      0)
+  end
+  object dsCityRegion: TDataSource
+    Left = 132
+    Top = 312
+  end
+  object dsStreet: TDataSource
+    Left = 204
+    Top = 312
+  end
+  object dsCity: TDataSource
+    Left = 276
+    Top = 312
+  end
+  object dsArea: TDataSource
+    Left = 324
+    Top = 312
+  end
+  object dsRegion: TDataSource
+    Left = 372
+    Top = 312
+  end
+  object dsRegion_p: TDataSource
+    Left = 372
+    Top = 360
+  end
+  object dsArea_p: TDataSource
+    Left = 324
+    Top = 360
+  end
+  object dsCity_p: TDataSource
+    Left = 276
+    Top = 360
+  end
+  object dsStreet_p: TDataSource
+    Left = 204
+    Top = 360
+  end
+  object dsCityRegion_p: TDataSource
+    Left = 132
+    Top = 360
+  end
+end

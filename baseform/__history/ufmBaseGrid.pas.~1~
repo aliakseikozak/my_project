@@ -1,0 +1,882 @@
+unit ufmBaseGrid;
+
+interface
+
+uses
+  Forms, ufmBaseForm, cxLookAndFeelPainters, cxStyles, cxCustomData,
+  cxGraphics, cxFilter, cxData, cxDataStorage, cxEdit, DB, cxDBData, Menus,
+  dxBar, cxGridLevel, cxClasses, cxControls, cxGridCustomView,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
+  cxGroupBox, cxContainer, cxLabel, cxDBLookupComboBox, cxTextEdit,
+  Controls, ExtCtrls, Classes, VCL.Dialogs,
+  Winapi.Windows,
+  ActnList, SysUtils,
+  cxExtEditRepositoryItems, cxLookAndFeels, cxNavigator, cxButtonEdit,
+  System.Actions, Variants,
+  uExchDBData, VCL.StdCtrls, dxLayoutControlAdapters, dxLayoutContainer, dxtree, dxdbtree,
+  cxTL, cxTLdxBarBuiltInMenu, cxInplaceContainer, cxTLData, cxDBTL,Winapi.Messages,
+  dxLayoutControl, VCL.ComCtrls, dxCore, cxDateUtils, cxMaskEdit, cxDropDownEdit, cxCalendar, StrUtils,cxPC,
+  cxSplitter;
+
+type
+  TfmBaseGrid = class(TfmBaseForm)
+    pnParam: TPanel;
+    lbParam: TcxLabel;
+    actNew: TAction;
+    actEdit: TAction;
+    actDel: TAction;
+    actRefresh: TAction;
+    actGetData: TAction;
+    actSave: TAction;
+    actCancel: TAction;
+    btRefresh: TdxBarButton;
+    btGetData: TdxBarButton;
+    btNew: TdxBarButton;
+    dxBarSeparator1: TdxBarSeparator;
+    btDel: TdxBarButton;
+    btEdit: TdxBarButton;
+    btSave: TdxBarButton;
+    btCancel: TdxBarButton;
+    pmGrid: TPopupMenu;
+    N1: TMenuItem;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    N4: TMenuItem;
+    N5: TMenuItem;
+    N6: TMenuItem;
+    N7: TMenuItem;
+    N8: TMenuItem;
+    N9: TMenuItem;
+    actFilter: TAction;
+    btFilter: TdxBarButton;
+    actExcel: TAction;
+    btExcel: TdxBarButton;
+    actParamClear: TAction;
+    btParamClear: TdxBarButton;
+    pnSelect: TPanel;
+    btnSelect: TButton;
+    btnCancel: TButton;
+    dxLCPnlSelectGroup_Root: TdxLayoutGroup;
+    dxLCPnlSelect: TdxLayoutControl;
+    dxLIbtnCancel: TdxLayoutItem;
+    dxLIbtnSelect: TdxLayoutItem;
+    actHistoryLog: TAction;
+    N11: TMenuItem;
+    N12: TMenuItem;
+    gbGridBase: TPanel;
+    grBase: TcxGrid;
+    grBaseDBTableView: TcxGridDBTableView;
+    grBaseLevel1: TcxGridLevel;
+    actSelectAll: TAction;
+    actUnselectAll: TAction;
+    N100Select: TMenuItem;
+    actSelectAll1: TMenuItem;
+    actUnselectAll1: TMenuItem;
+    nGridViewCustomize: TMenuItem;
+    nGridMenuSub: TMenuItem;
+    nGridMenuGroup: TMenuItem;
+    nGridMenuAvtoSize: TMenuItem;
+    nGridMenuWidthSelf: TMenuItem;
+    nGridViewRestore: TMenuItem;
+    cxspltrParam: TcxSplitter;
+    procedure actNewUpdate(Sender: TObject);
+    procedure actEditUpdate(Sender: TObject);
+    procedure actDelExecute(Sender: TObject);
+    procedure actDelUpdate(Sender: TObject);
+    procedure actSaveExecute(Sender: TObject);
+    procedure actSaveUpdate(Sender: TObject);
+    procedure actRefreshUpdate(Sender: TObject);
+    procedure actFilterExecute(Sender: TObject);
+    procedure actCancelExecute(Sender: TObject);
+    procedure actExcelExecute(Sender: TObject);
+
+    procedure actExitExecute(Sender: TObject);
+    procedure actParamClearExecute(Sender: TObject);
+    procedure actEditExecute(Sender: TObject);
+    procedure actNewExecute(Sender: TObject);
+    procedure actRefreshExecute(Sender: TObject);
+    procedure btnSelectClick(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
+    procedure actCancelUpdate(Sender: TObject);
+    procedure actHistoryLogExecute(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure actSelectAllExecute(Sender: TObject);
+    procedure actUnselectAllExecute(Sender: TObject);
+    procedure actSelectAllUpdate(Sender: TObject);
+    procedure actGridViewCustomizeExecute(Sender: TObject);
+    procedure aGroupPanelExecute(Sender: TObject);
+  private
+    FIsSprav: boolean;
+    procedure SetIsSprav(const Value: boolean);
+    // устанавливает переданное значение пол€ check дл€ всех записей базового dataset
+    procedure SetCheckValue(pCheck: boolean);
+    procedure AddReturnValue(grBaseDBTable: TcxGridDBTableView); overload;
+    procedure AddReturnValue(grBaseDBTreeList: TcxDBTreeList); overload;
+  protected
+    FIsModal: Boolean;
+    procedure ExportExcel(const pFileName: string = '');
+    // Ёкспорт в ексель дерев€нной структуры данных по ее Dataset
+    procedure ExportExcelTree(TreeList: TcxDBTreeList; const pFileName: string = '');
+    // «аполнени€ полей базового грида в TBaseGrid в базовом варианте
+    procedure FillGridColumnByXML(pFormName: string = ''; pFooterRecCnt: boolean = False; pCxGridTV: TcxGridDBTableView = nil); virtual;
+
+    procedure EditSave; virtual;
+    procedure EditCancel; virtual;
+    procedure DataSetRefresh(); override;
+    function  CreateFindSQL: string; virtual; abstract;
+    procedure SetSQLParams; virtual;
+
+    procedure ReturnAddValue(grBaseDBTable: TcxGridDBTableView = nil; grBaseDBTreeList: TcxDBTreeList = nil); virtual;
+    function  ShowAsModal(): boolean; virtual;
+    procedure ModalSelect; virtual;
+    procedure ModalCancel; virtual;
+    procedure MultiSelectAdd(grBaseDBTable: TcxGridDBTableView = nil; grBaseDBTreeList: TcxDBTreeList = nil);
+
+  public
+    // получение параметра дл€ выборки данных из lookupComboBox
+    class function GetParamDB(pLcb: TcxLookupComboBox;  IsFullCheck:boolean = false): string; overload;
+    class function GetParamDB(pLcb: TcxDateEdit): string; overload;
+    class function GetParamDB(pLcb: TcxComboBox): string; overload;
+    // позвал€ет пон€ть, это Ќ—» или реестр (дл€ разрешений)
+    property IsSprav: boolean read FIsSprav write SetIsSprav;
+  end;
+
+var
+  fmBaseGrid: TfmBaseGrid;
+
+implementation
+
+uses
+  cxGridExportLink, uResource, uResourceForms, uFileUtils, uDataUtils;
+
+
+ type
+   TModeReturnAddValue  = (mravDBTable, mravDBTreeList);
+
+{$R *.dfm}
+{ --------------- }
+{ ---- Class ---- }
+{ --------------- }
+
+// получение параметра дл€ выборки данных из lookupComboBox
+class function TfmBaseGrid.GetParamDB(pLcb: TcxLookupComboBox; IsFullCheck:boolean = false): string;
+begin
+ if IsFullCheck then
+  begin
+   if VarIsNull(pLcb.EditingValue) then
+    begin
+     if VarIsNull(pLcb.EditValue) then
+      result := '~NULL'
+     else
+      result := VarToStr(pLcb.EditValue);
+    end
+    else
+     result := VarToStr(pLcb.EditingValue);
+  end
+  else begin
+   if VarIsNull(pLcb.EditValue) then
+    result := '~NULL'
+   else
+    result := VarToStr(pLcb.EditValue);
+  end;
+end;
+
+// получение параметра дл€ выборки данных из lookupComboBox
+class function TfmBaseGrid.GetParamDB(pLcb: TcxDateEdit): string;
+begin
+  if VarIsNull(pLcb.EditValue) then
+    result := '~NULL'
+  else
+    result := DateToStr(pLcb.EditValue, Resource.JsonFormatSettings);
+end;
+
+// получение параметра дл€ выборки данных из lookupComboBox
+class function TfmBaseGrid.GetParamDB(pLcb: TcxComboBox): string;
+begin
+  if (pLcb.ItemIndex = -1) then
+    result := '~NULL'
+  else
+    case pLcb.ItemIndex of
+      0:
+        result := 'true';
+      1:
+        result := 'false';
+    end;
+end;
+
+
+{ --------------- }
+{ --- Actions --- }
+{ --------------- }
+
+{ actNew }
+
+procedure TfmBaseGrid.actNewExecute(Sender: TObject);
+begin
+  inherited;
+    DataSetInsert();
+end;
+
+procedure TfmBaseGrid.actNewUpdate(Sender: TObject);
+begin
+  inherited;
+
+  TAction(Sender).Enabled := actNewEnable(TAction(Sender))and TAction(Sender).Enabled;
+end;
+
+procedure TfmBaseGrid.actParamClearExecute(Sender: TObject);
+  procedure FindAndClear(AComponent: TComponent);
+  var
+    i: integer;
+  begin
+    i := 0;
+    while i < AComponent.ComponentCount do
+    begin
+      if AComponent.Components[i] is TcxLookupComboBox then
+        (AComponent.Components[i] as TcxLookupComboBox).Clear
+      else if AComponent.Components[i] is TcxTextEdit then
+        (AComponent.Components[i] as TcxTextEdit).Clear
+      else
+        FindAndClear(AComponent.Components[i]);
+      inc(i);
+    end;
+  end;
+
+begin
+  inherited;
+  FindAndClear(pnParam); // с TdxLayoutControl не работает.
+end;
+
+{ actEdit }
+
+procedure TfmBaseGrid.actEditExecute(Sender: TObject);
+begin
+  inherited;
+   DataSetUpdate();
+end;
+
+procedure TfmBaseGrid.actEditUpdate(Sender: TObject);
+begin
+  inherited;
+    TAction(Sender).Enabled := actEditEnable(TAction(Sender)) and TAction(Sender).Enabled;
+end;
+
+{ actDel }
+
+procedure TfmBaseGrid.actCancelUpdate(Sender: TObject);
+begin
+  inherited;
+
+  if Assigned(dbBase) then
+    TAction(Sender).Enabled := (dbBase.CoreActionCount > 0);
+end;
+
+procedure TfmBaseGrid.actDelExecute(Sender: TObject);
+begin
+  inherited;
+
+  if DialogQuest('”далить запись? ¬ы уверены?', '”даление записи') then
+    DataSetDelete();
+end;
+
+procedure TfmBaseGrid.actDelUpdate(Sender: TObject);
+begin
+  inherited;
+end;
+
+{ actRefresh }
+
+procedure TfmBaseGrid.actRefreshExecute(Sender: TObject);
+begin
+  inherited;
+
+  if (DataModify) and (not DialogQuest('Ќе сохран€ть изменени€? ¬ы уверены?', 'ќтмена внесенных изменений')) then
+    Exit;
+
+  DataSetRefresh();
+end;
+
+procedure TfmBaseGrid.actRefreshUpdate(Sender: TObject);
+begin
+  inherited;
+  // TAction(Sender).Enabled := DataModify;
+end;
+
+{ actSave }
+
+procedure TfmBaseGrid.actSaveExecute(Sender: TObject);
+begin
+  inherited;
+  EditSave;
+end;
+
+procedure TfmBaseGrid.actSaveUpdate(Sender: TObject);
+begin
+  inherited;
+  { „тобы сохранить, достаточно прав на редактирование }
+  TAction(Sender).Enabled := DataModify;
+end;
+
+procedure TfmBaseGrid.actSelectAllExecute(Sender: TObject);
+begin
+  SetCheckValue(True);
+end;
+
+procedure TfmBaseGrid.actUnselectAllExecute(Sender: TObject);
+begin
+  SetCheckValue(False);
+end;
+
+procedure TfmBaseGrid.AddReturnValue(grBaseDBTable: TcxGridDBTableView);
+ var
+  j: integer;
+  k: integer;
+  iRow: integer;
+  iCol: integer;
+  ID : integer;
+  ItemName: TComponentName;
+  DS: TDataSource;
+
+  procedure RetValue;
+  var
+     j: integer;
+  begin
+   if grBaseDBTableView.Controller.SelectedRecordCount <> 0 then
+   begin
+     iRow := grBaseDBTableView.Controller.SelectedRows[0].RecordIndex;
+     for j := 0 to Length(gridFields) - 1 do
+     begin
+         iCol := grBaseDBTableView.GetColumnByFieldName(gridFields[j].name).Index;
+         FRetValue[integer(0)][gridFields[j].name].AsVariant := grBaseDBTableView.DataController.Values[iRow, iCol];
+     end;
+   end;
+  end;
+
+begin
+  if not Assigned(grBaseDBTable)
+   then Exit;
+
+   DS:= grBaseDBTable.DataController.DataSource;
+
+   Assert(Assigned(DS));
+
+   ItemName:= grBaseDBTableView.Name + 'check';
+   if DS.DataSet.RecordCount > 0 then
+   begin
+      FRetValue.Clear;
+      if grBaseDBTableView.FindItemByName(ItemName) <> nil then
+      begin
+        if grBaseDBTableView.GetColumnByFieldName('check').Visible then
+        begin
+            ID := DS.DataSet.FieldByName(FormInfo.keyfield).Value;
+            DS.DataSet.DisableControls;
+            k := 0;
+            try
+              DS.DataSet.First;
+             while not (DS.DataSet.Eof) do
+              begin
+                 if (DS.DataSet.FieldByName('check').Value) then
+                   begin
+                      for j := 0 to Length(gridFields) - 1 do
+                          FRetValue[k][gridFields[j].name].AsVariant := DS.DataSet.FieldByName(gridFields[j].name).Value;
+                      inc(k);
+                   end;
+                DS.DataSet.Next;
+              end;
+            finally
+                DS.DataSet.Locate(FormInfo.keyfield,ID,[]);
+                if k = 0  then
+                   for j := 0 to Length(gridFields) - 1 do
+                      FRetValue[Integer(0)][gridFields[j].name].AsVariant := DS.DataSet.FieldByName(gridFields[j].name).Value;
+                DS.DataSet.EnableControls;
+            end;
+        end
+        else
+         RetValue;
+      end
+      else
+         RetValue;
+   end;
+end;
+
+procedure TfmBaseGrid.AddReturnValue(grBaseDBTreeList: TcxDBTreeList);
+var
+  j: integer;
+  k: integer;
+  iRow: integer;
+  iCol: integer;
+  ID : integer;
+  ItemName: TComponentName;
+  DS:TDataSource;
+
+  procedure RetValue;
+  var
+     j: integer;
+  begin
+   if  grBaseDBTreeList.SelectionCount <> 0 then
+   begin
+     for j := 0 to Length(gridFields) - 1 do
+     begin
+         iCol := grBaseDBTreeList.GetColumnByFieldName(gridFields[j].name).ItemIndex;
+         FRetValue[integer(0)][gridFields[j].name].AsVariant := grBaseDBTreeList.Selections[0].Values[iCol];;
+     end;
+   end;
+  end;
+
+begin
+  if not Assigned(grBaseDBTreeList)
+   then Exit;
+
+   DS:= grBaseDBTreeList.DataController.DataSource;
+
+   Assert(Assigned(DS));
+
+   ItemName:= grBaseDBTreeList.Name + 'check';
+   if DS.DataSet.RecordCount > 0 then
+   begin
+      FRetValue.Clear;
+
+      if grBaseDBTreeList.ColumnByName(ItemName) <> nil then
+      begin
+        if grBaseDBTreeList.GetColumnByFieldName('check').Visible then
+        begin
+            ID := DS.DataSet.FieldByName(FormInfo.keyfield).Value;
+            DS.DataSet.DisableControls;
+            k := 0;
+            try
+              DS.DataSet.First;
+              while not (DS.DataSet.Eof) do begin
+               if (DS.DataSet.FieldByName('check').Value) then
+                  begin
+                    for j := 0 to Length(gridFields) - 1 do
+                       FRetValue[k][gridFields[j].name].AsVariant := DS.DataSet.FieldByName(gridFields[j].name).Value;
+                     inc(k);
+                  end;
+                DS.DataSet.Next;
+              end;
+            finally
+                DS.DataSet.Locate(FormInfo.keyfield,ID,[]);
+                if k = 0  then
+                   for j := 0 to Length(gridFields) - 1 do
+                      FRetValue[Integer(0)][gridFields[j].name].AsVariant := DS.DataSet.FieldByName(gridFields[j].name).Value;
+                DS.DataSet.EnableControls;
+            end;
+        end
+        else
+         RetValue;
+      end
+      else
+         RetValue;
+   end;
+end;
+
+procedure TfmBaseGrid.aGroupPanelExecute(Sender: TObject);
+begin
+  inherited;
+
+end;
+
+// устанавливает переданное значение пол€ check дл€ всех записей базового dataset
+procedure TfmBaseGrid.SetCheckValue(pCheck: boolean);
+var
+  OID: variant;
+begin
+  if (not Assigned(dbBase)) and
+     (not Assigned(dbBase.DataSet)) and
+     (dbBase.DataSet.IsEmpty) then
+    Exit;
+
+  dbBase.DataSet.DisableControls;
+  OID := dbBase.DataSet.FieldByName('uid').Value;
+
+  try
+    with dbBase.DataSet do
+    begin
+      First;
+
+      while not Eof do
+      begin
+        Edit;
+        FieldByName('check').AsBoolean := pCheck;
+        Post;
+
+        Next;
+      end;
+    end;
+  finally
+    dbBase.DataSet.Locate('uid',OID,[]);
+    dbBase.DataSet.EnableControls
+  end;
+end;
+
+procedure TfmBaseGrid.actSelectAllUpdate(Sender: TObject);
+begin
+  if (Assigned(dbBase)) and
+     (Assigned(dbBase.DataSet)) and
+     (not dbBase.DataSet.IsEmpty) and
+     (Assigned(grBaseDBTableView)) and
+     (Assigned(grBaseDBTableView.GetColumnByFieldName('check'))) and
+     (grBaseDBTableView.GetColumnByFieldName('check').Visible = true) then
+  begin
+    (Sender as TAction).Visible := True;
+    (Sender as TAction).Enabled := True;
+    N100Select.Visible := True;
+  end
+  else
+  begin
+    (Sender as TAction).Visible := False;
+    (Sender as TAction).Enabled := False;
+    N100Select.Visible := False;
+  end
+end;
+
+procedure TfmBaseGrid.btnCancelClick(Sender: TObject);
+begin
+  ModalCancel;
+end;
+
+procedure TfmBaseGrid.btnSelectClick(Sender: TObject);
+begin
+  ModalSelect;
+end;
+
+{ actGetData }
+
+procedure TfmBaseGrid.actHistoryLogExecute(Sender: TObject);
+begin
+  inherited;
+
+  if ((Assigned(dbBase.DataSet)) and (not dbBase.DataSet.IsEmpty)) then
+    ShowHistoryLog(FormInfo, dbBase.DataSet.FieldByName(FormInfo.keyfield).AsInteger);
+end;
+
+{ actCancel }
+
+procedure TfmBaseGrid.actCancelExecute(Sender: TObject);
+begin
+  inherited;
+
+  EditCancel;
+end;
+
+{ actFilter }
+
+procedure TfmBaseGrid.actFilterExecute(Sender: TObject);
+var
+  cxGridTableView: TcxGridTableView;
+begin
+  inherited;
+  actFilter.Checked := not actFilter.Checked;
+  cxGridTableView := TcxGridTableView(grBase.ActiveView);
+  cxGridTableView.FilterRow.Visible := actFilter.Checked;
+  cxGridTableView.DataController.Filter.Active := actFilter.Checked;
+end;
+
+procedure TfmBaseGrid.actGridViewCustomizeExecute(Sender: TObject);
+begin
+  inherited;
+
+end;
+
+{ actExcel }
+
+procedure TfmBaseGrid.actExcelExecute(Sender: TObject);
+begin
+  inherited;
+  ExportExcel;
+end;
+
+procedure TfmBaseGrid.actExitExecute(Sender: TObject);
+begin
+  inherited;
+
+end;
+
+{ --------------- }
+{ --- Methods --- }
+{ --------------- }
+
+{ ¬ыводит таблицу в Excel }
+
+procedure TfmBaseGrid.ExportExcel(const pFileName: string = '');
+var
+  TempFileName: string;
+  ANullStrictConvert: Boolean;
+begin
+  if Length(pFileName) = 0 then
+    TempFileName := Resource.ModuleInfo.TempDir + FormatDateTime('dd-mm-yyyy_hh-nn-ss.zzz',now) + '_temp.xls'
+  else
+    TempFileName := pFileName;
+
+  ANullStrictConvert := NullStrictConvert;
+  try
+    NullStrictConvert := False;
+    ExportGridToExcel(TempFileName, grBase, TRUE, True, False);
+  finally
+    NullStrictConvert := ANullStrictConvert;
+  end;
+
+  ShellOpenFile(TempFileName);
+end;
+
+// Ёкспорт в ексель дерев€нной структуры данных по ее Dataset
+procedure TfmBaseGrid.ExportExcelTree(TreeList: TcxDBTreeList; const pFileName: string = '');
+var
+  TempFileName: string;
+  ANullStrictConvert: Boolean;
+  dsTemp: TDataSource;
+  cxGrid: TcxGrid;
+  cxGridLvl: TcxGridLevel;
+  cxGridDBTV: TcxGridDBTableView;
+  cxGridDBTVCol: TcxGridDBColumn;
+  i: integer;
+begin
+  if Length(pFileName) = 0 then
+    TempFileName := Resource.ModuleInfo.TempDir + FormatDateTime('dd-mm-yyyy_hh-nn-ss.zzz',now) + '_temp.xls'
+  else
+    TempFileName := pFileName;
+
+  dsTemp := TDataSource.Create(Self);
+  cxGrid := TcxGrid.Create(Self);
+  cxGridLvl := cxGrid.Levels.Add;
+  cxGridDBTV := cxGrid.CreateView(TcxGridDBTableView) as TcxGridDBTableView;
+
+  try
+    cxGridDBTV.Name := 'DBTV';
+    cxGridLvl.GridView := cxGridDBTV;
+    dsTemp.DataSet := TreeList.DataController.DataSource.DataSet;
+    cxGridDBTV.DataController.DataSource := dsTemp;
+  //  cxGridDBTV.DataController.CreateAllItems();
+
+    for i := 0 to TreeList.ColumnCount-1 do
+    begin
+      cxGridDBTVCol := cxGridDBTV.CreateColumn();
+      cxGridDBTVCol.Visible := TreeList.Columns[i].Visible;
+      cxGridDBTVCol.Caption := TreeList.Columns[i].Caption.Text;
+      cxGridDBTVCol.Width := TreeList.Columns[i].Width + 20;
+      cxGridDBTVCol.DataBinding.FieldName := (TreeList.Columns[i] as TcxDbTreeListColumn).DataBinding.FieldName;
+    end;
+
+    ANullStrictConvert := NullStrictConvert;
+    try
+      NullStrictConvert := False;
+      ExportGridToExcel(TempFileName, cxGrid, TRUE);
+    finally
+      NullStrictConvert := ANullStrictConvert;
+    end;
+
+  finally
+    cxGridDBTV.Free;
+    cxGridLvl.Free;
+    cxGrid.Free;
+    dsTemp.Free;
+  end;
+
+  ShellOpenFile(TempFileName);
+end;
+
+procedure TfmBaseGrid.ReturnAddValue(grBaseDBTable: TcxGridDBTableView = nil; grBaseDBTreeList: TcxDBTreeList = nil);
+var
+  Mode: TModeReturnAddValue;
+begin
+  inherited ReturnAddValue;
+
+  if Assigned(grBaseDBTreeList)
+   then Mode := mravDBTreeList
+   else begin
+    Mode := mravDBTable;
+    if not Assigned(grBaseDBTable)
+     then grBaseDBTable:= grBaseDBTableView;
+   end;
+
+  Assert((
+    (Assigned(grBaseDBTable) and not Assigned(grBaseDBTreeList)) or
+    (not Assigned(grBaseDBTable) and Assigned(grBaseDBTreeList))
+  ));
+
+   case Mode of
+     mravDBTable: AddReturnValue(grBaseDBTable);
+     mravDBTreeList: AddReturnValue(grBaseDBTreeList);
+   end;
+end;
+
+{ —охран€ет  данные }
+
+procedure TfmBaseGrid.EditSave;
+begin
+  DataSetPost();
+end;
+
+{ ќтмен€ет изменени€ }
+
+procedure TfmBaseGrid.EditCancel;
+begin
+  if (dbBase.CoreActionCount > 0) and (DialogQuest('Ќе сохран€ть изменени€? ¬ы уверены?', 'ќтмена внесенных изменений')) then
+  begin
+    DataSetCancel();
+  end;
+end;
+
+{ ќбновл€еи DataSet }
+
+procedure TfmBaseGrid.DataSetRefresh();
+begin
+  actRefresh.Checked := TRUE;
+  try
+    inherited;
+  finally
+    if Assigned(dbBase) then
+      dsBase.DataSet := dbBase.DataSet;
+
+    actRefresh.Checked := False;
+  end;
+end;
+
+{ «аполн€ет параметры дл€ запроса поиска }
+
+procedure TfmBaseGrid.SetIsSprav(const Value: boolean);
+begin
+  FIsSprav := Value;
+end;
+
+procedure TfmBaseGrid.SetSQLParams;
+begin
+  { ничего не делаем }
+  { а могли бы }
+end;
+
+function TfmBaseGrid.ShowAsModal: boolean;
+begin
+  pnSelect.Visible := TRUE;
+  Position := poScreenCenter;
+  btnCancel.Cancel := TRUE;
+  btnSelect.Default := TRUE;
+end;
+
+// ѕроцедура отмены в модальной форме
+procedure TfmBaseGrid.ModalCancel;
+begin
+  ModalResult := mrCancel;
+end;
+
+// процедура получени€ данных из выбранных полей
+procedure TfmBaseGrid.ModalSelect;
+begin
+  if ReturnCount <> 0 then
+    ModalResult := mrOk
+  else
+    DialogInfo('¬ы не выбрали ни одной записи!');
+end;
+
+// «аполнени€ полей базового грида в TBaseGrid в базовом варианте
+procedure TfmBaseGrid.FillGridColumnByXML(pFormName: string = ''; pFooterRecCnt: boolean = False; pCxGridTV: TcxGridDBTableView = nil);
+var
+  ClassName: string;
+begin
+  if (pFormName = '') then
+    pFormName := Self.FFormName;
+
+  if (not Assigned(pCxGridTV)) then
+    pCxGridTV := grBaseDBTableView;
+
+  if (not Assigned(pCxGridTV)) then
+  begin
+    DialogStop('√рид дл€ [FillGridColumnByXML] не найден!');
+    Exit;
+  end;
+
+  // получим класс формы по имени
+  ClassName := Resource.GetFormClass(pFormName);
+
+  if (ClassName = '') then
+  begin
+    DialogStop('”казанный класс формы [' + pFormName + '] не найден!', ' ласс не найден');
+    Exit;
+  end;
+
+  inherited FillGridColumnByXML(pFormName, pFooterRecCnt, pCxGridTV);
+end;
+
+//создаем  check-и
+procedure TfmBaseGrid.MultiSelectAdd(grBaseDBTable: TcxGridDBTableView = nil; grBaseDBTreeList: TcxDBTreeList = nil);
+ var
+  ItemName: TComponentName;
+begin
+  if Assigned(grBaseDBTable) then
+  begin
+    ItemName:= grBaseDBTable.Name + 'check';
+    with grBaseDBTable do
+    begin
+      // создадим колонку check если данной колонки нет в XML
+      if ( not Assigned(GetColumnByFieldName('check')) ) then
+        with CreateColumn do
+        begin
+          Name := ItemName;
+          DataBinding.FieldName := 'check';
+          Options.Editing := True;
+          Caption := '';
+          Index := 0;
+
+          if FMultiSelect then
+            Visible := true
+          else
+            Visible := false;
+        end;
+
+      with OptionsSelection do
+      begin
+        CellSelect := true;
+        MultiSelect := true;
+      end;
+    end;
+  end
+  else
+    if Assigned(grBaseDBTreeList) then
+    begin
+      ItemName:= grBaseDBTreeList.Name + 'check';
+      with grBaseDBTreeList do
+       // создадим колонку check если данной колонки нет в XML
+      if ( not Assigned(GetColumnByFieldName('check')) ) then
+      with (grBaseDBTreeList.CreateColumn as TcxDbTreeListColumn) do
+      begin
+          Name := ItemName;
+          DataBinding.FieldName := 'check';
+          Caption.Text := '¬ыбор';
+          PropertiesClassName := 'CheckBox';
+          Options.Editing := True;
+          Styles.Header := Resource.cxStyleHeader;
+          Position.ColIndex := 0;
+          Visible := true;
+          Width := 20;
+      end;
+
+      with grBaseDBTreeList.OptionsSelection do
+      begin
+          CellSelect := true;
+          MultiSelect := true;
+      end;
+    end;
+
+end;
+
+procedure TfmBaseGrid.FormShow(Sender: TObject);
+var
+  I: integer;
+begin
+  inherited;
+
+  if ( FIsModal ) or (FMultiSelect) then
+  begin
+    if grBaseDBTableView.DataController <> nil then
+    begin
+      for I := 0 to grBaseDBTableView.ColumnCount - 1 do
+           grBaseDBTableView.Columns[i].Options.Editing := false;
+      if FMultiSelect then
+        MultiSelectAdd(grBaseDBTableView);
+    end;
+  end;
+  grBaseDBTableView.RestoreFromIniFile(ExtractFilePath(Application.ExeName) + '/Settings/Forms/' + Self.ClassName + '.ini', true, false, [], 'grBaseDBTableView');
+end;
+
+end.
+

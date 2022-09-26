@@ -1,0 +1,78 @@
+inherited fmOffenses: TfmOffenses
+  Caption = 'fmOffenses'
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited pnParam: TPanel
+    TabOrder = 2
+    inherited lbParam: TcxLabel
+      Style.IsFontAssigned = True
+    end
+  end
+  inherited pnSelect: TPanel
+    TabOrder = 4
+    inherited dxLCPnlSelect: TdxLayoutControl
+      inherited dxLCPnlSelectGroup_Root: TdxLayoutGroup
+        Index = -1
+      end
+      inherited dxLIbtnCancel: TdxLayoutItem
+        Index = 1
+      end
+      inherited dxLIbtnSelect: TdxLayoutItem
+        Index = 0
+      end
+    end
+  end
+  inherited gbGridBase: TPanel
+    ExplicitWidth = 904
+    inherited grBase: TcxGrid
+      ExplicitWidth = 902
+      inherited grBaseDBTableView: TcxGridDBTableView
+        object grBaseDBTableViewColumn1: TcxGridDBColumn
+          Caption = #1044#1072#1090#1072' '#1089#1086#1074#1077#1088#1096#1077#1085#1080#1103' '#1087#1088#1072#1074#1086#1085#1072#1088#1091#1096#1077#1085#1080#1103
+          DataBinding.FieldName = 'offenses_date'
+          Width = 110
+        end
+        object grBaseDBTableViewColumn2: TcxGridDBColumn
+          Caption = #1044#1072#1090#1072' '#1087#1088#1080#1074#1083#1077#1095#1077#1085#1080#1103' '#1082' '#1072#1076#1084'.'#1086#1090#1074#1077#1090#1089#1090#1074#1077#1085#1085#1086#1089#1090#1080
+          DataBinding.FieldName = 'attraction_date'
+          Width = 146
+        end
+        object grBaseDBTableViewColumn3: TcxGridDBColumn
+          Caption = #1056#1077#1075'.'#1085#1086#1084#1077#1088' '#1040#1055' '#1074' '#1045#1043#1041#1044#1055
+          DataBinding.FieldName = 'reg_num'
+          Width = 96
+        end
+        object grBaseDBTableViewColumn4: TcxGridDBColumn
+          Caption = #1050#1077#1084' '#1087#1088#1080#1074#1083#1077#1082#1072#1083#1089#1103
+          DataBinding.FieldName = 'name_org'
+          Width = 119
+        end
+        object grBaseDBTableViewColumn5: TcxGridDBColumn
+          Caption = #1057#1090#1072#1090#1100#1103' '#1050#1086#1040#1055
+          DataBinding.FieldName = 'name_type'
+          Width = 115
+        end
+        object grBaseDBTableViewColumn6: TcxGridDBColumn
+          Caption = #1042#1080#1076' '#1087#1088#1072#1074#1086#1085#1072#1088#1091#1096#1077#1085#1080#1103
+          DataBinding.FieldName = 'state_support_id'
+          Width = 127
+        end
+      end
+    end
+  end
+  inherited cxspltrParam: TcxSplitter
+    ExplicitWidth = 904
+  end
+  inherited BarManager: TdxBarManager
+    DockControlHeights = (
+      0
+      0
+      24
+      0)
+  end
+  inherited ActionList: TActionList
+    inherited actGetData: TAction
+      OnExecute = actGetDataExecute
+    end
+  end
+end

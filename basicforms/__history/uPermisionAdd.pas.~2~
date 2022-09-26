@@ -1,0 +1,44 @@
+unit uPermisionAdd;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, System.Actions,
+  Vcl.ActnList, dxBar, cxClasses, Data.DB, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
+  dxLayoutcxEditAdapters, Vcl.StdCtrls, Vcl.ExtCtrls, dxLayoutContainer,
+  cxTextEdit, cxMaskEdit, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
+  cxDBLookupComboBox, dxLayoutControl, dxLayoutControlAdapters;
+
+type
+  TfmPermisionAdd = class(TfmBaseForm)
+    dxLayoutControl2: TdxLayoutControl;
+    cxLookupComboBox3: TcxLookupComboBox;
+    dxLayoutGroup1: TdxLayoutGroup;
+    dxLayoutItem4: TdxLayoutItem;
+    Panel2: TPanel;
+    btnOk: TButton;
+    btnCancel: TButton;
+    dxLayoutItem1: TdxLayoutItem;
+    cxLookupComboBox1: TcxLookupComboBox;
+    CheckBox1: TCheckBox;
+    dxLayoutItem2: TdxLayoutItem;
+    dxLayoutItem3: TdxLayoutItem;
+    CheckBox2: TCheckBox;
+    dxLayoutItem5: TdxLayoutItem;
+    CheckBox3: TCheckBox;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmPermisionAdd: TfmPermisionAdd;
+
+implementation
+
+{$R *.dfm}
+
+end.

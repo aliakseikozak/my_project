@@ -1,0 +1,51 @@
+unit uCourtdecisionAdd;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, Data.DB,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, System.Actions, Vcl.ActnList,
+  dxBar, cxClasses, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.ComCtrls, dxCore, cxDateUtils,
+  dxLayoutcxEditAdapters, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
+  cxDBLookupComboBox, dxLayoutContainer, cxTextEdit, cxMaskEdit, cxCalendar,
+  dxLayoutControl, Vcl.StdCtrls, Vcl.ExtCtrls;
+
+type
+  TfmCourtdecisionAdd = class(TfmBaseForm)
+    Panel2: TPanel;
+    btnOk: TButton;
+    btnCancel: TButton;
+    dxLayoutControl1: TdxLayoutControl;
+    cxDateEdit1: TcxDateEdit;
+    cxTextEdit1: TcxTextEdit;
+    cxDateEdit2: TcxDateEdit;
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutItem2: TdxLayoutItem;
+    dxLayoutItem4: TdxLayoutItem;
+    dxLayoutItem3: TdxLayoutItem;
+    dxLayoutItem1: TdxLayoutItem;
+    cxDateEdit3: TcxDateEdit;
+    dxLayoutItem5: TdxLayoutItem;
+    cxLookupComboBox2: TcxLookupComboBox;
+    dxLayoutItem6: TdxLayoutItem;
+    cxTextEdit2: TcxTextEdit;
+    dxLayoutItem8: TdxLayoutItem;
+    cxLookupComboBox3: TcxLookupComboBox;
+    dxLayoutItem9: TdxLayoutItem;
+    cxLookupComboBox4: TcxLookupComboBox;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmCourtdecisionAdd: TfmCourtdecisionAdd;
+
+implementation
+
+{$R *.dfm}
+
+end.

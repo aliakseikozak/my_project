@@ -1,0 +1,145 @@
+
+unit uBaseResource;
+
+interface
+
+uses
+  System.SysUtils, Vcl.Forms, Vcl.Controls, IniFiles,
+  Vcl.ExtCtrls, System.Classes,
+  Data.DB, System.ImageList, Vcl.ImgList, ZSqlMonitor, ZAbstractConnection,
+  ZConnection, ZAbstractRODataset, ZAbstractDataset, ZDataset;
+const
+  WM_AFTER_SHOW = 300; // переменная для проверки загрузки общих справочников
+
+type
+  TModuleInfo = record
+    Name: string;            // название модуля
+    FIO: string;             // ФИО пользователя
+    ThousandSeparator: Char; // разделитель групп разрядов
+    SuperUser: string;       // имя суперюзера
+    AppDir: string;          // Каталог программы
+    TempDir: string;         // Временный каталог
+  end;
+
+  TSessionInfo = record
+    UserName: string;
+    IsSuperUser: Boolean;
+    token_id: string;
+    Database: string;
+    HostName: string;
+    Shema   : string;
+    Password: String;
+    Catalog: String;
+    ConName: string;
+    Temp_NameSpace: string;
+    Client_name : String; // наименование клиента  облачного сервиса
+  end;
+
+  TBaseResource = class(TDataModule)
+ {   ZConn: TZConnection;
+    ZSQLMonitor: TZSQLMonitor;
+    qryRun: TZQuery;  }
+    ImageList: TImageList;
+    ImageListDlg: TImageList;
+    ImageListStatus: TImageList;
+    ZConn: TZConnection;
+    ZSQLMonitor: TZSQLMonitor;
+    qryRun: TZQuery;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure AppException(Sender: TObject; E: Exception);
+  protected
+    FTechsupportMessage: string;
+    FVisibleInterval: Integer;
+    FInvisibleInterval: Integer;
+  public
+    ModuleInfo: TModuleInfo;
+    sessionInfo : TSessionInfo;
+    JsonFormatSettings: TFormatSettings;
+    IniFile: TiniFile;
+    DS, DS2: TStringList; // Тут будем логи хранить
+    procedure AfterConnect;
+    procedure SetSessionInfo; // устанавливает параметры сессии
+    procedure SetClient_id; // устанавливает глобальнуюб переменную на сервере из свойств Zconn
+    property TechsupportMessage: string read FTechsupportMessage; // Сообщение о неоплате техподдержки
+    property VisibleInterval: Integer read FVisibleInterval; // Интервал, в течение которого показывается сообщение о неоплате техподдержки (в секундах). 0 - не показывается
+    property InvisibleInterval: Integer read FInvisibleInterval; // Интервал между показами сообщения о неоплате техподдержки (в секундах). 0 - показывается только при запуске программы
+  end;
+
+const
+  DEFAULT_HOST:               string  = 'localhost';
+  DEFAULT_THOUSAND_SEPARATOR: Char    = ' ';
+  DEFAULT_DECIMAL_SEPARATOR:  Char    = '.';
+
+  DEFAULT_FONT_SIZE:          Integer = 8;
+  MIN_FONT_SIZE:              Integer = 8;
+  MAX_FONT_SIZE:              Integer = 12;
+
+  cWeekDaysShort: array[1..7] of string = ('пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс');
+
+// меняет курсор на часы
+procedure SetCursorWait(pwait: Boolean = false);
+
+implementation
+
+{$R *.dfm}
+
+uses
+  uResourceForms, ExceptLibPg;
+
+{ меняет курсор на часы }
+procedure SetCursorWait(pwait : Boolean =false);
+begin
+ if pWait then
+   Screen.Cursor:= crHourGlass
+ else
+   Screen.cursor:= crDefault;
+ Application.ProcessMessages;
+end;
+
+{TBaseResource}
+
+// устанавливает глобальнуюб переменную на сервере из свойств Zconn
+procedure TBaseResource.SetClient_id;
+begin
+
+end;
+
+procedure TBaseResource.AfterConnect;
+begin
+  setSessionInfo;
+end;
+
+{ Обработчик исклоючений программы }
+procedure TBaseResource.AppException(Sender: TObject; E: Exception);
+begin
+  DialogStop(ExceptMessage(E));
+end;
+
+procedure TBaseResource.DataModuleCreate(Sender: TObject);
+begin
+  inherited;
+  FormatSettings.ShortDateFormat := 'dd.mm.yyyy';
+  FormatSettings.LongDateFormat := 'dd.mm.yyyy';
+  FormatSettings.CurrencyString := '';
+  FormatSettings.DecimalSeparator := DEFAULT_DECIMAL_SEPARATOR;
+  Application.OnException := AppException;
+  ModuleInfo.AppDir := ExtractFilePath(Application.ExeName);
+end;
+
+
+procedure TBaseResource.setSessionInfo;
+
+  function GetVersion: string;
+  begin
+      Result := '1.0';
+  end;
+
+begin
+  SessionInfo.IsSuperUser:=(ModuleInfo.superuser = SessionInfo.UserName);
+  // установим глобальную переменную на сервере
+  SetClient_id;
+end;
+
+
+
+end.

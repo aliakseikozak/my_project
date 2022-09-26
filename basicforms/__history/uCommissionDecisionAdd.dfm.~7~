@@ -1,0 +1,213 @@
+inherited fmCommissionDecisionAdd: TfmCommissionDecisionAdd
+  Caption = #1056#1077#1096#1077#1085#1080#1077' '#1082#1086#1084#1080#1089#1089#1080#1080
+  ClientHeight = 459
+  ClientWidth = 618
+  Position = poMainFormCenter
+  ExplicitWidth = 634
+  ExplicitHeight = 498
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel2: TPanel [0]
+    Left = 0
+    Top = 418
+    Width = 618
+    Height = 41
+    Align = alBottom
+    TabOrder = 4
+    DesignSize = (
+      618
+      41)
+    object btnOk: TButton
+      Tag = 6
+      Left = 344
+      Top = 6
+      Width = 160
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1080' '#1079#1072#1082#1088#1099#1090#1100
+      ImageIndex = 14
+      Images = Resource.ImageList
+      TabOrder = 0
+      OnClick = btnOkClick
+    end
+    object btnCancel: TButton
+      Left = 510
+      Top = 6
+      Width = 90
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = #1054#1090#1084#1077#1085#1072
+      ImageIndex = 16
+      Images = Resource.ImageList
+      TabOrder = 1
+      OnClick = btnCancelClick
+    end
+  end
+  object dxLayoutControl1: TdxLayoutControl [1]
+    Left = 0
+    Top = 0
+    Width = 618
+    Height = 186
+    Align = alClient
+    TabOrder = 5
+    ExplicitTop = 45
+    ExplicitHeight = 141
+    object cxDateEdit1: TcxDateEdit
+      Left = 240
+      Top = 10
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 0
+      Width = 121
+    end
+    object cxLookupComboBox1: TcxLookupComboBox
+      Left = 240
+      Top = 91
+      Properties.KeyFieldNames = 'id'
+      Properties.ListColumns = <
+        item
+          Caption = #1056#1077#1096#1077#1085#1080#1077' '#1082#1086#1084#1080#1089#1089#1080#1080
+          FieldName = 'name'
+        end>
+      Properties.ListSource = dsResolution
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 3
+      Width = 223
+    end
+    object cxTextEdit1: TcxTextEdit
+      Left = 240
+      Top = 64
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      TabOrder = 2
+      Width = 57
+    end
+    object cxDateEdit2: TcxDateEdit
+      Left = 240
+      Top = 37
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 1
+      Width = 121
+    end
+    object dxLayoutControl1Group_Root: TdxLayoutGroup
+      AlignHorz = ahLeft
+      AlignVert = avTop
+      ButtonOptions.Buttons = <>
+      Hidden = True
+      ShowBorder = False
+      Index = -1
+    end
+    object dxLayoutItem2: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      AlignVert = avTop
+      CaptionOptions.Text = #1044#1072#1090#1072' '#1085#1072#1087#1088#1072#1074#1083#1077#1085#1080#1103' '#1076#1086#1082#1091#1084#1077#1085#1090#1086#1074' '#1074' '#1082#1086#1084#1080#1089#1089#1080#1102':'
+      Control = cxDateEdit1
+      ControlOptions.ShowBorder = False
+      Index = 0
+    end
+    object dxLayoutItem7: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      CaptionOptions.Text = #1056#1077#1096#1077#1085#1080#1077' '#1082#1086#1084#1080#1089#1089#1080#1080':'
+      Control = cxLookupComboBox1
+      ControlOptions.ShowBorder = False
+      Index = 3
+    end
+    object dxLayoutItem4: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahClient
+      AlignVert = avTop
+      CaptionOptions.Text = #1048#1085#1092#1086#1088#1084#1072#1094#1080#1103' '#1086' '#1082#1086#1084#1080#1089#1089#1080#1080':'
+      Control = cxTextEdit1
+      ControlOptions.ShowBorder = False
+      Index = 2
+    end
+    object dxLayoutItem3: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      AlignVert = avTop
+      CaptionOptions.Text = #1044#1072#1090#1072' '#1079#1072#1089#1077#1076#1072#1085#1080#1103' '#1082#1086#1084#1080#1089#1089#1080#1080':'
+      Control = cxDateEdit2
+      ControlOptions.ShowBorder = False
+      Index = 1
+    end
+  end
+  object Panel1: TPanel [2]
+    Left = 0
+    Top = 186
+    Width = 618
+    Height = 232
+    Align = alBottom
+    TabOrder = 6
+    object cxGrid1: TcxGrid
+      Left = 10
+      Top = 6
+      Width = 431
+      Height = 200
+      TabOrder = 0
+      object cxGrid1DBTableView1: TcxGridDBTableView
+        Navigator.Buttons.CustomButtons = <>
+        DataController.Summary.DefaultGroupSummaryItems = <>
+        DataController.Summary.FooterSummaryItems = <>
+        DataController.Summary.SummaryGroups = <>
+      end
+      object cxGrid1Level1: TcxGridLevel
+        GridView = cxGrid1DBTableView1
+      end
+    end
+    object Button1: TButton
+      Left = 447
+      Top = 6
+      Width = 130
+      Height = 25
+      Caption = #1047#1072#1075#1088#1091#1079#1080#1090#1100' '#1076#1086#1082#1091#1084#1077#1085#1090
+      TabOrder = 1
+    end
+    object Button2: TButton
+      Left = 447
+      Top = 37
+      Width = 130
+      Height = 25
+      Caption = #1055#1088#1086#1089#1084#1086#1090#1088#1077#1090#1100' '#1076#1086#1082#1091#1084#1077#1085#1090
+      TabOrder = 2
+    end
+    object Button3: TButton
+      Left = 447
+      Top = 68
+      Width = 130
+      Height = 25
+      Caption = #1059#1076#1072#1083#1080#1090#1100' '#1076#1086#1082#1091#1084#1077#1085#1090
+      TabOrder = 3
+    end
+  end
+  inherited BarManager: TdxBarManager
+    DockControlHeights = (
+      0
+      0
+      0
+      0)
+    inherited BarManagerMainMenu: TdxBar
+      Visible = False
+    end
+    inherited BarManagerMainBar: TdxBar
+      DockedTop = 0
+      Visible = False
+    end
+  end
+  object dsResolution: TDataSource
+    Left = 160
+    Top = 157
+  end
+end

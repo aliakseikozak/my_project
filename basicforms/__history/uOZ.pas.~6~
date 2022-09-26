@@ -1,0 +1,168 @@
+unit uOZ;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseGrid, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
+  dxLayoutControlAdapters, cxStyles, cxCustomData, cxFilter, cxData,
+  cxDataStorage, cxNavigator, Data.DB, cxDBData, Vcl.Menus, System.Actions,
+  Vcl.ActnList, dxBar, cxClasses, cxSplitter, cxGridLevel, cxGridCustomView,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
+  dxLayoutContainer, Vcl.StdCtrls, dxLayoutControl, cxLabel, Vcl.ExtCtrls,
+  Vcl.Buttons, dxLayoutcxEditAdapters, Vcl.ComCtrls, dxCore, cxDateUtils,
+  cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit,
+  cxMaskEdit, cxCalendar, uKartUtils, uResource, uOVDAdd;
+
+type
+  TfmOZ = class(TfmBaseGrid)
+    grBaseDBTableViewColumn1: TcxGridDBColumn;
+    grBaseDBTableViewColumn2: TcxGridDBColumn;
+    grBaseDBTableViewColumn3: TcxGridDBColumn;
+    grBaseDBTableViewColumn4: TcxGridDBColumn;
+    grBaseDBTableViewColumn5: TcxGridDBColumn;
+    grBaseDBTableViewColumn6: TcxGridDBColumn;
+    grBaseDBTableViewColumn7: TcxGridDBColumn;
+    grBaseDBTableViewColumn8: TcxGridDBColumn;
+    grBaseDBTableViewColumn9: TcxGridDBColumn;
+    grBaseDBTableViewColumn10: TcxGridDBColumn;
+    dxLayoutControl2: TdxLayoutControl;
+    Edit5: TEdit;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
+    Edit6: TEdit;
+    Edit7: TEdit;
+    Edit8: TEdit;
+    cxLookupComboBox7: TcxLookupComboBox;
+    cxLookupComboBox8: TcxLookupComboBox;
+    cxDateEdit2: TcxDateEdit;
+    cxLookupComboBox9: TcxLookupComboBox;
+    CheckBox1: TCheckBox;
+    cxLookupComboBox10: TcxLookupComboBox;
+    Edit9: TEdit;
+    dxLayoutGroup3: TdxLayoutGroup;
+    dxLayoutGroup5: TdxLayoutGroup;
+    dxLayoutItem11: TdxLayoutItem;
+    dxLayoutItem12: TdxLayoutItem;
+    dxLayoutItem13: TdxLayoutItem;
+    dxLayoutAutoCreatedGroup4: TdxLayoutAutoCreatedGroup;
+    dxLayoutAutoCreatedGroup5: TdxLayoutAutoCreatedGroup;
+    dxLayoutItem19: TdxLayoutItem;
+    dxLayoutItem20: TdxLayoutItem;
+    dxLayoutItem21: TdxLayoutItem;
+    dxLayoutItem22: TdxLayoutItem;
+    dxLayoutAutoCreatedGroup6: TdxLayoutAutoCreatedGroup;
+    dxLayoutItem23: TdxLayoutItem;
+    dxLayoutItem24: TdxLayoutItem;
+    dxLayoutItem25: TdxLayoutItem;
+    dxLayoutItem26: TdxLayoutItem;
+    dxLayoutItem27: TdxLayoutItem;
+    dxLayoutItem28: TdxLayoutItem;
+    procedure actGetDataExecute(Sender: TObject);
+    procedure actNewExecute(Sender: TObject);
+    procedure actEditExecute(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure actParamClearExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmOZ: TfmOZ;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfmOZ.actEditExecute(Sender: TObject);
+var
+  fm: TfmOVDAdd;
+begin
+  if dbBase.DataSet.IsEmpty then
+    Exit;
+
+  fm := TfmOVDAdd(CreateForm('TfmOVDAdd', 'fmOVDAdd', Self, false));
+  try
+    fm.SetData(dbBase, 1, dbBase.DataSet.FieldByName('grinformation_id').Value);
+    if ( fm.ShowModal() = mrOk ) then
+    begin
+      dbBase.DataSetReQuery;
+    end;
+  finally
+    fm.Free;
+    actGetData.Execute;
+  end;
+end;
+
+procedure TfmOZ.actGetDataExecute(Sender: TObject);
+var
+  Columns: string;
+  Params: string;
+  Operations: string;
+begin
+
+  with Filtered(Self) do
+  begin
+    Columns := Column;
+    Params := Param;
+    Operations := Operation;
+  end;
+
+   if (cxDateEdit1.EditValue <> NULL) then
+   begin
+     if Columns <> EmptyStr then
+     begin
+       Columns := Columns + '~';
+       Operations := Operations + '~';
+       Params := Params + '~';
+     end;
+
+     Columns := Columns + cxDateEdit1.Properties.ImeName;
+     Operations := Operations + '=';
+     Params:= Params + '''''' + FormatDateTime('YYYY-MM-DD', cxDateEdit1.Date) + '''''';
+   end;
+
+  FreeAndNil(dbBase);
+  dbBase := DataSetQuery('grinformation_field_get', [Resource.sessionInfo.token_id, '1', Columns, Params, Operations], GetFieldsArray(), true);
+  dsBase.DataSet := dbBase.DataSet;
+end;
+
+procedure TfmOZ.actNewExecute(Sender: TObject);
+var
+  fm: TfmOVDAdd;
+begin
+  fm := TfmOVDAdd(CreateForm('TfmOVDAdd', 'fmOVDAdd', Self, false));
+  try
+    fm.SetData(dbBase, 0, 0);
+    if ( fm.ShowModal() = mrOk ) then begin
+
+      dbBase.DataSetReQuery;
+
+    end;
+  finally
+    fm.Free;
+    actGetData.Execute;
+  end;
+end;
+
+procedure TfmOZ.actParamClearExecute(Sender: TObject);
+begin
+  Edit1.Clear;
+  Edit2.Clear;
+  Edit3.Clear;
+  Edit4.Clear;
+  cxDateEdit1.Clear;
+end;
+
+procedure TfmOZ.FormShow(Sender: TObject);
+begin
+//  InitForm;
+  gNameForm := 'fmOZ';
+  dbBase := DataSetQuery('grinformation_field_get', [Resource.sessionInfo.token_id, '1', 'bmf.id', '-1', '='], GetFieldsArray(), true);
+  dsBase.DataSet := dbBase.DataSet;
+end;
+
+end.

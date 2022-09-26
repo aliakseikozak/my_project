@@ -1,0 +1,178 @@
+inherited fmLtpPenaltyAdd: TfmLtpPenaltyAdd
+  Caption = #1048#1085#1092#1086#1088#1084#1072#1094#1080#1103' '#1086' '#1085#1072#1082#1072#1079#1072#1085#1080#1080
+  ClientHeight = 177
+  ClientWidth = 434
+  Position = poMainFormCenter
+  ExplicitWidth = 450
+  ExplicitHeight = 216
+  PixelsPerInch = 96
+  TextHeight = 13
+  object dxLayoutControl1: TdxLayoutControl [0]
+    Left = 0
+    Top = 0
+    Width = 434
+    Height = 136
+    Align = alClient
+    TabOrder = 4
+    object cxDateEdit1: TcxDateEdit
+      Left = 162
+      Top = 10
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 0
+      Width = 121
+    end
+    object cxLookupComboBox2: TcxLookupComboBox
+      Left = 162
+      Top = 37
+      Properties.DropDownSizeable = True
+      Properties.KeyFieldNames = 'id'
+      Properties.ListColumns = <
+        item
+          Caption = #1042#1080#1076#1099' '#1085#1072#1088#1091#1096#1077#1085#1080#1081
+          FieldName = 'name'
+        end>
+      Properties.ListSource = dsViolations
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 1
+      Width = 223
+    end
+    object cxLookupComboBox1: TcxLookupComboBox
+      Left = 162
+      Top = 91
+      Properties.DropDownSizeable = True
+      Properties.KeyFieldNames = 'id'
+      Properties.ListColumns = <
+        item
+          Caption = #1042#1080#1076#1099' '#1074#1079#1099#1089#1082#1072#1085#1080#1081
+          FieldName = 'name'
+        end>
+      Properties.ListSource = dsPenaltytype
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 3
+      Width = 223
+    end
+    object cxDateEdit2: TcxDateEdit
+      Left = 162
+      Top = 64
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 2
+      Width = 121
+    end
+    object dxLayoutControl1Group_Root: TdxLayoutGroup
+      AlignHorz = ahLeft
+      AlignVert = avTop
+      ButtonOptions.Buttons = <>
+      Hidden = True
+      ShowBorder = False
+      Index = -1
+    end
+    object dxLayoutItem2: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      AlignVert = avTop
+      CaptionOptions.Text = #1044#1072#1090#1072' '#1087#1088#1086#1089#1090#1091#1087#1082#1072':'
+      Control = cxDateEdit1
+      ControlOptions.ShowBorder = False
+      Index = 0
+    end
+    object dxLayoutItem3: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      CaptionOptions.Text = #1042#1080#1076' '#1085#1072#1088#1091#1096#1077#1085#1080#1103':'
+      Control = cxLookupComboBox2
+      ControlOptions.ShowBorder = False
+      Index = 1
+    end
+    object dxLayoutItem7: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      CaptionOptions.Text = #1042#1080#1076' '#1074#1079#1099#1089#1082#1072#1085#1080#1103':'
+      Control = cxLookupComboBox1
+      ControlOptions.ShowBorder = False
+      Index = 3
+    end
+    object dxLayoutItem4: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      AlignVert = avClient
+      CaptionOptions.Text = #1044#1072#1090#1072' '#1074#1099#1085#1077#1089#1077#1085#1080#1103' '#1074#1079#1099#1089#1082#1072#1085#1080#1103':'
+      Control = cxDateEdit2
+      ControlOptions.ShowBorder = False
+      Index = 2
+    end
+  end
+  object Panel2: TPanel [1]
+    Left = 0
+    Top = 136
+    Width = 434
+    Height = 41
+    Align = alBottom
+    TabOrder = 5
+    DesignSize = (
+      434
+      41)
+    object btnOk: TButton
+      Tag = 6
+      Left = 160
+      Top = 6
+      Width = 160
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1080' '#1079#1072#1082#1088#1099#1090#1100
+      ImageIndex = 14
+      Images = Resource.ImageList
+      TabOrder = 0
+      OnClick = btnOkClick
+    end
+    object btnCancel: TButton
+      Left = 326
+      Top = 6
+      Width = 90
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = #1054#1090#1084#1077#1085#1072
+      ImageIndex = 16
+      Images = Resource.ImageList
+      TabOrder = 1
+      OnClick = btnCancelClick
+    end
+  end
+  inherited BarManager: TdxBarManager
+    DockControlHeights = (
+      0
+      0
+      0
+      0)
+    inherited BarManagerMainMenu: TdxBar
+      Visible = False
+    end
+    inherited BarManagerMainBar: TdxBar
+      DockedTop = 0
+      Visible = False
+    end
+  end
+  object dsPenaltytype: TDataSource
+    Left = 56
+    Top = 80
+  end
+  object dsViolations: TDataSource
+    Left = 120
+    Top = 80
+  end
+end

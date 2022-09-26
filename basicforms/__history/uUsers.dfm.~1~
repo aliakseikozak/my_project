@@ -1,0 +1,253 @@
+inherited fmUsers: TfmUsers
+  Caption = 'fmUsers'
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited pnParam: TPanel
+    Height = 145
+    TabOrder = 2
+    ExplicitHeight = 145
+    inherited lbParam: TcxLabel
+      Style.IsFontAssigned = True
+    end
+    object lcParams: TdxLayoutControl
+      Left = 1
+      Top = 18
+      Width = 902
+      Height = 126
+      Align = alClient
+      TabOrder = 1
+      ExplicitWidth = 980
+      ExplicitHeight = 131
+      DesignSize = (
+        902
+        126)
+      object eLastName: TEdit
+        Left = 67
+        Top = 10
+        Width = 190
+        Height = 21
+        ImeName = 'A.last_name'
+        MaxLength = 100
+        TabOrder = 0
+      end
+      object eFirstName: TEdit
+        Left = 67
+        Top = 37
+        Width = 190
+        Height = 21
+        ImeName = 'A.first_name'
+        MaxLength = 100
+        TabOrder = 1
+      end
+      object eMiddleName: TEdit
+        Left = 67
+        Top = 64
+        Width = 190
+        Height = 21
+        ImeName = 'A.middle_name'
+        MaxLength = 100
+        TabOrder = 2
+      end
+      object eLogin: TEdit
+        Left = 338
+        Top = 10
+        Width = 242
+        Height = 21
+        ImeName = 'A.login'
+        MaxLength = 100
+        TabOrder = 3
+      end
+      object cxOrg: TcxLookupComboBox
+        Left = 338
+        Top = 37
+        ImeName = 'E.organization_id'
+        Properties.DropDownSizeable = True
+        Properties.ImeName = 'E.organization_id'
+        Properties.KeyFieldNames = 'organization_id'
+        Properties.ListColumns = <
+          item
+            Caption = #1053#1072#1080#1084#1077#1085#1086#1074#1072#1085#1080#1077
+            FieldName = 'short_name'
+          end>
+        Style.BorderColor = clWindowFrame
+        Style.BorderStyle = ebs3D
+        Style.HotTrack = False
+        Style.ButtonStyle = bts3D
+        Style.PopupBorderStyle = epbsFrame3D
+        TabOrder = 4
+        Width = 242
+      end
+      object cIsBlocked: TComboBox
+        Left = 338
+        Top = 64
+        Width = 242
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akLeft, akTop, akRight]
+        ItemIndex = 1
+        TabOrder = 5
+        Text = #1044#1077#1081#1089#1090#1074#1091#1102#1097#1080#1077
+        Items.Strings = (
+          #1042#1089#1077
+          #1044#1077#1081#1089#1090#1074#1091#1102#1097#1080#1077
+          #1059#1074#1086#1083#1077#1085#1085#1099#1077)
+      end
+      object btFind: TBitBtn
+        Left = 10
+        Top = 91
+        Width = 148
+        Height = 25
+        Action = actGetData
+        Caption = #1055#1086#1083#1091#1095#1080#1090#1100' '#1076#1072#1085#1085#1099#1077
+        TabOrder = 6
+      end
+      object btFindParamClear: TBitBtn
+        Left = 164
+        Top = 91
+        Width = 197
+        Height = 25
+        Action = actParamClear
+        Caption = #1054#1095#1080#1089#1090#1080#1090#1100' '#1087#1072#1088#1072#1084#1077#1090#1088#1099' '#1087#1086#1080#1089#1082#1072
+        TabOrder = 7
+      end
+      object lcParamsGroup_Root: TdxLayoutGroup
+        AlignHorz = ahLeft
+        AlignVert = avTop
+        ButtonOptions.Buttons = <>
+        Hidden = True
+        ShowBorder = False
+        Index = -1
+      end
+      object dxLayoutItem7: TdxLayoutItem
+        Parent = dxLayoutAutoCreatedGroup5
+        AlignHorz = ahLeft
+        AlignVert = avTop
+        CaptionOptions.Text = #1060#1072#1084#1080#1083#1080#1103':'
+        Control = eLastName
+        ControlOptions.ShowBorder = False
+        Index = 0
+      end
+      object dxLayoutAutoCreatedGroup5: TdxLayoutAutoCreatedGroup
+        Parent = dxLayoutAutoCreatedGroup3
+        Index = 0
+        AutoCreated = True
+      end
+      object dxLayoutAutoCreatedGroup2: TdxLayoutAutoCreatedGroup
+        Parent = dxLayoutAutoCreatedGroup3
+        AlignHorz = ahLeft
+        Index = 1
+        AutoCreated = True
+      end
+      object dxLayoutItem6: TdxLayoutItem
+        Parent = dxLayoutAutoCreatedGroup5
+        AlignHorz = ahLeft
+        AlignVert = avTop
+        CaptionOptions.Text = #1048#1084#1103':'
+        Control = eFirstName
+        ControlOptions.ShowBorder = False
+        Index = 1
+      end
+      object dxLayoutItem8: TdxLayoutItem
+        Parent = dxLayoutAutoCreatedGroup5
+        AlignHorz = ahLeft
+        AlignVert = avTop
+        CaptionOptions.Text = #1054#1090#1095#1077#1089#1090#1074#1086':'
+        Control = eMiddleName
+        ControlOptions.ShowBorder = False
+        Index = 2
+      end
+      object dxLayoutItem2: TdxLayoutItem
+        Parent = dxLayoutAutoCreatedGroup2
+        AlignHorz = ahLeft
+        AlignVert = avTop
+        CaptionOptions.Text = #1051#1086#1075#1080#1085':'
+        Control = eLogin
+        ControlOptions.ShowBorder = False
+        Index = 0
+      end
+      object dxLayoutItem4: TdxLayoutItem
+        Parent = dxLayoutAutoCreatedGroup2
+        AlignHorz = ahLeft
+        AlignVert = avTop
+        CaptionOptions.Text = #1054#1088#1075#1072#1085#1080#1079#1072#1094#1080#1103':'
+        Control = cxOrg
+        ControlOptions.ShowBorder = False
+        Index = 1
+      end
+      object dxLayoutItem5: TdxLayoutItem
+        Parent = dxLayoutAutoCreatedGroup2
+        AlignHorz = ahLeft
+        AlignVert = avTop
+        CaptionOptions.Text = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100':'
+        Control = cIsBlocked
+        ControlOptions.ShowBorder = False
+        Index = 2
+      end
+      object dxLayoutAutoCreatedGroup3: TdxLayoutAutoCreatedGroup
+        Parent = lcParamsGroup_Root
+        AlignHorz = ahLeft
+        AlignVert = avTop
+        LayoutDirection = ldHorizontal
+        Index = 0
+        AutoCreated = True
+      end
+      object dxLayoutItem1: TdxLayoutItem
+        Parent = dxLayoutAutoCreatedGroup1
+        AlignHorz = ahLeft
+        CaptionOptions.Visible = False
+        Control = btFind
+        ControlOptions.ShowBorder = False
+        Index = 0
+      end
+      object dxLayoutItem3: TdxLayoutItem
+        Parent = dxLayoutAutoCreatedGroup1
+        AlignHorz = ahLeft
+        AlignVert = avClient
+        CaptionOptions.Visible = False
+        Control = btFindParamClear
+        ControlOptions.ShowBorder = False
+        Index = 1
+      end
+      object dxLayoutAutoCreatedGroup1: TdxLayoutAutoCreatedGroup
+        Parent = lcParamsGroup_Root
+        LayoutDirection = ldHorizontal
+        Index = 1
+        AutoCreated = True
+      end
+    end
+  end
+  inherited pnSelect: TPanel
+    TabOrder = 4
+    inherited dxLCPnlSelect: TdxLayoutControl
+      inherited dxLCPnlSelectGroup_Root: TdxLayoutGroup
+        Index = -1
+      end
+      inherited dxLIbtnCancel: TdxLayoutItem
+        Index = 1
+      end
+      inherited dxLIbtnSelect: TdxLayoutItem
+        Index = 0
+      end
+    end
+  end
+  inherited gbGridBase: TPanel
+    Top = 177
+    Height = 310
+    ExplicitWidth = 904
+    inherited grBase: TcxGrid
+      Height = 308
+      ExplicitWidth = 902
+    end
+  end
+  inherited cxspltrParam: TcxSplitter
+    Top = 169
+    ExplicitWidth = 904
+  end
+  inherited BarManager: TdxBarManager
+    DockControlHeights = (
+      0
+      0
+      24
+      0)
+  end
+end

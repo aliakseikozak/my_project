@@ -1,0 +1,45 @@
+unit uDiseaseAdd;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
+  dxLayoutcxEditAdapters, dxLayoutControlAdapters, cxTextEdit, Vcl.StdCtrls,
+  Vcl.ExtCtrls, dxLayoutContainer, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
+  cxDBLookupEdit, cxDBLookupComboBox, dxLayoutControl, Data.DB,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, System.Actions, Vcl.ActnList,
+  dxBar, cxClasses;
+
+type
+  TfmDiseaseAdd = class(TfmBaseForm)
+    dxLayoutControl1: TdxLayoutControl;
+    cxLookupComboBox1: TcxLookupComboBox;
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutItem7: TdxLayoutItem;
+    Panel2: TPanel;
+    btnOk: TButton;
+    btnCancel: TButton;
+    CheckBox1: TCheckBox;
+    dxLayoutItem1: TdxLayoutItem;
+    cxTextEdit2: TcxTextEdit;
+    dxLayoutItem2: TdxLayoutItem;
+    dxLayoutItem3: TdxLayoutItem;
+    cxLookupComboBox2: TcxLookupComboBox;
+    dxLayoutItem4: TdxLayoutItem;
+    cxLookupComboBox3: TcxLookupComboBox;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmDiseaseAdd: TfmDiseaseAdd;
+
+implementation
+
+{$R *.dfm}
+
+end.

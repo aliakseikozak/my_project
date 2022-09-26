@@ -1,0 +1,46 @@
+unit uOffensesAdd;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, System.Actions,
+  Vcl.ActnList, dxBar, cxClasses, Data.DB, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.ComCtrls,
+  dxCore, cxDateUtils, dxLayoutcxEditAdapters, cxTextEdit, Vcl.StdCtrls,
+  Vcl.ExtCtrls, dxLayoutContainer, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
+  cxDBLookupComboBox, cxMaskEdit, cxCalendar, dxLayoutControl;
+
+type
+  TfmOffensesAdd = class(TfmBaseForm)
+    dxLayoutControl1: TdxLayoutControl;
+    dtBirthdate: TcxDateEdit;
+    cxDateEdit1: TcxDateEdit;
+    cxLookupComboBox2: TcxLookupComboBox;
+    cxLookupComboBox3: TcxLookupComboBox;
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutItem4: TdxLayoutItem;
+    dxLayoutItem2: TdxLayoutItem;
+    dxLayoutItem5: TdxLayoutItem;
+    dxLayoutItem6: TdxLayoutItem;
+    Panel1: TPanel;
+    btnOk: TButton;
+    btnCancel: TButton;
+    dxLayoutItem1: TdxLayoutItem;
+    cxLookupComboBox4: TcxLookupComboBox;
+    cxTextEdit1: TcxTextEdit;
+    dxLayoutItem7: TdxLayoutItem;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmOffensesAdd: TfmOffensesAdd;
+
+implementation
+
+{$R *.dfm}
+
+end.

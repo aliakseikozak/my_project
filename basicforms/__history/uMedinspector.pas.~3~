@@ -1,0 +1,111 @@
+unit uMedinspector;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseGrid, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
+  dxLayoutControlAdapters, cxStyles, cxCustomData, cxFilter, cxData,
+  cxDataStorage, cxNavigator, Data.DB, cxDBData, Vcl.Menus, ZAbstractRODataset,
+  ZAbstractDataset, ZDataset, System.Actions, Vcl.ActnList, dxBar, cxClasses,
+  cxSplitter, cxGridLevel, cxGridCustomView, cxGridCustomTableView,
+  cxGridTableView, cxGridDBTableView, cxGrid, dxLayoutContainer, Vcl.StdCtrls,
+  dxLayoutControl, cxLabel, Vcl.ExtCtrls, uKartUtils, uResource;
+
+type
+  TfmMedinspector = class(TfmBaseGrid)
+    grBaseDBTableViewColumn1: TcxGridDBColumn;
+    grBaseDBTableViewColumn2: TcxGridDBColumn;
+    grBaseDBTableViewColumn3: TcxGridDBColumn;
+    grBaseDBTableViewColumn4: TcxGridDBColumn;
+    grBaseDBTableViewColumn5: TcxGridDBColumn;
+    grBaseDBTableViewColumn7: TcxGridDBColumn;
+    grBaseDBTableViewColumn8: TcxGridDBColumn;
+    grBaseDBTableViewColumn9: TcxGridDBColumn;
+    grBaseDBTableViewColumn10: TcxGridDBColumn;
+    grBaseDBTableViewColumn11: TcxGridDBColumn;
+    procedure FormShow(Sender: TObject);
+    procedure actNewExecute(Sender: TObject);
+    procedure actEditExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmMedinspector: TfmMedinspector;
+
+implementation
+uses
+  uOVDAdd, uMedinspectorAdd;
+
+{$R *.dfm}
+
+procedure TfmMedinspector.actEditExecute(Sender: TObject);
+var
+  fm: TfmMedinspectorAdd;
+begin
+
+  fm := TfmMedinspectorAdd(CreateForm('TfmMedinspectorAdd', 'fmMedinspectorAdd', Self, false));
+  try
+    fm.SetData(dbBase, 1, ginformation);
+    if ( fm.ShowModal() = mrOk ) then
+    begin
+
+      dbBase.DataSetReQuery;
+
+    end;
+  finally
+    fm.Free;
+   // gCaptionName := 'Склады';
+  end;
+end;
+
+procedure TfmMedinspector.actNewExecute(Sender: TObject);
+var
+  fm: TfmMedinspectorAdd;
+begin
+
+  fm := TfmMedinspectorAdd(CreateForm('TfmMedinspectorAdd', 'fmMedinspectorAdd', Self, false));
+  try
+    fm.SetData(dbBase, 0, ginformation);
+    if ( fm.ShowModal() = mrOk ) then
+    begin
+
+      dbBase.DataSetReQuery;
+
+    end;
+  finally
+    fm.Free;
+   // gCaptionName := 'Склады';
+  end;
+end;
+
+procedure TfmMedinspector.FormShow(Sender: TObject);
+var
+  Columns: string;
+  Params: string;
+  Operations: string;
+begin
+  pnParam.Visible := false;
+  cxspltrParam.Visible:= False;
+
+  with Filtered(Self) do
+  begin
+    Columns := Column;
+    Params := Param;
+    Operations := Operation;
+  end;
+
+  FreeAndNil(dbBase);
+ // if ginformation <> 0 then
+ // begin
+    dbBase := DataSetQuery('medinspector_get', [Resource.sessionInfo.token_id, '1', 'bmf.grinformation_id', VarToStr(ginformation), '='], GetFieldsArray(), true);
+    dsBase.DataSet := dbBase.DataSet;
+
+ // end;
+end;
+
+end.

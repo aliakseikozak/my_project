@@ -1,0 +1,508 @@
+inherited fmMedAssessmentAdd: TfmMedAssessmentAdd
+  Caption = #1054#1094#1077#1085#1082#1072' '#1084#1077#1076#1080#1082#1086'-'#1089#1086#1094#1080#1072#1083#1100#1085#1086#1075#1086' '#1082#1088#1080#1090#1077#1088#1080#1103
+  ClientHeight = 553
+  ClientWidth = 623
+  ExplicitWidth = 639
+  ExplicitHeight = 592
+  PixelsPerInch = 96
+  TextHeight = 13
+  object dxLayoutControl1: TdxLayoutControl [0]
+    Left = 0
+    Top = 45
+    Width = 623
+    Height = 467
+    Align = alClient
+    TabOrder = 4
+    ExplicitTop = -15
+    ExplicitWidth = 697
+    ExplicitHeight = 318
+    object cxLookupComboBox6: TcxLookupComboBox
+      Left = 371
+      Top = 145
+      Properties.KeyFieldNames = 'id'
+      Properties.ListColumns = <
+        item
+          Caption = #1057#1074#1103#1079#1080
+          FieldName = 'name'
+        end>
+      Properties.ListSource = dsCommunication
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 5
+      Width = 223
+    end
+    object cxLookupComboBox2: TcxLookupComboBox
+      Left = 371
+      Top = 172
+      Properties.KeyFieldNames = 'id'
+      Properties.ListColumns = <
+        item
+          Caption = #1047#1072#1074#1080#1089#1080#1084#1086#1089#1090#1100
+          FieldName = 'name'
+        end>
+      Properties.ListSource = dsdependency
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 6
+      Width = 223
+    end
+    object cxLookupComboBox1: TcxLookupComboBox
+      Left = 371
+      Top = 10
+      Properties.KeyFieldNames = 'id'
+      Properties.ListColumns = <
+        item
+          Caption = #1057#1088#1086#1082
+          FieldName = 'name'
+        end>
+      Properties.ListSource = dsReabReriod
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 0
+      Width = 223
+    end
+    object cxDateEdit1: TcxDateEdit
+      Left = 371
+      Top = 37
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 1
+      Width = 121
+    end
+    object cxDateEdit2: TcxDateEdit
+      Left = 371
+      Top = 388
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 14
+      Width = 121
+    end
+    object cxCheckBox1: TCheckBox
+      Left = 10
+      Top = 415
+      Width = 175
+      Height = 17
+      Caption = #1042#1099#1076#1072#1085' '#1055#1057#1056
+      TabOrder = 15
+    end
+    object cxLookupComboBox7: TcxLookupComboBox
+      Left = 371
+      Top = 199
+      Properties.KeyFieldNames = 'id'
+      Properties.ListColumns = <
+        item
+          Caption = #1054#1094#1077#1085#1082#1072
+          FieldName = 'name'
+        end>
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 7
+      Width = 223
+    end
+    object cxLookupComboBox8: TcxLookupComboBox
+      Left = 371
+      Top = 280
+      Properties.KeyFieldNames = 'id'
+      Properties.ListColumns = <
+        item
+          Caption = #1050#1086#1083#1080#1095#1077#1089#1090#1074#1086
+          FieldName = 'name'
+        end>
+      Properties.ListSource = dsrequirement3
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 10
+      Width = 223
+    end
+    object cxLookupComboBox5: TcxLookupComboBox
+      Left = 371
+      Top = 64
+      Properties.KeyFieldNames = 'id'
+      Properties.ListColumns = <
+        item
+          Caption = #1059#1056#1055
+          FieldName = 'name'
+        end>
+      Properties.ListSource = dsUpr
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 2
+      Width = 223
+    end
+    object cxLookupComboBox4: TcxLookupComboBox
+      Left = 371
+      Top = 91
+      Properties.KeyFieldNames = 'id'
+      Properties.ListColumns = <
+        item
+          Caption = #1042#1086#1079#1088#1072#1089#1090
+          FieldName = 'name'
+        end>
+      Properties.ListSource = dsAge
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 3
+      Width = 223
+    end
+    object cxLookupComboBox3: TcxLookupComboBox
+      Left = 371
+      Top = 118
+      Properties.KeyFieldNames = 'id'
+      Properties.ListColumns = <
+        item
+          Caption = #1046#1080#1090#1077#1083#1100
+          FieldName = 'name'
+        end>
+      Properties.ListSource = dsRegion
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 4
+      Width = 223
+    end
+    object cxLookupComboBox10: TcxLookupComboBox
+      Left = 371
+      Top = 226
+      Properties.KeyFieldNames = 'id'
+      Properties.ListColumns = <
+        item
+          Caption = #1040#1082#1090#1080#1074#1085#1086#1089#1090#1100
+          FieldName = 'name'
+        end>
+      Properties.ListSource = dsrequirement1
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 8
+      Width = 223
+    end
+    object cxLookupComboBox9: TcxLookupComboBox
+      Left = 371
+      Top = 253
+      Properties.KeyFieldNames = 'id'
+      Properties.ListColumns = <
+        item
+          Caption = #1057#1088#1086#1082
+          FieldName = 'name'
+        end>
+      Properties.ListSource = dsrequirement2
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 9
+      Width = 223
+    end
+    object cxLookupComboBox12: TcxLookupComboBox
+      Left = 371
+      Top = 307
+      Properties.KeyFieldNames = 'id'
+      Properties.ListColumns = <
+        item
+          Caption = #1054#1094#1077#1085#1082#1072
+          FieldName = 'name'
+        end>
+      Properties.ListSource = dsrequirement4
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 11
+      Width = 223
+    end
+    object cxTextEdit1: TcxTextEdit
+      Left = 371
+      Top = 361
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      TabOrder = 13
+      Width = 223
+    end
+    object cxLookupComboBox11: TcxLookupComboBox
+      Left = 371
+      Top = 334
+      Properties.KeyFieldNames = 'id'
+      Properties.ListColumns = <
+        item
+          Caption = #1054#1094#1077#1085#1082#1072
+          FieldName = 'name'
+        end>
+      Properties.ListSource = dsrequirement5
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      Style.ButtonStyle = bts3D
+      Style.PopupBorderStyle = epbsFrame3D
+      TabOrder = 12
+      Width = 223
+    end
+    object dxLayoutControl1Group_Root: TdxLayoutGroup
+      AlignHorz = ahLeft
+      AlignVert = avTop
+      CaptionOptions.Visible = False
+      ButtonOptions.Buttons = <>
+      Hidden = True
+      ShowBorder = False
+      Index = -1
+    end
+    object dxLayoutItem9: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      CaptionOptions.Text = #1057#1086#1094#1080#1072#1083#1100#1085#1086'-'#1087#1086#1083#1077#1079#1085#1099#1077' '#1089#1074#1103#1079#1080':'
+      Control = cxLookupComboBox6
+      ControlOptions.ShowBorder = False
+      Index = 5
+    end
+    object dxLayoutItem5: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      CaptionOptions.Text = #1042#1080#1076' '#1079#1072#1074#1080#1089#1080#1084#1086#1089#1090#1080':'
+      Control = cxLookupComboBox2
+      ControlOptions.ShowBorder = False
+      Index = 6
+    end
+    object dxLayoutItem7: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      AlignVert = avTop
+      CaptionOptions.Text = #1057#1088#1086#1082' '#1086#1094#1077#1085#1082#1080':'
+      Control = cxLookupComboBox1
+      ControlOptions.ShowBorder = False
+      Index = 0
+    end
+    object dxLayoutItem3: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      AlignVert = avTop
+      CaptionOptions.Text = #1044#1072#1090#1072' '#1086#1094#1077#1085#1082#1080':'
+      Control = cxDateEdit1
+      ControlOptions.ShowBorder = False
+      Index = 1
+    end
+    object dxLayoutItem1: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      CaptionOptions.Text = #1044#1072#1090#1072' '#1086#1082#1086#1085#1095#1072#1085#1080#1103' '#1088#1077#1072#1073#1080#1083#1080#1090#1072#1094#1080#1080
+      Control = cxDateEdit2
+      ControlOptions.ShowBorder = False
+      Index = 14
+    end
+    object dxLayoutItem11: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      AlignVert = avTop
+      CaptionOptions.Text = 'CheckBox1'
+      CaptionOptions.Visible = False
+      Control = cxCheckBox1
+      ControlOptions.AutoColor = True
+      ControlOptions.ShowBorder = False
+      Index = 15
+    end
+    object dxLayoutItem10: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      CaptionOptions.Text = #1054#1094#1077#1085#1082#1072' '#1084#1077#1076#1080#1082#1086'-'#1089#1086#1094#1080#1072#1083#1100#1085#1086#1075#1086' '#1082#1088#1080#1090#1077#1088#1080#1103':'
+      Control = cxLookupComboBox7
+      ControlOptions.ShowBorder = False
+      Index = 7
+    end
+    object dxLayoutItem12: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      CaptionOptions.Text = #1050#1086#1083#1080#1095#1077#1089#1090#1074#1086' '#1088#1077#1094#1080#1076#1080#1074#1086#1074' '#1079#1072#1073#1086#1083#1077#1074#1072#1085#1080#1103':'
+      Control = cxLookupComboBox8
+      ControlOptions.ShowBorder = False
+      Index = 10
+    end
+    object dxLayoutItem8: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      AlignVert = avTop
+      CaptionOptions.Text = #1059#1056#1055':'
+      Control = cxLookupComboBox5
+      ControlOptions.ShowBorder = False
+      Index = 2
+    end
+    object dxLayoutItem6: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      CaptionOptions.Text = #1042#1086#1079#1088#1072#1089#1090':'
+      Control = cxLookupComboBox4
+      ControlOptions.ShowBorder = False
+      Index = 3
+    end
+    object dxLayoutItem2: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      CaptionOptions.Text = #1046#1080#1090#1077#1083#1100':'
+      Control = cxLookupComboBox3
+      ControlOptions.ShowBorder = False
+      Index = 4
+    end
+    object dxLayoutItem14: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      CaptionOptions.Text = #1058#1077#1088#1072#1087#1077#1074#1090#1080#1095#1077#1089#1082#1072#1103' '#1072#1082#1090#1080#1074#1085#1086#1089#1090#1100' '#1087#1086#1089#1077#1097#1077#1085#1080#1103' '#1074#1088#1072#1095#1072'-'#1087#1089#1080#1093#1080#1072#1090#1088#1072'-'#1085#1072#1088#1082#1086#1083#1086#1075#1072':'
+      Control = cxLookupComboBox10
+      ControlOptions.ShowBorder = False
+      Index = 8
+    end
+    object dxLayoutItem13: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      CaptionOptions.Text = #1057#1088#1086#1082' '#1090#1077#1088#1072#1087#1077#1074#1090#1080#1095#1077#1089#1082#1086#1081' '#1088#1077#1084#1080#1089#1089#1080#1080':'
+      Control = cxLookupComboBox9
+      ControlOptions.ShowBorder = False
+      Index = 9
+    end
+    object dxLayoutItem16: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      CaptionOptions.Text = #1057#1090#1077#1087#1077#1085#1100' '#1074#1099#1088#1072#1078#1077#1085#1085#1086#1089#1090#1080' '#1074#1083#1077#1095#1077#1085#1080#1103' '#1082' '#1091#1087#1086#1090#1088#1077#1073#1083#1077#1085#1080#1102' '#1055#1040#1042':'
+      Control = cxLookupComboBox12
+      ControlOptions.ShowBorder = False
+      Index = 11
+    end
+    object dxLayoutItem4: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      AlignVert = avTop
+      CaptionOptions.Text = #1056#1077#1079#1091#1083#1100#1090#1072#1090' '#1087#1088#1086#1093#1086#1078#1076#1077#1085#1080#1103' '#1088#1077#1072#1073#1080#1083#1080#1090#1072#1094#1080#1080':'
+      Control = cxTextEdit1
+      ControlOptions.ShowBorder = False
+      Index = 13
+    end
+    object dxLayoutItem15: TdxLayoutItem
+      Parent = dxLayoutControl1Group_Root
+      AlignHorz = ahLeft
+      CaptionOptions.Text = #1063#1072#1089#1090#1086#1090#1072' '#1091#1087#1086#1090#1088#1077#1073#1083#1077#1085#1080#1103' '#1055#1040#1042':'
+      Control = cxLookupComboBox11
+      ControlOptions.ShowBorder = False
+      Index = 12
+    end
+  end
+  object Panel2: TPanel [1]
+    Left = 0
+    Top = 512
+    Width = 623
+    Height = 41
+    Align = alBottom
+    TabOrder = 5
+    ExplicitTop = 262
+    ExplicitWidth = 697
+    DesignSize = (
+      623
+      41)
+    object btnOk: TButton
+      Tag = 6
+      Left = 349
+      Top = 6
+      Width = 160
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1080' '#1079#1072#1082#1088#1099#1090#1100
+      ImageIndex = 14
+      Images = Resource.ImageList
+      TabOrder = 0
+      OnClick = btnOkClick
+      ExplicitLeft = 423
+    end
+    object btnCancel: TButton
+      Left = 515
+      Top = 6
+      Width = 90
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = #1054#1090#1084#1077#1085#1072
+      ImageIndex = 16
+      Images = Resource.ImageList
+      TabOrder = 1
+      ExplicitLeft = 589
+    end
+  end
+  inherited BarManager: TdxBarManager
+    DockControlHeights = (
+      0
+      0
+      45
+      0)
+  end
+  object dsReabReriod: TDataSource
+    Left = 208
+    Top = 101
+  end
+  object dsCommunication: TDataSource
+    Left = 264
+    Top = 213
+  end
+  object dsRegion: TDataSource
+    Left = 264
+    Top = 173
+  end
+  object dsUpr: TDataSource
+    Left = 264
+    Top = 93
+  end
+  object dsAge: TDataSource
+    Left = 264
+    Top = 133
+  end
+  object dsdependency: TDataSource
+    Left = 296
+    Top = 53
+  end
+  object dsrequirement1: TDataSource
+    Left = 328
+    Top = 109
+  end
+  object dsrequirement2: TDataSource
+    Left = 328
+    Top = 157
+  end
+  object dsrequirement3: TDataSource
+    Left = 336
+    Top = 189
+  end
+  object dsrequirement4: TDataSource
+    Left = 336
+    Top = 237
+  end
+  object dsrequirement5: TDataSource
+    Left = 336
+    Top = 285
+  end
+end

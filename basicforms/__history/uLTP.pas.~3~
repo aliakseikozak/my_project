@@ -1,0 +1,65 @@
+unit uLTP;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseGrid, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
+  dxLayoutControlAdapters, cxStyles, cxCustomData, cxFilter, cxData,
+  cxDataStorage, cxNavigator, Data.DB, cxDBData, Vcl.Menus, System.Actions,
+  Vcl.ActnList, dxBar, cxClasses, cxSplitter, cxGridLevel, cxGridCustomView,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
+  dxLayoutContainer, Vcl.StdCtrls, dxLayoutControl, cxLabel, Vcl.ExtCtrls,
+  dxLayoutcxEditAdapters, Vcl.ComCtrls, dxCore, cxDateUtils, cxDropDownEdit,
+  cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit, cxMaskEdit,
+  cxCalendar, Vcl.Buttons;
+
+type
+  TfmLTP = class(TfmBaseGrid)
+    dxLayoutControl2: TdxLayoutControl;
+    Edit5: TEdit;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
+    Edit6: TEdit;
+    Edit7: TEdit;
+    Edit8: TEdit;
+    cxLookupComboBox7: TcxLookupComboBox;
+    cxLookupComboBox8: TcxLookupComboBox;
+    cxDateEdit2: TcxDateEdit;
+    cxLookupComboBox9: TcxLookupComboBox;
+    cxLookupComboBox10: TcxLookupComboBox;
+    CheckBox2: TCheckBox;
+    cxDateEdit3: TcxDateEdit;
+    dxLayoutGroup1: TdxLayoutGroup;
+    dxLayoutGroup5: TdxLayoutGroup;
+    dxLayoutItem11: TdxLayoutItem;
+    dxLayoutItem12: TdxLayoutItem;
+    dxLayoutItem13: TdxLayoutItem;
+    dxLayoutAutoCreatedGroup4: TdxLayoutAutoCreatedGroup;
+    dxLayoutAutoCreatedGroup5: TdxLayoutAutoCreatedGroup;
+    dxLayoutItem19: TdxLayoutItem;
+    dxLayoutItem20: TdxLayoutItem;
+    dxLayoutItem21: TdxLayoutItem;
+    dxLayoutItem22: TdxLayoutItem;
+    dxLayoutAutoCreatedGroup6: TdxLayoutAutoCreatedGroup;
+    dxLayoutItem23: TdxLayoutItem;
+    dxLayoutItem24: TdxLayoutItem;
+    dxLayoutItem25: TdxLayoutItem;
+    dxLayoutItem27: TdxLayoutItem;
+    dxLayoutItem14: TdxLayoutItem;
+    dxLayoutItem15: TdxLayoutItem;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmLTP: TfmLTP;
+
+implementation
+
+{$R *.dfm}
+
+end.

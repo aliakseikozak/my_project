@@ -1,0 +1,67 @@
+unit uMedAssessmentAdd;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, System.Actions,
+  Vcl.ActnList, dxBar, cxClasses, Data.DB, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.ComCtrls,
+  dxCore, cxDateUtils, dxLayoutcxEditAdapters, dxLayoutControlAdapters,
+  Vcl.StdCtrls, Vcl.ExtCtrls, dxLayoutContainer, cxDropDownEdit, cxCalendar,
+  cxMaskEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit,
+  dxLayoutControl;
+
+type
+  TfmMedAssessmentAdd = class(TfmBaseForm)
+    dxLayoutControl1: TdxLayoutControl;
+    cxTextEdit1: TcxTextEdit;
+    cxLookupComboBox3: TcxLookupComboBox;
+    cxLookupComboBox4: TcxLookupComboBox;
+    cxLookupComboBox5: TcxLookupComboBox;
+    cxLookupComboBox6: TcxLookupComboBox;
+    cxLookupComboBox2: TcxLookupComboBox;
+    cxLookupComboBox1: TcxLookupComboBox;
+    cxDateEdit1: TcxDateEdit;
+    cxLookupComboBox7: TcxLookupComboBox;
+    cxCheckBox1: TCheckBox;
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutItem4: TdxLayoutItem;
+    dxLayoutItem2: TdxLayoutItem;
+    dxLayoutItem6: TdxLayoutItem;
+    dxLayoutItem8: TdxLayoutItem;
+    dxLayoutItem9: TdxLayoutItem;
+    dxLayoutItem5: TdxLayoutItem;
+    dxLayoutItem7: TdxLayoutItem;
+    dxLayoutItem3: TdxLayoutItem;
+    dxLayoutItem10: TdxLayoutItem;
+    dxLayoutItem11: TdxLayoutItem;
+    Panel2: TPanel;
+    btnOk: TButton;
+    btnCancel: TButton;
+    dxLayoutItem1: TdxLayoutItem;
+    cxDateEdit2: TcxDateEdit;
+    dxLayoutItem12: TdxLayoutItem;
+    cxLookupComboBox8: TcxLookupComboBox;
+    dxLayoutItem13: TdxLayoutItem;
+    cxLookupComboBox9: TcxLookupComboBox;
+    dxLayoutItem14: TdxLayoutItem;
+    cxLookupComboBox10: TcxLookupComboBox;
+    dxLayoutItem15: TdxLayoutItem;
+    cxLookupComboBox11: TcxLookupComboBox;
+    cxLookupComboBox12: TcxLookupComboBox;
+    dxLayoutItem16: TdxLayoutItem;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmMedAssessmentAdd: TfmMedAssessmentAdd;
+
+implementation
+
+{$R *.dfm}
+
+end.

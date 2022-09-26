@@ -1,0 +1,74 @@
+inherited fmCriminal: TfmCriminal
+  Caption = 'fmCriminal'
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited pnParam: TPanel
+    TabOrder = 2
+    inherited lbParam: TcxLabel
+      Style.IsFontAssigned = True
+    end
+  end
+  inherited pnSelect: TPanel
+    TabOrder = 4
+    inherited dxLCPnlSelect: TdxLayoutControl
+      inherited dxLCPnlSelectGroup_Root: TdxLayoutGroup
+        Index = -1
+      end
+      inherited dxLIbtnCancel: TdxLayoutItem
+        Index = 1
+      end
+      inherited dxLIbtnSelect: TdxLayoutItem
+        Index = 0
+      end
+    end
+  end
+  inherited gbGridBase: TPanel
+    ExplicitWidth = 904
+    inherited grBase: TcxGrid
+      ExplicitWidth = 902
+      inherited grBaseDBTableView: TcxGridDBTableView
+        object grBaseDBTableViewColumn1: TcxGridDBColumn
+          Caption = #1044#1072#1090#1072' '#1089#1091#1076#1080#1084#1086#1089#1090#1080
+          DataBinding.FieldName = 'date_criminal'
+          Width = 97
+        end
+        object grBaseDBTableViewColumn2: TcxGridDBColumn
+          Caption = #1056#1077#1075#1080#1089#1090#1088#1072#1094#1080#1086#1085#1085#1099#1081' '#1085#1086#1084#1077#1088' '
+          DataBinding.FieldName = 'reg_num'
+          Width = 112
+        end
+        object grBaseDBTableViewColumn3: TcxGridDBColumn
+          Caption = #1057#1090#1072#1090#1100#1103
+          DataBinding.FieldName = 'name'
+          PropertiesClassName = 'TcxLookupComboBoxProperties'
+          Properties.KeyFieldNames = 'id'
+          Properties.ListColumns = <
+            item
+              Caption = #1057#1090#1072#1090#1100#1103
+              FieldName = 'name'
+            end>
+          Properties.ListSource = dsDirectoryArticle
+        end
+      end
+    end
+  end
+  inherited cxspltrParam: TcxSplitter
+    ExplicitWidth = 904
+  end
+  inherited BarManager: TdxBarManager
+    DockControlHeights = (
+      0
+      0
+      24
+      0)
+  end
+  inherited ActionList: TActionList
+    inherited actGetData: TAction
+      OnExecute = actGetDataExecute
+    end
+  end
+  object dsDirectoryArticle: TDataSource
+    Left = 416
+    Top = 226
+  end
+end

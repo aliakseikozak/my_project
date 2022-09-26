@@ -1,0 +1,142 @@
+unit uDiseaseAdd;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
+  dxLayoutcxEditAdapters, dxLayoutControlAdapters, cxTextEdit, Vcl.StdCtrls,
+  Vcl.ExtCtrls, dxLayoutContainer, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
+  cxDBLookupEdit, cxDBLookupComboBox, dxLayoutControl, Data.DB,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, System.Actions, Vcl.ActnList,
+  dxBar, cxClasses, uResource, uKartUtils, uExchDB, uExchDBData;
+
+type
+  TfmDiseaseAdd = class(TfmBaseForm)
+    dxLayoutControl1: TdxLayoutControl;
+    cxLookupComboBox1: TcxLookupComboBox;
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutItem7: TdxLayoutItem;
+    Panel2: TPanel;
+    btnOk: TButton;
+    btnCancel: TButton;
+    CheckBox1: TCheckBox;
+    dxLayoutItem1: TdxLayoutItem;
+    cxTextEdit2: TcxTextEdit;
+    dxLayoutItem2: TdxLayoutItem;
+    dxLayoutItem3: TdxLayoutItem;
+    cxLookupComboBox2: TcxLookupComboBox;
+    dxLayoutItem4: TdxLayoutItem;
+    cxLookupComboBox3: TcxLookupComboBox;
+    dsDiseaseclass: TDataSource;
+    dsDiseasesubclass: TDataSource;
+    dsDiseaseunderclass: TDataSource;
+    function GenParams(): string;
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+    FMode: integer;
+    FID: Variant;
+    FDB: TDBData;
+    dbIU: TDBData;
+    dbDiseaseclass: TDBData;
+    dbDiseasesubclass: TDBData;
+    dbDiseaseunderclass: TDBData;
+    procedure InitForm;
+    function GetLcbValue(pLcb: TcxLookupComboBox): string; overload;
+    function GetLcbValue(pLcb: TcxComboBox): string; overload;
+  public
+    { Public declarations }
+    procedure SetData(pDb: TDBData; pMode: integer; pID: Variant);
+  end;
+
+var
+  fmDiseaseAdd: TfmDiseaseAdd;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfmDiseaseAdd.FormShow(Sender: TObject);
+var
+  Columns: string;
+  Params: string;
+  Operations: string;
+begin
+  InitForm;
+  if (FMode = 1) and (not FDB.DataSet.IsEmpty) then
+  begin
+    with FDB.DataSet do
+    begin
+      cxTextEdit2.Text := FieldByName('doctor').Value;
+      cxLookupComboBox1.EditValue := FieldByName('org_id').Value;
+      cxLookupComboBox3.EditValue := FieldByName('org_id').Value;
+      cxLookupComboBox2.EditValue := FieldByName('org_id').Value;
+    end;
+  end;
+end;
+
+procedure TfmDiseaseAdd.InitForm;
+begin
+  dbDiseaseclass := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+   '   FROM directory_diseaseclass AS s  ', []);
+  dsDiseaseclass.DataSet := dbDiseaseclass.DataSet;
+
+  dbDiseasesubclass := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+   '   FROM directory_diseasesubclass AS s  ', []);
+  dsDiseasesubclass.DataSet := dbDiseasesubclass.DataSet;
+
+  dbDiseaseunderclass := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+   '   FROM directory_diseaseunderclass AS s  ', []);
+  dsDiseaseunderclass.DataSet := dbDiseaseunderclass.DataSet;
+end;
+
+procedure TfmDiseaseAdd.SetData(pDb: TDBData; pMode: integer; pID: Variant);
+begin
+  FDB := pDb;
+  FID := pID;
+  FMode := pMode;
+end;
+
+function TfmDiseaseAdd.GetLcbValue(pLcb: TcxLookupComboBox): string;
+begin
+  if VarIsNull(pLcb.EditValue) then
+    result := 'NULL'
+  else
+    result := VarToStr(pLcb.EditValue);
+end;
+
+function TfmDiseaseAdd.GetLcbValue(pLcb: TcxComboBox): string;
+begin
+  case (pLcb.ItemIndex) of
+    0:
+      result := 'true';
+    1:
+      result := 'false';
+  end;
+end;
+
+function TfmDiseaseAdd.GenParams(): string;
+begin
+  result := '';
+
+  IF cxTextEdit2.Text <> '' then
+    result := result + cxTextEdit2.Text + '~'
+  else
+    result := result + 'NULL' + '~';
+
+  result := result + GetLcbValue(cxLookupComboBox3) + '~';
+
+  result := result + GetLcbValue(cxLookupComboBox2) + '~';
+
+  result := result + GetLcbValue(cxLookupComboBox1) + '~';
+
+  result := result + VarToStr(FID) + '~';
+
+end;
+
+end.

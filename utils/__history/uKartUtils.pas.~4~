@@ -1,0 +1,751 @@
+unit uKartUtils;
+
+interface
+
+uses System.Actions, VCL.stdCtrls, System.SysUtils,
+  VCL.Controls, System.Variants, VCL.Graphics,
+  VCL.Forms, Generics.Collections,
+  VCL.ActnList, System.Classes,
+  Winapi.Windows, VCL.comCTRLs,
+  cxDBLookupComboBox, dxImCtrl,
+  cxEdit, cxDBLabel, cxDropDownEdit,
+  dxLayoutControl, uExchDBData, VCL.Dialogs,
+  cxCalendar, cxButtonEdit, ufmBaseForm,IdHashSHA,
+  cxTextEdit, cxMaskEdit,cxSpinEdit, StrUtils;
+
+type // Рекорд для передачи параметров в выборку
+  TParams = record
+    Column: Variant;
+    Param: Variant;
+    Operation: Variant;
+  end;
+
+  // Сенерация SHA1-ключа
+function GenerateSHA1(Pdata: String): String;
+// получение id справочника НСИ с окртыием модального окна
+function GetNsiId(pFormID: string; var pID: integer): boolean;
+// общий метод для настройки кнопок в лукапе
+procedure CreateButtonInCX(pCxObj: TcxLookupComboBox; pListButtonKind: array of TcxEditButtonKind; pListButtonAction: array of TAction); overload;
+// общий метод для настройки кнопок в комбобоксе
+procedure CreateButtonInCX(pCxObj: TcxComboBox; pListButtonKind: array of TcxEditButtonKind; pListButtonAction: array of TAction); overload;
+// общий метод для настройки кнопок в редакторе даты
+procedure CreateButtonInCX(pCxObj: TcxDateEdit; pListButtonKind: array of TcxEditButtonKind; pListButtonAction: array of TAction); overload;
+// общий метод для настройки кнопок в редакторе
+procedure CreateButtonInCX(pCxObj: TcxButtonEdit; pListButtonKind: array of TcxEditButtonKind; pListButtonAction: array of TAction); overload;
+// Выборка из БД
+function Filtered(Owner: TfmBaseForm): TParams;
+// Получаем список Колонок, Текста поиска, и операцию для выборки из БД (Действует с Edit и TcxLookupCombobox)
+function GetDataForFilter(Sender: TObject): TParams;
+// Валидность обязательных полей для ввода
+function Validate(aObject: TList<TComponent>; CheckVisible: boolean = False): boolean;
+// Получаем список Колонок, Текста поиска, и операцию для записи в грид
+function GetDataForAddEd(Sender: TObject): TParams;
+// Добавление данных из карточек в Грид
+procedure AddEdData(Owner: TfmBaseForm; Pdata: TDBData;IsMod: integer = 0);
+procedure EnabledEdData(Owner: TfmBaseForm;  nameform: string;  nameformcurrent: string; IsMod: integer = 0);
+// Получаем список Колонок, Текста поиска, и операцию для записи в компоненты
+procedure GetDataForComponent(Sender: TObject; Pdata: TDBData);
+// Получение данных из DataSet в компоненты
+procedure GetData(Owner: TfmBaseForm; Pdata: TDBData);
+
+//Функция перевода ANSI в UNOCODE
+function   URLEncode(const AValue: string): string;
+function   URLEncodeChar(const AChar: Char): string;
+//Функция перевода UNOCODE в ANSI
+function   URLDecode(const AValue: string): string;
+function   HexToInt(Str: string): integer;
+
+var
+ gImeName : string;
+
+implementation
+
+uses uResource, uResourceForms;
+
+
+
+
+//Функция перевода ANSI в UNOCODE
+function URLEncode(const AValue: string): string;
+ const
+    ValidURLChars: set of Char = ['A'..'Z', 'a'..'z', '0'..'9', '_', '&', '=','/','`','^',':','\','.','~'];
+var
+  I: Integer;
+  C: Char;
+begin
+  Result := '';
+  for I := 1 to Length(AValue) do
+  begin
+    C := AValue[I];
+    if C in ValidURLChars then
+      Result := Result + C
+    else if C = ' ' then
+      Result := Result + ' '
+    else Result := Result + URLEncodeChar(C);
+  end;
+end;
+
+function URLEncodeChar(const AChar: Char): string;
+begin
+  Result := '\u' + IntToHex(Ord(AChar), 4);
+end;
+
+//Функция перевода UNOCODE в ANSI
+function URLDecode(const AValue: string): string;
+var
+  field_data_tmp: string;
+  field_data: string;
+  field_data_hex: string;
+
+begin
+  field_data_tmp := AValue;
+  field_data := '';
+  if pos('\u', field_data_tmp) <> 0 then
+  begin
+    WHILE pos('\u', field_data_tmp) <> 0 do
+    Begin
+      field_data_hex := Copy(field_data_tmp, pos('\u', field_data_tmp) + 2, 4);
+      field_data_tmp := Copy(field_data_tmp, pos('\u', field_data_tmp) + 6, length(field_data_tmp));
+      field_data := field_data + Chr(HexToInt(field_data_hex)) + Copy(field_data_tmp, 0, pos('\u', field_data_tmp) - 1);
+    END;
+    result := field_data;
+  end
+  else
+    result := field_data_tmp;
+
+end;
+
+function HexToInt(Str: string): integer;
+var
+  i, r: integer;
+begin
+  val('$' + Trim(Str), r, i);
+  if i <> 0 then
+    HexToInt := 0
+  else
+    HexToInt := r;
+end;
+
+// Сенерация SHA1-ключа
+function GenerateSHA1(Pdata: String): String;
+var
+  Hash: string;
+  IdHashSHA: TIdHashSHA1;
+begin
+  IdHashSHA := TIdHashSHA1.Create;
+  try
+    Hash := IdHashSHA.HashStringAsHex(Pdata);
+    if Hash <> '' then
+      Result := Hash;
+  finally
+    IdHashSHA.Free;
+  end;
+end;
+
+// получение id справочника НСИ с окртыием модального окна
+function GetNsiId(pFormID: string; var pID: integer): boolean;
+var
+  f: TfmBaseForm;
+begin
+  Result := False;
+
+  f := TfmBaseForm(CreateForm('TfmSprav', pFormID, nil, True, False, pID));
+  try
+    if (f.ModalResult = mrOk) then
+    begin
+      pID := f.ReturnID;
+      Result := True;
+    end;
+  finally
+    f.Free;
+  end;
+end;
+
+// общий метод для настройки кнопок в лукапе
+procedure CreateButtonInCX(pCxObj: TcxLookupComboBox; pListButtonKind: array of TcxEditButtonKind; pListButtonAction: array of TAction); overload;
+var
+  i: integer;
+begin
+  pCxObj.Properties.Images := Resource.ImageList;
+  pCxObj.AutoSize := False;
+  pCxObj.Properties.Buttons[0].Width := 21;
+  pCxObj.Height := 22;
+
+  if (Length(pListButtonKind) = Length(pListButtonAction)) then
+    with pCxObj.Properties.Buttons do
+    begin
+      for i := Low(pListButtonKind) to High(pListButtonKind) do
+        with Add as TcxEditButton do
+        begin
+          Default := False;
+          Kind := pListButtonKind[i];
+          Action := pListButtonAction[i];
+          Width := 21;
+        end;
+    end
+  else
+    Application.MessageBox('Установка параметров кнопок выпадающего списка: неравное количество параметров в массивах!', 'Ошибка', MB_ICONERROR + MB_OK)
+end;
+
+// общий метод для настройки кнопок в комбобоксе
+procedure CreateButtonInCX(pCxObj: TcxComboBox; pListButtonKind: array of TcxEditButtonKind; pListButtonAction: array of TAction); overload;
+var
+  i: integer;
+begin
+  pCxObj.Properties.Images := Resource.ImageList;
+  pCxObj.AutoSize := False;
+  pCxObj.Properties.Buttons[0].Width := 21;
+  pCxObj.Height := 22;
+
+  if (Length(pListButtonKind) = Length(pListButtonAction)) then
+    with pCxObj.Properties.Buttons do
+    begin
+      for i := Low(pListButtonKind) to High(pListButtonKind) do
+        with Add as TcxEditButton do
+        begin
+          Default := False;
+          Kind := pListButtonKind[i];
+          Action := pListButtonAction[i];
+          Width := 21;
+        end;
+    end
+  else
+    Application.MessageBox('Установка параметров кнопок выпадающего списка: неравное количество параметров в массивах!', 'Ошибка', MB_ICONERROR + MB_OK)
+end;
+
+// общий метод для настройки кнопок в редакторе даты
+procedure CreateButtonInCX(pCxObj: TcxDateEdit; pListButtonKind: array of TcxEditButtonKind; pListButtonAction: array of TAction); overload;
+var
+  i: integer;
+begin
+  pCxObj.Properties.Images := Resource.ImageList;
+  pCxObj.AutoSize := False;
+  pCxObj.Properties.Buttons[0].Width := 21;
+  pCxObj.Height := 22;
+
+  if (Length(pListButtonKind) = Length(pListButtonAction)) then
+    with pCxObj.Properties.Buttons do
+    begin
+      for i := Low(pListButtonKind) to High(pListButtonKind) do
+        with Add as TcxEditButton do
+        begin
+          Default := False;
+          Kind := pListButtonKind[i];
+          Action := pListButtonAction[i];
+          Width := 21;
+        end;
+    end
+  else
+    Application.MessageBox('Установка параметров кнопок выпадающего списка: неравное количество параметров в массивах!', 'Ошибка', MB_ICONERROR + MB_OK)
+end;
+
+// общий метод для настройки кнопок в редакторе
+procedure CreateButtonInCX(pCxObj: TcxButtonEdit; pListButtonKind: array of TcxEditButtonKind; pListButtonAction: array of TAction); overload;
+var
+  i: integer;
+begin
+  pCxObj.Properties.Buttons.Clear;
+  pCxObj.Properties.Images := Resource.ImageList;
+  pCxObj.AutoSize := False;
+  pCxObj.Height := 22;
+
+  if (Length(pListButtonKind) = Length(pListButtonAction)) then
+    with pCxObj.Properties.Buttons do
+    begin
+      for i := Low(pListButtonKind) to High(pListButtonKind) do
+        with Add as TcxEditButton do
+        begin
+          Default := False;
+          Kind := pListButtonKind[i];
+          Action := pListButtonAction[i];
+          Width := 21;
+        end;
+    end
+  else
+    Application.MessageBox('Установка параметров кнопок выпадающего списка: неравное количество параметров в массивах!', 'Ошибка', MB_ICONERROR + MB_OK)
+end;
+
+// Получаем список Колонок, Текста поиска, и операцию для выборки из БД (Действует с Edit и TcxLookupCombobox)
+function GetDataForFilter(Sender: TObject): TParams;
+var
+  tempText: String;
+begin
+  Result.Column := '';
+  Result.Param := '';
+  Result.Operation := '';
+
+  if Sender is TEdit then
+  begin
+    if ((Sender as TEdit).Text <> '') and ((Sender as TEdit).ImeName <> '') then
+      if (Sender as TEdit).NumbersOnly then
+      begin
+        Result.Column := (Sender as TEdit).ImeName;
+        Result.Param := (Sender as TEdit).Text;
+        Result.Operation := '=';
+      end
+      else
+      begin
+        tempText := (Sender as TEdit).Text;
+        if Pos('&&', tempText) > 0 then
+        begin
+          tempText := StringReplace(tempText, '&&', ',', [rfReplaceAll]);
+          Result.Column := (Sender as TEdit).ImeName;
+          Result.Param := '(' + tempText + ')';
+          Result.Operation := 'in';
+        end
+        else
+        begin
+          Result.Column := 'UPPER(' + (Sender as TEdit).ImeName + ')';
+          Result.Param := '$$' + ANSIUPPERCASE(tempText) + '$$';
+          Result.Operation := 'like';
+        end;
+      end;
+    exit;
+  end;
+
+  if Sender is TcxButtonEdit then
+  begin
+    if (Sender as TcxButtonEdit).EditValue <> NULL then
+    begin
+      Result.Column := 'UPPER(' + (Sender as TcxButtonEdit).Properties.ImeName + ')';
+      Result.Param := '$$' + ANSIUPPERCASE((Sender as TcxButtonEdit).Text) + '$$';
+      Result.Operation := 'like';
+    end;
+    exit
+  end;
+
+  if Sender is TcxLookupComboBox then
+  begin
+    if (Sender as TcxLookupComboBox).EditValue <> NULL then
+    begin
+      Result.Column := (Sender as TcxLookupComboBox).Properties.ImeName;
+      Result.Param := VarToStr((Sender as TcxLookupComboBox).EditValue);
+      Result.Operation := '=';
+    end;
+    exit
+  end;
+
+end;
+
+// Выборка из БД
+function Filtered(Owner: TfmBaseForm): TParams;
+var
+  Columns: string;
+  Params: string;
+  Operations: string;
+  k: integer;
+  WHERE: string;
+  i: integer;
+begin
+  Columns := '';
+  Params := '';
+  Operations := '';
+  for i := 0 to Owner.ComponentCount - 1 do
+  begin
+    if ( (Owner.Components[i] is TcxButtonEdit) ) then
+      sleep(10);
+
+    if (Owner.Components[i] is TEdit) or (Owner.Components[i] is TcxButtonEdit) or (Owner.Components[i] is TcxLookupComboBox) then
+      with GetDataForFilter(Owner.Components[i]) do
+        if Column <> '' then
+        begin
+          Columns := Columns + Column + '~';
+          Params := Params + Param + '~';
+          Operations := Operations + Operation + '~';
+        end;
+  end;
+
+  Result.Column := Copy(Columns, 1, Length(Columns) - 1);
+  Result.Param := Copy(Params, 1, Length(Params) - 1);
+  Result.Operation := Copy(Operations, 1, Length(Operations) - 1);
+end;
+
+// Добавление данных из карточек в DataSet
+procedure AddEdData(Owner: TfmBaseForm; Pdata: TDBData;IsMod: integer = 0);
+var
+  i: integer;
+begin
+  case IsMod of
+   0:       // Edit
+        Pdata.CoreUpdateRecord(Pdata.DataSet.FieldByName('uid').Value,Pdata.DataSet.FieldByName(Owner.FormInfo.keyfield).Value);
+   1:       // New
+        Pdata.CoreInsertRecord();
+   end;
+
+  Pdata.DataSet.Edit;
+
+  for i := 0 to Owner.ComponentCount - 1 do
+    if
+      (Owner.Components[i] is TEdit) or (Owner.Components[i] is TcxLookupComboBox) or (Owner.Components[i] is TcxDateEdit) or (Owner.Components[i] is TMemo) or
+      (Owner.Components[i] is TdxImageComboBox) or (Owner.Components[i] is TRichEdit) or (Owner.Components[i] is TCombobox) or (Owner.Components[i] is TCheckBox)
+       or (Owner.Components[i] is TcxCombobox)  or (Owner.Components[i] is TcxSpinEdit) or (Owner.Components[i] is TcxMaskEdit)
+    then
+    begin
+      with GetDataForAddEd(Owner.Components[i]) do
+      begin
+        if Column <> '' then
+          Pdata.DataSet.FieldByName(Column).Value := Param;
+      end;
+    end;
+  Pdata.DataSet.Post;
+end;
+
+//
+function GetDataForAddEd(Sender: TObject): TParams;
+begin
+  Result.Column := '';
+  Result.Param := '';
+
+  if Sender is TcxSpinEdit then
+    if (Sender as TcxSpinEdit).ImeName <> '' then
+    begin
+      Result.Column := (Sender as TcxSpinEdit).Properties.ImeName;
+      if (Sender as TcxSpinEdit).Text <> '' then
+        Result.Param := (Sender as TcxSpinEdit).Text
+      else
+        Result.Param := NULL;
+      exit;
+    end;
+
+  if Sender is TcxDateEdit then
+    if (Sender as TcxDateEdit).Properties.ImeName <> '' then
+    begin
+      Result.Column := (Sender as TcxDateEdit).Properties.ImeName;
+      if (Sender as TcxDateEdit).EditValue = NULL then
+        Result.Param := NULL
+      else
+        Result.Param := (Sender as TcxDateEdit).Date;
+      exit;
+    end;
+
+  if Sender is TCombobox then
+    if (Sender as TCombobox).ImeName <> '' then
+    begin
+      Result.Column := (Sender as TCombobox).ImeName;
+      case (Sender as TCombobox).ItemIndex of
+        0:
+          Result.Param := True;
+        1:
+          Result.Param := False;
+      end;
+      exit;
+    end;
+
+  if Sender is TcxComboBox then
+    if (Sender as TcxComboBox).Properties.ImeName <> '' then
+    begin
+      Result.Column := (Sender as TcxComboBox).Properties.ImeName;
+      Result.Param := (Sender as TcxComboBox).ItemIndex + 1;
+      exit;
+    end;
+
+  if Sender is TEdit then
+    if (Sender as TEdit).ImeName <> '' then
+    begin
+      Result.Column := (Sender as TEdit).ImeName;
+      if (Sender as TEdit).Text <> '' then
+        Result.Param := (Sender as TEdit).Text
+      else
+        Result.Param := NULL;
+      exit;
+    end;
+
+  if Sender is TdxImageComboBox then
+  begin
+    if (Sender as TdxImageComboBox).ItemIndex <> -1 then
+    begin
+      Result.Column := (Sender as TdxImageComboBox).Hint;
+      Result.Param := (Sender as TdxImageComboBox).ItemIndex;
+
+    end;
+    exit;
+  end;
+
+  if Sender is TRichEdit then
+    if (Sender as TRichEdit).ImeName <> '' then
+    begin
+        Result.Column := (Sender as TRichEdit).ImeName;
+        Result.Param := (Sender as TRichEdit).Text;
+        exit;
+    end;
+
+  if Sender is TcxLookupComboBox then
+    if (Sender as TcxLookupComboBox).Properties.ImeName <> '' then
+    begin
+      if (Sender as TcxLookupComboBox).EditValue = NULL then
+      begin
+        Result.Column := (Sender as TcxLookupComboBox).Properties.ImeName;
+        Result.Param := NULL;
+      end
+      else
+      begin
+        Result.Column := (Sender as TcxLookupComboBox).Properties.ImeName;
+        Result.Param := (Sender as TcxLookupComboBox).EditValue;
+      end;
+      exit;
+    end;
+
+  if Sender is TcxMaskEdit then
+    if CompareStr((Sender as TcxMaskEdit).Properties.ImeName, EmptyStr) <> 0 then
+    begin
+      Result.Column := (Sender as TcxMaskEdit).Properties.ImeName;
+      if CompareStr((Sender as TcxMaskEdit).Text, EmptyStr) <> 0 then
+        Result.Param := (Sender as TcxMaskEdit).Text
+      else
+        Result.Param := NULL;
+      exit;
+    end;
+end;
+
+procedure GetData(Owner: TfmBaseForm; Pdata: TDBData);
+var
+  i: integer;
+begin
+  Assert(assigned(Pdata));
+
+  for i := 0 to Owner.ComponentCount - 1 do
+  begin
+    if (Owner.Components[i] is TEdit) or (Owner.Components[i] is TcxDateEdit) or (Owner.Components[i] is TcxLookupComboBox) or (Owner.Components[i] is TCombobox) or (Owner.Components[i] is TcxDBLabel)
+      or (Owner.Components[i] is TCheckBox) or (Owner.Components[i] is TRichEdit) or (Owner.Components[i] is TdxImageComboBox)or (Owner.Components[i] is TcxSpinEdit)or (Owner.Components[i] is TcxCombobox)
+      or (Owner.Components[i] is TcxMaskEdit) then
+    begin
+      GetDataForComponent(Owner.Components[i], Pdata);
+    end;
+
+    if Owner.Components[i].Name = 'LCreate'
+     then (Owner.Components[i] as TLabel).Caption := Pdata.DataSet.FieldByName('date_create').Text + ' - ' + Pdata.DataSet.FieldByName('user_create_name').Text;
+
+    if Owner.Components[i].Name = 'LUpdate'
+     then (Owner.Components[i] as TLabel).Caption := Pdata.DataSet.FieldByName('date_update').Text + ' - ' + Pdata.DataSet.FieldByName('user_update_name').Text;
+
+    //(Owner.FindComponent('LCreate') as TLabel).Caption := Pdata.DataSet.FieldByName('date_create').Text + ' - ' + Pdata.DataSet.FieldByName('user_create_name').Text;
+    //(Owner.FindComponent('LUpdate') as TLabel).Caption := Pdata.DataSet.FieldByName('date_update').Text + ' - ' + Pdata.DataSet.FieldByName('user_update_name').Text;
+  end;
+end;
+
+procedure GetDataForComponent(Sender: TObject; Pdata: TDBData);
+begin
+  if Sender is TcxSpinEdit then
+    if (Sender as TcxSpinEdit).ImeName <> '' then
+    begin
+      (Sender as TcxSpinEdit).Text := Pdata.DataSet.FieldByName((Sender as TcxSpinEdit).Properties.ImeName).Text;
+      exit;
+    end;
+
+     if Sender is TEdit then
+    if (Sender as TEdit).ImeName <> '' then
+    begin
+      (Sender as TEdit).Text := Pdata.DataSet.FieldByName((Sender as TEdit).ImeName).Text;
+      exit;
+    end;
+
+  if Sender is TcxDBLabel then
+    if (Sender as TcxDBLabel).ImeName <> '' then
+    begin
+      if (Sender as TcxDBLabel).DataBinding.DataSource = nil then
+        (Sender as TcxDBLabel).Caption := Pdata.DataSet.FieldByName((Sender as TcxDBLabel).ImeName).Text;
+      exit;
+    end;
+
+  if Sender is TcxLookupComboBox then
+    if (Sender as TcxLookupComboBox).Properties.ImeName <> '' then
+    begin
+      if (Sender as TcxLookupComboBox).Properties.ImeName <> '' then
+        (Sender as TcxLookupComboBox).EditValue := Pdata.DataSet.FieldByName((Sender as TcxLookupComboBox).Properties.ImeName).Value;
+      exit;
+    end;
+
+  if Sender is TCombobox then
+    if (Sender as TCombobox).ImeName <> '' then
+    begin
+      if Pdata.DataSet.FieldByName((Sender as TCombobox).ImeName).AsBoolean then
+        (Sender as TCombobox).ItemIndex := 0
+      else
+        (Sender as TCombobox).ItemIndex := 1;
+      exit;
+    end;
+
+
+  if Sender is TcxComboBox then
+    if (Sender as TcxComboBox).Properties.ImeName <> '' then
+    begin
+      if Pdata.DataSet.FieldByName((Sender as TcxComboBox).Properties.ImeName).Value<>null then
+        (Sender as TcxComboBox).ItemIndex := Pdata.DataSet.FieldByName((Sender as TcxComboBox).Properties.ImeName).Value - 1;
+      exit;
+    end;
+
+  if Sender is TdxImageComboBox then
+    if (Sender as TdxImageComboBox).Hint <> '' then
+    begin
+      (Sender as TdxImageComboBox).ItemIndex := Pdata.DataSet.FieldByName((Sender as TdxImageComboBox).Hint).Text.ToInteger;
+      exit;
+    end;
+
+  if Sender is TRichEdit then
+    if (Sender as TRichEdit).ImeName <> '' then
+    begin
+      (Sender as TRichEdit).Text := Pdata.DataSet.FieldByName((Sender as TRichEdit).ImeName).Text;
+      exit;
+    end;
+
+  if Sender is TcxDateEdit then
+    if (Sender as TcxDateEdit).Properties.ImeName <> '' then
+    begin
+      if Pdata.DataSet.FieldByName((Sender as TcxDateEdit).Properties.ImeName).Value <> NULL then
+        (Sender as TcxDateEdit).Date := Pdata.DataSet.FieldByName((Sender as TcxDateEdit).Properties.ImeName).Value;
+      exit;
+    end;
+
+  if Sender is TcxMaskEdit then
+   if CompareStr((Sender as TcxMaskEdit).Properties.ImeName, EmptyStr) <> 0 then
+   begin
+     (Sender as TcxMaskEdit).Text := Pdata.DataSet.FieldByName((Sender as TcxMaskEdit).Properties.ImeName).Text;
+     exit;
+   end;
+
+end;
+
+procedure EnabledEdData(Owner: TfmBaseForm; nameform: string; nameformcurrent: string; IsMod: integer = 0);
+var
+  i: integer;
+begin
+
+     if (    (nameform = 'fmOVD')
+         and (   (nameformcurrent = 'fmSocAssessmentAdd')
+              or (nameformcurrent = 'fmMedinspectorAdd')
+              or (nameformcurrent = 'TfmMedexaminationAdd'))) then
+     begin
+       for i:=0 to Owner.ComponentCount-1 do
+       begin
+         if Owner.Components[i] is TcxLookupComboBox
+            then TcxLookupComboBox(Owner.Components[i]).Enabled:= false;
+         if Owner.Components[i] is TcxTextEdit
+            then TcxTextEdit(Owner.Components[i]).Enabled:= false;
+         if Owner.Components[i] is TcxDateEdit
+            then TcxDateEdit(Owner.Components[i]).Enabled:= false;
+         if Owner.Components[i] is TCheckBox
+            then TCheckBox(Owner.Components[i]).Enabled:= false;
+         if Owner.Components[i] is TEdit
+            then TEdit(Owner.Components[i]).Enabled:= false;
+         if Owner.Components[i] is TMemo
+            then TEdit(Owner.Components[i]).Enabled:= false;
+       end;
+     end;
+
+     if (    (nameform = 'fmOZ')
+         and (   (nameformcurrent = 'fmOVDAdd')
+              or (nameformcurrent = 'fmGrdocumentAdd')
+              or (nameformcurrent = 'fmWorkAdd')
+              or (nameformcurrent = 'fmEducationAdd')
+              or (nameformcurrent = 'fmFamilyCompositionAdd')
+              or (nameformcurrent = 'fmCriminalAdd')
+              or (nameformcurrent = 'fmOffensesAdd')
+              or (nameformcurrent = 'fmPreventionAdd'))) then
+     begin
+       for i:=0 to Owner.ComponentCount-1 do
+       begin
+         if Owner.Components[i] is TcxLookupComboBox
+            then TcxLookupComboBox(Owner.Components[i]).Enabled:= false;
+         if Owner.Components[i] is TcxTextEdit
+            then TcxTextEdit(Owner.Components[i]).Enabled:= false;
+         if Owner.Components[i] is TcxDateEdit
+            then TcxDateEdit(Owner.Components[i]).Enabled:= false;
+         if Owner.Components[i] is TCheckBox
+            then TCheckBox(Owner.Components[i]).Enabled:= false;
+         if Owner.Components[i] is TEdit
+            then TEdit(Owner.Components[i]).Enabled:= false;
+         if Owner.Components[i] is TMemo
+            then TEdit(Owner.Components[i]).Enabled:= false;
+       end;
+     end;
+end;
+
+function Validate(aObject: TList<TComponent>; CheckVisible: boolean = False): boolean;
+var
+  i: integer;
+begin
+  Result := True;
+
+  for i := 0 to aObject.Count - 1 do
+  begin
+    if ( (CheckVisible) and
+         (not (aObject[i] as TControl).Visible) ) then
+      Continue;
+
+    if aObject[i] is TcxButtonEdit then
+    begin
+      (aObject[i] as TcxButtonEdit).Style.Color := clWindow;
+      if (aObject[i] as TcxButtonEdit).EditValue = NULL then
+      begin
+        (aObject[i] as TcxButtonEdit).Style.Color := Resource.NotTextColor;
+        Result := False;
+      end;
+    end;
+
+    if aObject[i] is TcxDateEdit then
+    begin
+      (aObject[i] as TcxDateEdit).Style.Color := clWindow;
+      if (aObject[i] as TcxDateEdit).EditValue = NULL then
+      begin
+        (aObject[i] as TcxDateEdit).Style.Color := Resource.NotTextColor;
+        Result := False;
+      end;
+    end;
+
+    if aObject[i] is TcxTextEdit then
+    begin
+      (aObject[i] as TcxTextEdit).Style.Color := clWindow;
+      if (aObject[i] as TcxTextEdit).Text = '' then
+      begin
+        (aObject[i] as TcxTextEdit).Style.Color := Resource.NotTextColor;
+        Result := False;
+      end;
+    end;
+
+    if aObject[i] is TEdit then
+    begin
+      (aObject[i] as TEdit).Color := clWindow;
+      if (aObject[i] as TEdit).Text = '' then
+      begin
+        (aObject[i] as TEdit).Color := Resource.NotTextColor;
+        Result := False;
+      end;
+    end;
+
+    if aObject[i] is TcxLookupComboBox then
+    begin
+      (aObject[i] as TcxLookupComboBox).Style.Color := clWindow;
+      if (aObject[i] as TcxLookupComboBox).EditValue = NULL then
+      begin
+        (aObject[i] as TcxLookupComboBox).Style.Color := Resource.NotTextColor;
+        Result := False;
+      end;
+    end;
+
+    if aObject[i] is TcxMaskEdit then
+    begin
+      (aObject[i] as TcxMaskEdit).Style.Color := clWindow;
+      if (aObject[i] as TcxMaskEdit).EditValue = '' then
+      begin
+        (aObject[i] as TcxMaskEdit).Style.Color := Resource.NotTextColor;
+        Result := False;
+      end;
+    end;
+
+    if aObject[i] is TRichEdit then
+    begin
+      (aObject[i] as TRichEdit).Color := clWindow;
+      if (aObject[i] as TRichEdit).Text = '' then
+      begin
+        (aObject[i] as TRichEdit).Color := Resource.NotTextColor;
+        Result := False;
+      end;
+    end;
+  end;
+  if NOT Result then
+   DialogInfo('Вы не заполнили обязательные поля! Обратите внимание на указатель!', 'Внимание');
+end;
+
+end.
+
+

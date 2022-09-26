@@ -1,0 +1,16 @@
+inherited fmWorkAdd: TfmWorkAdd
+  Caption = 'fm'
+  ClientHeight = 350
+  ClientWidth = 403
+  ExplicitWidth = 419
+  ExplicitHeight = 389
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited BarManager: TdxBarManager
+    DockControlHeights = (
+      0
+      0
+      45
+      0)
+  end
+end

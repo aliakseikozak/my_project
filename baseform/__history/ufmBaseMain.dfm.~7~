@@ -1,0 +1,392 @@
+inherited fmBaseMain: TfmBaseMain
+  Left = 814
+  Top = 140
+  Caption = 'fmBaseMain'
+  ClientHeight = 627
+  ClientWidth = 998
+  Position = poMainFormCenter
+  WindowState = wsMaximized
+  OnResize = FormResize
+  ExplicitWidth = 1014
+  ExplicitHeight = 666
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Statbar: TdxStatusBar [0]
+    Left = 0
+    Top = 604
+    Width = 998
+    Height = 23
+    Panels = <
+      item
+        PanelStyleClassName = 'TdxStatusBarKeyboardStatePanelStyle'
+        PanelStyle.CapsLockKeyAppearance.ActiveCaption = 'CAPS'
+        PanelStyle.CapsLockKeyAppearance.InactiveCaption = 'CAPS'
+        PanelStyle.NumLockKeyAppearance.ActiveCaption = 'NUM'
+        PanelStyle.NumLockKeyAppearance.InactiveCaption = 'NUM'
+        PanelStyle.ScrollLockKeyAppearance.ActiveCaption = 'SCRL'
+        PanelStyle.ScrollLockKeyAppearance.InactiveCaption = 'SCRL'
+        PanelStyle.InsertKeyAppearance.ActiveCaption = 'OVR'
+        PanelStyle.InsertKeyAppearance.InactiveCaption = 'INS'
+      end
+      item
+        PanelStyleClassName = 'TdxStatusBarTextPanelStyle'
+      end
+      item
+        PanelStyleClassName = 'TdxStatusBarContainerPanelStyle'
+        PanelStyle.Container = StatbarCont
+        Bevel = dxpbNone
+      end>
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    object StatbarCont: TdxStatusBarContainerControl
+      Left = 180
+      Top = 2
+      Width = 802
+      Height = 21
+      object ProgressBar: TcxProgressBar
+        Left = 563
+        Top = 0
+        Align = alRight
+        Properties.PeakValue = 12.000000000000000000
+        TabOrder = 0
+        Width = 239
+      end
+    end
+  end
+  object cxSplitterMain: TcxSplitter [1]
+    AlignWithMargins = True
+    Left = 279
+    Top = 22
+    Width = 8
+    Height = 562
+    Margins.Left = 1
+    Margins.Top = 1
+    Margins.Right = 1
+    Margins.Bottom = 1
+    HotZoneClassName = 'TcxXPTaskBarStyle'
+    Color = clBackground
+    ParentColor = False
+  end
+  object pnTreeDB: TPanel [2]
+    Left = 0
+    Top = 21
+    Width = 278
+    Height = 564
+    Align = alLeft
+    BevelOuter = bvNone
+    TabOrder = 6
+    object DBTreetMainMenu: TdxDBTreeView
+      Left = 0
+      Top = 21
+      Width = 278
+      Height = 543
+      ShowNodeHint = True
+      DataSource = dsBase
+      ImageIndexField = 'form_ind_img'
+      KeyField = 'appform_id'
+      ListField = 'form_comment'
+      ParentField = 'parent_id'
+      RootValue = Null
+      SeparatedSt = ' - '
+      StateIndexField = 'form_ind_img'
+      RaiseOnError = True
+      ReadOnly = True
+      Indent = 19
+      OnGetSelectedIndex = DBTreetMainMenuGetSelectedIndex
+      Align = alClient
+      ParentColor = False
+      Options = [trDBConfirmDelete, trCanDBNavigate, trSmartRecordCopy, trCheckHasChildren]
+      SelectedIndex = 15
+      TabOrder = 0
+      OnDblClick = DBTreetMainMenuDblClick
+      Images = Resource.ImageListAppform
+    end
+    object cxSearch: TcxTextEdit
+      Left = 0
+      Top = 0
+      Align = alTop
+      Properties.OnChange = cxSearchPropertiesChange
+      TabOrder = 1
+      Text = #1058#1077#1082#1089#1090' '#1076#1083#1103' '#1087#1086#1080#1089#1082#1072'...'
+      OnEnter = cxSearchEnter
+      OnExit = cxSearchExit
+      Width = 278
+    end
+  end
+  object cxPageControlForms: TcxPageControl [3]
+    Left = 288
+    Top = 21
+    Width = 710
+    Height = 564
+    CustomHint = BalloonHint
+    Align = alClient
+    TabOrder = 7
+    Properties.CloseButtonMode = cbmEveryTab
+    Properties.CustomButtons.Buttons = <
+      item
+        Hint = 'My Hint 3 (TcxPCButton)'
+        Visible = False
+      end>
+    Properties.Options = [pcoAlwaysShowGoDialogButton, pcoCloseButton, pcoGradient, pcoGradientClientArea, pcoRedrawOnResize]
+    Properties.ShowButtonHints = True
+    Properties.ShowTabHints = True
+    Properties.TabHeight = 25
+    Properties.TabWidth = 120
+    OnCanClose = cxPageControlFormsCanClose
+    OnChange = cxPageControlFormsChange
+    ClientRectBottom = 560
+    ClientRectLeft = 4
+    ClientRectRight = 706
+    ClientRectTop = 4
+  end
+  object StatusBar1: TStatusBar [4]
+    Left = 0
+    Top = 585
+    Width = 998
+    Height = 19
+    Panels = <>
+  end
+  object cxHintStyleController: TcxHintStyleController [5]
+    HintStyleClassName = 'TcxHintStyle'
+    HintStyle.CallOutPosition = cxbpAuto
+    HintStyle.CaptionFont.Charset = DEFAULT_CHARSET
+    HintStyle.CaptionFont.Color = clWindowText
+    HintStyle.CaptionFont.Height = -11
+    HintStyle.CaptionFont.Name = 'Tahoma'
+    HintStyle.CaptionFont.Style = []
+    HintStyle.Font.Charset = DEFAULT_CHARSET
+    HintStyle.Font.Color = clWindowText
+    HintStyle.Font.Height = -11
+    HintStyle.Font.Name = 'Tahoma'
+    HintStyle.Font.Style = []
+    HintStyle.Rounded = True
+    LookAndFeel.NativeStyle = True
+    Left = 856
+    Top = 24
+  end
+  inherited dsBase: TDataSource
+    Left = 536
+    Top = 24
+  end
+  inherited BarManager: TdxBarManager
+    ImageOptions.Images = Resource.ImageList
+    Left = 608
+    Top = 24
+    DockControlHeights = (
+      0
+      0
+      21
+      0)
+    inherited BarManagerMainMenu: TdxBar
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'mnFile'
+        end
+        item
+          Visible = True
+          ItemName = 'mnPlugins'
+        end>
+    end
+    inherited BarManagerMainBar: TdxBar
+      Visible = False
+    end
+    object btArrange: TdxBarButton [5]
+      Caption = #1059#1087#1086#1088#1103#1076#1086#1095#1080#1090#1100
+      Category = 0
+      Hint = #1059#1087#1086#1088#1103#1076#1086#1095#1080#1090#1100
+      Visible = ivAlways
+    end
+    object btNext: TdxBarButton [6]
+      Caption = #1057#1083#1077#1076#1091#1102#1097#1077#1077
+      Category = 0
+      Hint = #1057#1083#1077#1076#1091#1102#1097#1077#1077
+      Visible = ivAlways
+    end
+    object btPrevious: TdxBarButton [7]
+      Caption = #1055#1088#1077#1076#1099#1076#1091#1097#1077#1077
+      Category = 0
+      Hint = #1055#1088#1077#1076#1099#1076#1091#1097#1077#1077
+      Visible = ivAlways
+    end
+    object btWindows: TdxBarListItem [8]
+      Caption = #1053#1086#1074#1086#1077' '#1086#1082#1085#1086
+      Category = 0
+      Visible = ivAlways
+      OnClick = btWindowsClick
+      OnGetData = btWindowsGetData
+      ShowCheck = True
+      ShowNumbers = False
+    end
+    inherited mnFile: TdxBarSubItem
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'btUpdateNSI'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarButton4'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarButton13'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarSeparator2'
+        end
+        item
+          Visible = True
+          ItemName = 'btExit'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarButton1'
+        end
+        item
+          Visible = True
+          ItemName = 'dxBarButton12'
+        end>
+    end
+    object btHelp: TdxBarButton
+      Action = actHelp
+      Category = 1
+    end
+    object dxBarButton1: TdxBarButton
+      Action = Action1
+      Category = 1
+    end
+    object btUpdateNSI: TdxBarButton
+      Action = ActUpdateSprav
+      Category = 1
+    end
+    object btCheckUpdPr: TdxBarButton
+      Action = actCheckUpdatePr
+      Category = 1
+    end
+    object dxBarButton3: TdxBarButton
+      Caption = '-'
+      Category = 1
+      Hint = '-'
+      Visible = ivAlways
+    end
+    object dxBarSeparator1: TdxBarSeparator
+      Caption = 'New Separator'
+      Category = 1
+      Hint = 'New Separator'
+      Visible = ivAlways
+    end
+    object dxBarSeparator2: TdxBarSeparator
+      Caption = 'New Separator'
+      Category = 1
+      Hint = 'New Separator'
+      Visible = ivAlways
+      ShowCaption = False
+    end
+    object dxBarButton2: TdxBarButton
+      Caption = 'New Button'
+      Category = 1
+      Hint = 'New Button'
+      Visible = ivAlways
+    end
+    object dxBarButton4: TdxBarButton
+      Action = actCheckUpdatePr
+      Category = 1
+    end
+    object dxBarButton5: TdxBarButton
+      Caption = #1057#1074#1077#1076#1077#1085#1080#1103' '#1086#1073' '#1086#1090#1087#1091#1089#1082#1077' '#1080' '#1088#1077#1072#1083#1080#1079#1072#1094#1080#1080' '#1076#1088#1077#1074#1077#1089#1080#1085#1099
+      Category = 1
+      Visible = ivAlways
+    end
+    object dxBarButton6: TdxBarButton
+      Caption = 
+        #1054#1090#1095#1077#1090' '#1086' '#1076#1074#1080#1078#1077#1085#1080#1080' '#1083#1077#1089#1085#1086#1081' '#1087#1088#1086#1076#1091#1082#1094#1080#1080' '#1085#1072' '#1087#1088#1086#1084#1077#1078#1091#1090#1086#1095#1085#1099#1093' '#1083#1077#1089#1086#1087#1088#1086#1084#1099#1096#1083#1077#1085 +
+        #1085#1099#1093' '#1089#1082#1083#1072#1076#1072#1093
+      Category = 1
+      Visible = ivAlways
+    end
+    object dxBarButton7: TdxBarButton
+      Caption = 
+        #1054#1090#1095#1077#1090' '#1087#1086' '#1086#1087#1077#1088#1072#1090#1080#1074#1085#1086#1084#1091' '#1091#1095#1077#1090#1091' '#1076#1088#1077#1074#1077#1089#1080#1085#1099' '#1074' '#1079#1072#1075#1086#1090#1086#1074#1083#1077#1085#1085#1086#1084' '#1074#1080#1076#1077' '#1074#1072#1083#1100#1097 +
+        #1080#1082#1086#1084' '#1083#1077#1089#1072
+      Category = 1
+      Visible = ivAlways
+    end
+    object dxBarButton8: TdxBarButton
+      Caption = #1054#1090#1095#1077#1090' '#1087#1086' '#1091#1095#1077#1090#1091' '#1076#1088#1077#1074#1077#1089#1080#1085#1099' '#1074' '#1079#1072#1075#1086#1090#1086#1074#1083#1077#1085#1085#1086#1084' '#1074#1080#1076#1077' '#1085#1072'  '#1083#1077#1089#1086#1089#1077#1082#1077
+      Category = 1
+      Visible = ivAlways
+    end
+    object dxBarButton9: TdxBarButton
+      Caption = 
+        #1054#1090#1095#1077#1090' '#1086' '#1076#1074#1080#1078#1077#1085#1080#1080' '#1083#1077#1089#1086#1087#1088#1086#1076#1091#1082#1094#1080#1080' '#1085#1072' '#1087#1088#1086#1084#1077#1078#1091#1090#1086#1095#1085#1086#1084' '#1083#1077#1089#1086#1087#1088#1086#1084#1099#1096#1083#1077#1085#1085#1086#1084 +
+        ' '#1089#1082#1083#1072#1076#1077
+      Category = 1
+      Visible = ivAlways
+    end
+    object dxBarButton10: TdxBarButton
+      Caption = 
+        #1040#1082#1090' '#1087#1088#1080#1077#1084#1082#1080'-'#1089#1076#1072#1095#1080' '#1083#1077#1089#1086#1084#1072#1090#1077#1088#1080#1072#1083#1086#1074' '#1085#1072' '#1087#1088#1086#1084#1077#1078#1091#1090#1086#1095#1085#1086#1084' '#1083#1077#1089#1086#1087#1088#1086#1084#1099#1096#1083#1077#1085#1085 +
+        #1086#1084' '#1089#1082#1083#1072#1076#1077' '
+      Category = 1
+      Visible = ivAlways
+    end
+    object dxBarButton11: TdxBarButton
+      Caption = 
+        #1054#1090#1095#1077#1090' '#1087#1086' '#1086#1087#1077#1088#1072#1090#1080#1074#1085#1086#1084#1091' '#1091#1095#1077#1090#1091' '#1076#1088#1077#1074#1077#1089#1080#1085#1099' '#1074' '#1079#1072#1075#1086#1090#1086#1074#1083#1077#1085#1085#1086#1084' '#1074#1080#1076#1077' '#1086#1087#1077#1088#1072 +
+        #1090#1086#1088#1086#1084' '#1084#1085#1086#1075#1086#1086#1087#1077#1088#1072#1094#1080#1086#1085#1085#1086#1081' '#1083#1077#1089#1086#1079#1072#1075#1086#1090#1086#1074#1080#1090#1077#1083#1100#1085#1086#1081' '#1090#1077#1093#1085#1080#1082#1080
+      Category = 1
+      Visible = ivAlways
+    end
+    object dxBarButton12: TdxBarButton
+      Action = Action9
+      Category = 1
+    end
+    object dxBarButton13: TdxBarButton
+      Action = actHelp
+      Category = 1
+    end
+  end
+  inherited ActionList: TActionList
+    Top = 24
+    object actHelp: TAction [1]
+      Caption = #1057#1087#1088#1072#1074#1082#1072
+      Hint = #1057#1087#1088#1072#1074#1082#1072
+      ImageIndex = 4
+      OnExecute = actHelpExecute
+    end
+    object Action1: TAction [5]
+      Caption = 'Action1'
+      Visible = False
+      OnExecute = Action1Execute
+    end
+    object ActUpdateSprav: TAction [6]
+      Caption = #1054#1073#1085#1086#1074#1080#1090#1100' '#1089#1087#1088#1072#1074#1086#1095#1085#1080#1082#1080
+      Hint = #1054#1073#1085#1086#1074#1080#1090#1100' '#1086#1073#1097#1080#1077' '#1089#1087#1088#1072#1074#1086#1095#1085#1080#1082#1080
+      ImageIndex = 13
+      OnExecute = ActUpdateSpravExecute
+    end
+    object actCheckUpdatePr: TAction [7]
+      Caption = #1054#1073#1085#1086#1074#1080#1090#1100' '#1087#1088#1086#1075#1088#1072#1084#1084#1091
+      ImageIndex = 35
+      OnExecute = actCheckUpdatePrExecute
+    end
+    object Action9: TAction [8]
+      Caption = #1055#1088#1080#1084#1077#1088' '#1096#1072#1073#1083#1086#1085#1072' Word'
+      OnExecute = Action9Execute
+    end
+    object aSqlLog: TAction [9]
+      Caption = 'SqlLog'
+      ShortCut = 24695
+      OnExecute = aSqlLogExecute
+    end
+  end
+  object BalloonHint: TBalloonHint
+    Left = 768
+    Top = 24
+  end
+end

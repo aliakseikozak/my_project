@@ -1,0 +1,54 @@
+unit uUsers;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseGrid, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
+  dxLayoutControlAdapters, dxLayoutContainer, dxLayoutcxEditAdapters, cxStyles,
+  cxCustomData, cxFilter, cxData, cxDataStorage, cxNavigator, Data.DB, cxDBData,
+  Vcl.Buttons, Vcl.StdCtrls, cxTextEdit, cxMaskEdit, cxDropDownEdit,
+  cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, Vcl.Menus, System.Actions,
+  Vcl.ActnList, dxBar, cxClasses, cxSplitter, cxGridLevel, cxGridCustomView,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
+  dxLayoutControl, cxLabel, Vcl.ExtCtrls;
+
+type
+  TfmUsers = class(TfmBaseGrid)
+    lcParams: TdxLayoutControl;
+    eLastName: TEdit;
+    eFirstName: TEdit;
+    eMiddleName: TEdit;
+    eLogin: TEdit;
+    cxOrg: TcxLookupComboBox;
+    cIsBlocked: TComboBox;
+    lcParamsGroup_Root: TdxLayoutGroup;
+    dxLayoutItem7: TdxLayoutItem;
+    dxLayoutAutoCreatedGroup5: TdxLayoutAutoCreatedGroup;
+    dxLayoutAutoCreatedGroup2: TdxLayoutAutoCreatedGroup;
+    dxLayoutItem6: TdxLayoutItem;
+    dxLayoutItem8: TdxLayoutItem;
+    dxLayoutItem2: TdxLayoutItem;
+    dxLayoutItem4: TdxLayoutItem;
+    dxLayoutItem5: TdxLayoutItem;
+    dxLayoutItem1: TdxLayoutItem;
+    btFind: TBitBtn;
+    dxLayoutItem3: TdxLayoutItem;
+    btFindParamClear: TBitBtn;
+    dxLayoutAutoCreatedGroup3: TdxLayoutAutoCreatedGroup;
+    dxLayoutAutoCreatedGroup1: TdxLayoutAutoCreatedGroup;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmUsers: TfmUsers;
+
+implementation
+
+{$R *.dfm}
+
+end.

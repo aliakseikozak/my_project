@@ -1,0 +1,40 @@
+unit uLTPReward;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.ComCtrls,
+  dxCore, cxDateUtils, dxLayoutcxEditAdapters, Vcl.StdCtrls, Vcl.ExtCtrls,
+  dxLayoutContainer, cxTextEdit, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit,
+  cxDBLookupComboBox, cxMaskEdit, cxCalendar, dxLayoutControl, System.Actions,
+  Vcl.ActnList, dxBar, cxClasses, Data.DB;
+
+type
+  TfmBaseForm2 = class(TfmBaseForm)
+    dxLayoutControl1: TdxLayoutControl;
+    cxDateEdit1: TcxDateEdit;
+    cxLookupComboBox2: TcxLookupComboBox;
+    cxTextEdit3: TcxTextEdit;
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutItem2: TdxLayoutItem;
+    dxLayoutItem3: TdxLayoutItem;
+    dxLayoutItem6: TdxLayoutItem;
+    Panel2: TPanel;
+    btnOk: TButton;
+    btnCancel: TButton;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmBaseForm2: TfmBaseForm2;
+
+implementation
+
+{$R *.dfm}
+
+end.

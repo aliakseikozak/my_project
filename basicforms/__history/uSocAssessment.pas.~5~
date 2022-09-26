@@ -1,0 +1,116 @@
+unit uSocAssessment;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseGrid, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
+  dxLayoutControlAdapters, cxStyles, cxCustomData, cxFilter, cxData,
+  cxDataStorage, cxNavigator, Data.DB, cxDBData, Vcl.Menus, ZAbstractRODataset,
+  ZAbstractDataset, ZDataset, System.Actions, Vcl.ActnList, dxBar, cxClasses,
+  cxSplitter, cxGridLevel, cxGridCustomView, cxGridCustomTableView,
+  cxGridTableView, cxGridDBTableView, cxGrid, dxLayoutContainer, Vcl.StdCtrls,
+  dxLayoutControl, cxLabel, Vcl.ExtCtrls, uResource,uKartUtils,uSocAssessmentAdd;
+
+type
+  TfmSocAssessment = class(TfmBaseGrid)
+    grBaseDBTableViewColumn1: TcxGridDBColumn;
+    grBaseDBTableViewColumn2: TcxGridDBColumn;
+    grBaseDBTableViewColumn3: TcxGridDBColumn;
+    grBaseDBTableViewColumn4: TcxGridDBColumn;
+    grBaseDBTableViewColumn5: TcxGridDBColumn;
+    grBaseDBTableViewColumn6: TcxGridDBColumn;
+    grBaseDBTableViewColumn7: TcxGridDBColumn;
+    grBaseDBTableViewColumn8: TcxGridDBColumn;
+    grBaseDBTableViewColumn9: TcxGridDBColumn;
+    grBaseDBTableViewColumn10: TcxGridDBColumn;
+    grBaseDBTableViewColumn11: TcxGridDBColumn;
+    grBaseDBTableViewColumn12: TcxGridDBColumn;
+    grBaseDBTableViewColumn13: TcxGridDBColumn;
+    procedure actGetDataExecute(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure actEditExecute(Sender: TObject);
+    procedure actNewExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+
+  end;
+
+var
+  fmSocAssessment: TfmSocAssessment;
+
+implementation
+uses
+uOVDAdd;
+
+{$R *.dfm}
+
+procedure TfmSocAssessment.actEditExecute(Sender: TObject);
+var
+  fm: TfmSocAssessmentAdd;
+begin
+
+  fm := TfmSocAssessmentAdd(CreateForm('TfmSocAssessmentAdd', 'fmSocAssessmentAdd', Self, false));
+  try
+    fm.SetData(dbBase, 1, ginformation);
+    if ( fm.ShowModal() = mrOk ) then
+    begin
+
+      dbBase.DataSetReQuery;
+
+    end;
+  finally
+    fm.Free;
+   // gCaptionName := 'Склады';
+  end;
+
+end;
+
+procedure TfmSocAssessment.actGetDataExecute(Sender: TObject);
+var
+  Columns: string;
+  Params: string;
+  Operations: string;
+begin
+
+  with Filtered(Self) do
+  begin
+    Columns := Column;
+    Params := Param;
+    Operations := Operation;
+  end;
+
+  FreeAndNil(dbBase);
+  if ginformation <> 0 then
+  begin
+    dbBase := DataSetQuery('rehabilitation_socassessment_get', [Resource.sessionInfo.token_id, '1', 'bmf.grinformation_id', VarToStr(ginformation), '='], GetFieldsArray(), true);
+    dsBase.DataSet := dbBase.DataSet;
+  end;
+end;
+
+procedure TfmSocAssessment.actNewExecute(Sender: TObject);
+var
+  fm: TfmSocAssessmentAdd;
+begin
+
+  fm := TfmSocAssessmentAdd(CreateForm('TfmSocAssessmentAdd', 'fmSocAssessmentAdd', Self, false));
+  try
+    fm.SetData(dbBase, 0, ginformation);
+    if ( fm.ShowModal() = mrOk ) then
+    begin
+      dbBase.DataSetReQuery;
+    end;
+  finally
+    fm.Free;
+  end;
+end;
+
+procedure TfmSocAssessment.FormShow(Sender: TObject);
+begin
+  actGetData.Execute;
+end;
+
+end.

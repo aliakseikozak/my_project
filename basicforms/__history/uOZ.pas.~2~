@@ -1,0 +1,48 @@
+unit uOZ;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseGrid, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit,
+  dxLayoutControlAdapters, cxStyles, cxCustomData, cxFilter, cxData,
+  cxDataStorage, cxNavigator, Data.DB, cxDBData, Vcl.Menus, System.Actions,
+  Vcl.ActnList, dxBar, cxClasses, cxSplitter, cxGridLevel, cxGridCustomView,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
+  dxLayoutContainer, Vcl.StdCtrls, dxLayoutControl, cxLabel, Vcl.ExtCtrls,
+  Vcl.Buttons;
+
+type
+  TfmOZ = class(TfmBaseGrid)
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutControl1: TdxLayoutControl;
+    dxLayoutItem3: TdxLayoutItem;
+    BitBtn1: TBitBtn;
+    dxLayoutItem4: TdxLayoutItem;
+    BitBtn2: TBitBtn;
+    dxLayoutItem1: TdxLayoutItem;
+    Edit1: TEdit;
+    dxLayoutItem2: TdxLayoutItem;
+    Edit2: TEdit;
+    dxLayoutItem5: TdxLayoutItem;
+    Edit3: TEdit;
+    dxLayoutItem6: TdxLayoutItem;
+    Edit4: TEdit;
+    dxLayoutGroup1: TdxLayoutGroup;
+    dxLayoutAutoCreatedGroup2: TdxLayoutAutoCreatedGroup;
+    dxLayoutGroup2: TdxLayoutGroup;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmOZ: TfmOZ;
+
+implementation
+
+{$R *.dfm}
+
+end.

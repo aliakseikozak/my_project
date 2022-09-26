@@ -1,0 +1,792 @@
+{
+© Bright REST
+TDBHTTP - Компонент взаимодействия с веб-сервисами.
+Протокол передачи данных: HTTP\HTTPS
+Формат сообщений: JSON 
+Результирующий набор данных: TDataSet
+Данные хранятся в оперативной памяти компьютера и не имеют связь с источником данных.
+}
+unit uExchDB;
+
+interface
+
+uses
+  System.SysUtils, System.StrUtils, System.Variants, System.Classes,
+  Vcl.Forms, System.Json, Data.DB,
+  Datasnap.DBClient, IdIOHandler, IdIOHandlerStack, IdSSL,
+  IdSSLOpenSSL, TypInfo, RTTI, uArrayV, IdHTTP, WinInet, utilSpravXML;
+
+type
+  TDBHTTP = class(TObject)
+
+  type TParamFunc = record
+     field_data: String;
+  end;
+    FParamFunc = ^TParamFunc;
+
+  type TParamFuncRep = record
+     field_dataA: IStrArray;
+  end;
+    FParamFuncRep = ^TParamFuncRep;
+
+  type TError = class(TObject)
+     mes_type: String;
+     message : String;
+   end;
+     FError = ^TError;
+
+  TArrayError = array of TError;
+
+
+  const
+   TypeRequest  = 'request';
+   TypeResponse = 'response';
+   TypeAuthorisation = 'authorisation';
+   TypeQuerySQL      = 'sql';
+   TypeQuery         = 'query';
+   TypeReportExcel = 'report_excel';
+   TypeReportWord  = 'report_word';
+
+  private
+    FMaxUid: Integer;
+  protected
+    FType_mes: string;
+    FRequest_id: string;
+    FResponse_Id: string;
+    FShema: string;
+    FName_Func: string;
+    FType_Query: string;
+    FToken: string;
+    FApiUserName: string;
+    FApiPass: string;
+    FPRows : array of TParamFunc;
+    FPRRows : array of TParamFuncRep;
+    FErRows: TArrayError;
+    function  GetParams_Func(Index: integer): FParamFunc;
+    function  GetParams_FuncRep(Index: integer): FParamFuncRep;
+    procedure SetParams_Func(Index: integer; const Value: FParamFunc);
+    procedure SetParams_FuncRep(Index: integer; const Value: FParamFuncRep);
+    procedure SetType_mes(const Value: string);
+    procedure SetRequest_Id(const Value: string);
+    procedure SetResponse_Id(const Value: string);
+    procedure SetShema(const Value: string);
+    procedure SetName_Func(const Value: string);
+    procedure SetType_Query(const Value: string);
+    procedure CleanFErRows();
+  public
+    constructor Create;  // Этот конструктор использует по умолчанию
+    destructor Destroy; override;
+    property   type_mes   : String read FType_mes write SetType_mes;
+    property   request_id : String read FRequest_Id write SetRequest_Id;
+    property   response_id: String read FResponse_Id write SetResponse_Id;
+    property   shema      : String read FShema write SetShema;
+    property   name_func  : String read FName_Func write SetName_Func;
+    property   type_query : String read FType_Query write SetType_Query;
+    property   Params_Func[Index: integer]: FParamFunc read GetParams_Func write SetParams_Func;
+    property   Params_FuncR[Index: integer]: FParamFuncRep read GetParams_FuncRep write SetParams_FuncRep;
+    property   token_id   : string read FToken write FToken;
+    property   username   : string read FApiUserName write FApiUserName;
+    property   password   : string read FApiPass write FApiPass;
+    procedure  HttpRequest(Url: string; Request: TStringStream; Response: TStream);
+    function   JsonToDataSet(jsObject: TJSONObject; FielsArray: IIntArray = nil; pDataSet: TDataSet = nil): TDataSet;
+    function   ToJSONObject(AJSON: string): TJSONObject; Overload;
+    function   ToJSONObject(AJSON: TStream): TJSONObject; Overload;
+    procedure  CreateRequest(RequestProperty :TDBHTTP; Request: TStringStream);
+    function   GenerateRequest_ID(Plen:Integer = 12): String;
+    function   ArrayToString(RequestProperty :TDBHTTP; field_data: array of TParamFunc): String;
+    procedure  GetErrorArray(Response: TStream);
+    function   GetValueFromJSON(Response: TStream; array_name: string; field_name: String; RowNum: Integer = 0): String;
+    function   GetMaxtUid: Integer;
+    function   Autorization(const pUserName: String; const pPassWord: String; const pShema: String; const pURL: String):string;
+  end;
+
+implementation
+   uses uResourceForms, uArrays, uKartUtils, uResource;
+
+constructor TDBHTTP.Create();
+begin
+  inherited;  // Вызов родительского метода
+end;
+
+destructor TDBHTTP.Destroy;
+begin
+  inherited Destroy;
+  CleanFErRows;
+end;
+
+procedure TDBHTTP.SetType_mes(const Value: string);
+begin
+  FType_mes := Value;
+end;
+
+procedure TDBHTTP.SetRequest_id(const Value: string);
+begin
+  FRequest_id := Value;
+end;
+
+procedure TDBHTTP.SetResponse_Id(const Value: string);
+begin
+  FResponse_Id := Value;
+end;
+
+procedure TDBHTTP.SetShema(const Value: string);
+begin
+  FShema := Value;
+end;
+
+procedure TDBHTTP.SetName_Func(const Value: string);
+begin
+  FName_Func := Value;
+end;
+
+procedure TDBHTTP.SetType_Query(const Value: string);
+begin
+  FType_Query := Value;
+end;
+
+procedure TDBHTTP.SetParams_Func(Index: integer; const Value: FParamFunc);
+begin
+ FPRows[Index]:=Value^;
+end;
+
+function TDBHTTP.GetParams_Func(Index: integer): FParamFunc;
+begin
+  if (Index >= Length(FPRows))then
+   Setlength(FPRows, Index + 1);
+  Result := @FPRows[Index];
+end;
+
+procedure TDBHTTP.SetParams_FuncRep(Index: integer; const Value: FParamFuncRep);
+begin
+ FPRRows[Index]:=Value^;
+end;
+
+function TDBHTTP.GetParams_FuncRep(Index: integer): FParamFuncRep;
+begin
+  if (Index >= Length(FPRRows))then
+    Setlength(FPRRows, Length(FPRRows) + 1);
+  Result := @FPRRows[Index];
+end;
+
+function TDBHTTP.Autorization(const pUserName, pPassWord, pShema,
+  pURL: String): string;
+var
+ Response: TStream;
+ Request : TStringStream;
+begin
+  MessageInfo('Проверка имени и пароля...');
+  Request  := TStringStream.Create;
+  Response := TMemoryStream.Create;
+  try
+   Result   :='';
+   try
+       Type_mes := TypeAuthorisation;
+       Request_Id := GenerateRequest_ID();
+       Shema := pShema;
+       Name_Func := 'get_datauser';
+       username := pUserName;
+
+       Password := GenerateSHA1(pPassWord);
+       CreateRequest(Self, Request);
+       HttpRequest(pURL, Request, Response);
+       GetErrorArray(Response);
+       Result := GetValueFromJSON(Response, 'server', 'token');
+
+   except
+      on E: Exception do
+      begin
+          DialogStop('Ошибка авторизации:' + E.Message , 'Ошибка');
+      end;
+   end;
+  finally
+     Request.Free;
+     Response.Free;
+     MessageInfo;
+  end;
+end;
+
+procedure TDBHTTP.CleanFErRows();
+var
+ i: Integer;
+begin
+  for i := 0 to Length(FErRows)- 1 do
+   TObject(FErRows[i]).Free;
+end;
+
+//Генерация случайного Request_ID
+function TDBHTTP.GenerateRequest_ID(Plen:Integer = 12): String;
+const StrTable: string =
+    'ABCDEFGHIJKLMabcdefghijklm' +
+    '0123456789' +
+    'NOPQRSTUVWXYZnopqrstuvwxyz';
+var
+  N, K, X, Y: integer;
+begin
+  if (Plen > Length(StrTable)) then
+    K := Length(StrTable)-1
+  else
+    K := PLen;
+
+  SetLength(Result, K);
+  Y := Length(StrTable);
+  N := 0;
+
+  while N < K do                     // цикл для создания K символов
+  begin
+    X := Random(Y) + 1;
+    if (pos(StrTable[X], Result) = 0) then
+    begin
+      inc(N);                        // символ не найден
+      Result[N] := StrTable[X];      // теперь его сохраняем
+    end;
+  end;
+end;
+
+function TDBHTTP.ArrayToString(RequestProperty :TDBHTTP; field_data: array of TParamFunc): String;
+  var fields: String;
+      i : integer;
+ begin
+   fields := '';
+   for i := 0 to length(field_data) - 1 do
+    fields := fields +'"' + RequestProperty.Params_Func[i]^.field_data + '"' + ',';
+   fields := Trim(fields);
+   Delete(fields, Length(fields), 1);
+   if Length(fields) > 0 then
+    Result := fields;
+ end;
+
+//Получение/заполнение ошибок при ответе
+procedure TDBHTTP.GetErrorArray(Response: TStream);
+var
+  //aList: TList;
+  //aRecPtr: FError;
+  jsObject, GErr: TJSONObject;
+  jsArr: TJSONArray;
+  jsValue: TJSONValue;
+  Context: TRttiContext;
+  //rRecord   : TRttiRecordType;
+  rType: TRttiType;
+  rField    : TRttiField;
+  rFldName, sValue  : String;
+  field: TRttiField;
+  CErr : TError;
+  i: integer;
+begin
+
+  if (Assigned(Response) and (Response.Size>0)) then
+  begin
+    try
+      try
+       jsObject := ToJSONObject(Response);
+       jsArr := jsObject.GetValue('error') as TJSONArray;
+        if Assigned(jsArr) then
+        begin
+          CleanFErRows;
+          Setlength(FErRows, jsArr.Count);
+          Context := TRttiContext.Create;
+          try
+            {rRecord := Context.GetType(TypeInfo(TError)).AsRecord;
+            New(aRecPtr);
+            aList := TList.Create;}
+
+            {for field in rType.GetFields do
+            begin
+               field.Name;
+               field.SetValue(CErr,'tt');
+            end;}
+            for i := 0 to jsArr.Size-1 do
+            begin
+              CErr := TError.Create;
+              rType := Context.GetType(CErr.ClassType);
+              GErr := jsArr.Get(i) as TJSONObject;
+              if Assigned(GErr) then
+              begin
+                for field in rType.GetFields do
+                begin
+                   sValue := GErr.Get(field.Name).JsonValue.Value;
+                   if ( sValue <> '' )then
+                     field.SetValue(CErr, GErr.Get(field.Name).JsonValue.Value);
+                end;
+                //aList.Add(@CErr);
+                FErRows[i] := CErr;
+              end;
+            end;
+            {for j := 1 to aList.Count do
+            begin
+              aRecPtr := FError(aList.Items[j - 1]);
+              s := s + aRecPtr.mes_type;
+            end; }
+          finally
+            Context.Free;
+            //aList.Free;
+          end;
+        end;
+      except
+        on E : Exception do
+          DialogStop(E.ClassName+' поднята ошибка, с сообщением : '+E.Message);
+      end;
+    finally
+      jsObject.Free;
+    end;
+  end;
+end;
+
+//получаем значение из значение из масcива JSON
+function TDBHTTP.GetValueFromJSON(Response: TStream; array_name: string; field_name: String; RowNum: Integer = 0): String;
+var
+  jsObject : TJSONObject;
+  jsArr: TJSONArray;
+  jsValue: TJSONValue;
+  i: integer;
+begin
+  Result := '';
+  if Assigned(Response) then
+  begin
+    try
+      try
+       jsObject := ToJSONObject(Response);
+       if jsObject<>nil then
+       begin
+         jsArr := jsObject.GetValue(array_name) as TJSONArray;
+          if Assigned(jsArr) then
+          begin
+              for i := 0 to jsArr.Size-1 do
+              begin
+                if i = RowNum then
+                begin
+                  jsObject := jsArr.Get(i) as TJSONObject;
+                  if Assigned(jsObject) then
+                    Result := jsObject.Get(field_name).JsonValue.Value;
+                  break;
+                end;
+              end;
+          end;
+       end;
+      except
+        on E : Exception do
+          DialogStop(E.ClassName+' поднята ошибка, с сообщением : '+E.Message);
+      end;
+    finally
+      jsObject.Free;
+    end;
+  end;
+
+end;
+
+//Преобразование свойств объекта в Json
+procedure TDBHTTP.CreateRequest(RequestProperty :TDBHTTP; Request: TStringStream);
+
+ function ArrayToJson(field_data: array of TParamFuncRep): TJSONArray; overload;
+ var
+   i, Index : integer;
+   JsonArray, JsonArrayR : TJSONArray;
+   SValue: String;
+   StrArray: TStringArray;
+ begin
+   Result := TJSONArray.Create();
+   for i := Low(field_data) to High(field_data) do
+   begin
+     JsonArray := TJSONArray.Create();
+     RequestProperty.Params_FuncR[i]^.field_dataA.First;
+     while not RequestProperty.Params_FuncR[i]^.field_dataA.Eof do
+     begin
+        SValue := RequestProperty.Params_FuncR[i]^.field_dataA.CurrentValue;
+        if (Copy(SValue, 1, 1) = '~')  then
+          JsonArray.AddElement(TJSONObject.Create().AddPair('param', TJSONString.Create(URLEncode(UTF8String(Copy(SValue, 2, Length(SValue) - 1))))))
+        else
+        if (Copy(SValue, 1, 1) = '[') then
+        begin
+            SValue := StringReplace(SValue, '[', '',
+                          [rfReplaceAll, rfIgnoreCase]);
+            SValue := StringReplace(SValue, ']', '',
+                          [rfReplaceAll, rfIgnoreCase]);
+            StrArray := StringToArray(SValue,',');
+            JsonArrayR := TJSONArray.Create();
+            for Index := 0 to Length(StrArray) - 1 do
+            begin
+               JsonArrayR.AddElement(TJSONString.Create(URLEncode(UTF8String(StrArray[Index]))));
+            end;
+            JsonArray.AddElement(JsonArrayR);
+        end
+        else
+          JsonArray.AddElement(TJSONString.Create(URLEncode(UTF8String(SValue))));
+        RequestProperty.Params_FuncR[i]^.field_dataA.Next;
+     end;
+     Result.AddElement(JsonArray);
+   end;
+ end;
+
+ function ArrayToJson(field_data: array of TParamFunc): TJSONArray; overload;
+ var
+   i : integer;
+   JSONNestedObject: TJSONObject;
+ begin
+   Result := TJSONArray.Create();
+   for i := Low(field_data) to High(field_data) do
+   begin
+    if (Copy(RequestProperty.Params_Func[i]^.field_data, 1, 1) = '~')  then
+      Result.AddElement(TJSONObject.Create().AddPair('param', TJSONString.Create(URLEncode(UTF8String(Copy(RequestProperty.Params_Func[i]^.field_data, 2, Length(RequestProperty.Params_Func[i]^.field_data) - 1))))))
+    else
+      Result.AddElement(TJSONString.Create(URLEncode(UTF8String(RequestProperty.Params_Func[i]^.field_data))));
+   end;
+
+ end;
+
+ function PropertyToJSON( PRequestProperty :TDBHTTP ): TJSONObject;
+ var
+   Context: TRttiContext;
+   rType: TRttiType;
+   field: TRttiProperty;
+   JsonArray : TJSONArray;
+   value: TJSONValue;
+   s: string;
+   JSONNestedObject: TJSONObject;
+ begin
+    try
+      Context := TRttiContext.Create;
+      Result := TJSONObject.Create();
+      jsonArray := TJSONArray.Create();
+      rType := Context.GetType(PRequestProperty.ClassType);
+      //for field in rType.GetFields do
+      for field in rType.GetProperties do
+      begin
+        s := field.GetValue(PRequestProperty).ToString;
+        if (s <> '') then
+         Result.AddPair(TJSONPair.Create(field.Name,URLEncode(UTF8String(s))));
+      end;
+       //параметры для функции
+      if Length(PRequestProperty.FPRows) > 0 then
+      begin
+        JSONNestedObject := TJSONObject.Create();
+        JSONNestedObject.AddPair(TJSONPair.Create('field_data', ArrayToJson(PRequestProperty.FPRows) ));
+        Result.AddPair(TJSONPair.Create('params', JSONNestedObject ));
+      end;
+      //параметры для функций отчетов
+      if Length(PRequestProperty.FPRRows) > 0 then
+      begin
+        JSONNestedObject := TJSONObject.Create();
+        JSONNestedObject.AddPair(TJSONPair.Create('field_data', ArrayToJson(PRequestProperty.FPRRows) ));
+        Result.AddPair(TJSONPair.Create('params_report', JSONNestedObject ));
+      end;
+
+      //Создаем массив
+      {JSONArray:=TJSONArray.Create;
+      //-- добавляем в массив первый объект --
+      // 1. заносим в массив пустой json-объект
+      JSONArray.AddElement(TJSONObject.Create);t)] as TJSONObject;
+      //заполняем объект данными
+      JSONNestedObject.AddPair('type','href')
+                    .AddPair('description','desc')
+                    .AddPair('link','https://www.webdelphi.ru');}
+    finally
+      Context.free;
+    end;
+ end;
+var
+  JsonArray: TJSONArray;
+  AResponse: TJSONObject;
+begin
+ try
+   JsonArray := TJSONArray.Create();
+   AResponse := TJSONObject.Create();
+
+   JsonArray.AddElement(PropertyToJSON(RequestProperty));
+   AResponse.AddPair(TJSONPair.Create('server', jsonArray));
+
+   Request.WriteString(AResponse.ToString);
+  finally
+     FreeAndNil(AResponse);
+   end;
+end;
+
+
+procedure GetProxyData(var ProxyEnabled: boolean; var ProxyServer: string; var ProxyPort: integer);
+var
+  ProxyInfo: PInternetProxyInfo;
+  Len: LongWord;
+  i, j: integer;
+begin
+  Len := 4096;
+  ProxyEnabled := false;
+  GetMem(ProxyInfo, Len);
+  try
+    if InternetQueryOption(nil, INTERNET_OPTION_PROXY, ProxyInfo, Len)
+      then
+      if ProxyInfo^.dwAccessType = INTERNET_OPEN_TYPE_PROXY then
+      begin
+        ProxyEnabled := True;
+        ProxyServer := ProxyInfo^.lpszProxy;
+      end
+  finally
+    FreeMem(ProxyInfo);
+  end;
+
+  if ProxyEnabled and (ProxyServer <> '') then
+  begin
+    i := Pos('http=', ProxyServer);
+    if (i > 0) then
+    begin
+      Delete(ProxyServer, 1, i + 5);
+      j := Pos(';', ProxyServer);
+      if (j > 0) then
+        ProxyServer := Copy(ProxyServer, 1, j - 1);
+    end;
+    i := Pos(':', ProxyServer);
+    if (i > 0) then
+    begin
+      ProxyPort := StrToIntDef(Copy(ProxyServer, i + 1, Length(ProxyServer) - i), 0);
+      ProxyServer := Copy(ProxyServer, 1, i - 1)
+    end
+  end;
+end;
+
+//Запрос к Web-серверу
+procedure TDBHTTP.HttpRequest(Url: string; Request: TStringStream; Response: TStream);
+var
+ HTTP: TidHttp;
+ SSLHandler : TIdSSLIOHandlerSocketOpenSSL;
+ ProxyEnabled: boolean;
+ ProxyServer: string;
+ ProxyPort: integer;
+ BodyS: TStringList;
+ //HTTP: THTTPSend;
+ Buffer: PByte;
+ sss : string;
+begin
+ if Assigned(Request) and  Assigned(Response) then
+ begin
+   try
+      try
+          SSLHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+          SSLHandler.SSLOptions.Mode := sslmUnassigned;
+          //SSLHandler.SSLOptions.Method := sslvTLSv1;
+          SSLHandler.SSLOptions.Method := sslvSSLv23; // enable all available versions first
+          SSLHandler.SSLOptions.SSLVersions := SSLHandler.SSLOptions.SSLVersions - [sslvSSLv2, sslvSSLv3];
+          HTTP := TIdHttp.Create(nil);
+
+          HTTP.ProxyParams.Clear;
+          HTTP.Request.UserAgent := 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36';
+          HTTP.Request.Accept := 'application/json, text/javascript, */*; q=0.01';
+          HTTP.Request.ContentType := 'application/json; charset=UTF-8';
+          HTTP.Request.CharSet := 'utf-8';
+          HTTP.HandleRedirects := true;
+          HTTP.IOHandler := SSLHandler;
+//          HTTP.ReadTimeout := 75000;
+          HTTP.ReadTimeout := 150000;
+     {     Request.SaveToFile('D:\soft\123.txt');
+          sss := HTTP.Post(Url, Request);
+          DialogInfo(sss);  }
+          HTTP.Post(Url, Request, Response);
+       except
+        on E : Exception do
+          if (E.ClassName = 'EIdReadTimeout') then
+          begin
+            DialogStop('Превышен timeout ожидания ответа от сервера. Сервер перегружен. Повторите запрос.');
+          end
+          else
+          begin
+            DialogStop(E.ClassName+' поднята ошибка, с сообщением : '+E.Message);
+          end;
+       end;
+   finally
+    HTTP.free;
+    SSLHandler.Free;
+   end;
+
+  {try
+      HTTP := THTTPSend.Create;
+
+      GetProxyData(ProxyEnabled, ProxyServer, ProxyPort);
+      if ProxyEnabled then
+        begin
+          HTTP.ProxyHost := ProxyServer;
+          HTTP.ProxyPort := inttostr(ProxyPort);
+        end;
+
+      http.MimeType := '';
+
+      HTTP.Document.LoadFromStream(Request);
+      if HTTP.HTTPMethod('POST', url) then
+        begin
+          if HTTP.resultcode=200 then
+            Response.CopyFrom(HTTP.Document, 0) else
+              begin
+               Showmessage('Ошибка соединения. Код ответа сервера: '+inttostr(HTTP.resultcode));
+               //Abort;
+              end;
+        end
+     finally
+        HTTP.Free;
+     end; }
+
+ end;
+end;
+
+//преобразование  Json-объекта к объекту TDataSet
+function TDBHTTP.JsonToDataSet(jsObject: TJSONObject; FielsArray: IIntArray = nil; pDataSet: TDataSet = nil): TDataSet;
+var
+  DataSet: TClientDataSet;
+  JsonStream: TStringStream;
+  jsItemObject: TJSONObject;
+  jsArr, jsArrField, jsArrSize, jsArrType, jsArrData: TJSONArray;
+  jsValue: TJSONValue;
+  fsize: Integer;
+  ftype: TFieldType;
+  i, j: integer;
+  ValidFieldNumbers: array of Integer;
+begin
+  if Assigned(jsObject) then
+  begin
+    try
+      // поиск и добавление полей
+      if Assigned(pDataSet) then
+      begin
+       if not TClientDataSet(pDataSet).IsEmpty then
+       begin
+        TClientDataSet(pDataSet).EmptyDataSet;
+        DataSet := TClientDataSet(pDataSet);
+        DataSet.Close;
+        DataSet.Open;
+       end
+       else
+        DataSet := TClientDataSet(pDataSet);
+      end
+      else
+       DataSet := TClientDataSet.Create(nil);
+
+      FMaxUid := 0; //обнуляем uid для  DataSet
+      jsArrField := jsObject.GetValue('field_names') as TJSONArray;
+      jsArrSize := jsObject.GetValue('field_size') as TJSONArray;
+      jsArrType := jsObject.GetValue('field_type') as TJSONArray;
+      if Assigned(jsArrField) and Assigned(jsArrSize) and Assigned(jsArrType) then
+      begin
+        if not Assigned(pDataSet) or ( DataSet.FieldDefs.Count = 0 ) then
+        begin
+          //DataSet.Close; // Очищаем перед началом работы
+          DataSet.FieldDefs.Clear; // Очищаем если что было в полях
+          for i := 0 to jsArrField.Count - 1 do
+          begin
+            ftype := ParseFieldType(ifThen(jsArrType.Items[i].Value <> '', jsArrType.Items[i].Value, 'ftString'));
+            if ftype = ftString then
+            begin
+             if FielsArray <> nil then
+             begin
+               if FielsArray.Exist(jsArrField.Items[i].Value) then
+                 fsize := FielsArray[jsArrField.Items[i].Value]
+             end
+             else
+              fsize:= StrToIntDef(jsArrSize.Items[i].Value, 50);
+              if fsize < 250 then
+                fsize := 250;
+
+            end
+            else
+             fsize := 0;
+            DataSet.FieldDefs.Add(URLEncode(jsArrField.Items[i].Value), ftype, fsize);
+          end;
+          if DataSet.FieldDefs.Count > 0 then
+          begin
+           DataSet.FieldDefs.Add('uid', ftInteger);
+           DataSet.FieldDefs.Add('check', ftBoolean);
+           DataSet.CreateDataSet;
+          end;
+        end;
+      end;
+
+      // добавление данных
+      for I := 0 to jsArrField.Count - 1 do begin
+       if DataSet.FindField(URLEncode(jsArrField.Items[i].Value)) <> nil
+        then begin
+         SetLength(ValidFieldNumbers, High(ValidFieldNumbers) + 2);
+         ValidFieldNumbers[High(ValidFieldNumbers)] := i;
+        end;
+      end;
+
+      jsArr := jsObject.GetValue('data') as TJSONArray;
+      if Assigned(jsArr) and ( DataSet.FieldDefs.Count > 0 ) then
+      begin
+        DataSet.DisableControls;
+        for i := 0 to jsArr.Count - 1 do
+        begin
+          jsArrData := jsArr.Items[i] as TJSONArray;
+          DataSet.Append; // побавляем поля
+          for j := 0 to High(ValidFieldNumbers) do
+            //if DataSet.FindField(URLEncode(jsArrField.Items[j].Value)) <> nil then
+              if ((jsArrData.Items[ValidFieldNumbers[j]].Value = '')  or ( CompareText(jsArrData.Items[ValidFieldNumbers[j]].Value, 'null') = 0 )) then
+                DataSet.FieldByName(URLEncode(jsArrField.Items[ValidFieldNumbers[j]].Value)).Value := Null
+              else
+                if (DataSet.FieldByName(URLEncode(jsArrField.Items[ValidFieldNumbers[j]].Value)).DataType = ftTimeStamp) then
+                  DataSet.FieldByName(URLEncode(jsArrField.Items[ValidFieldNumbers[j]].Value)).Value := StrToDateTime(jsArrData.Items[ValidFieldNumbers[j]].Value, Resource.JsonFormatSettings)
+                else
+                  DataSet.FieldByName(URLEncode(jsArrField.Items[ValidFieldNumbers[j]].Value)).Value := jsArrData.Items[ValidFieldNumbers[j]].Value;
+          DataSet.FieldByName('uid').AsInteger := i;
+          DataSet.FieldByName('check').AsBoolean := False;
+          DataSet.Post;
+          Application.ProcessMessages;
+        end;
+        //Application.ProcessMessages;
+        FMaxUid := i;
+        DataSet.EnableControls;
+      end;
+      Result := DataSet;
+    except
+      on e: Exception do
+      begin
+        FreeAndNil(jsObject);
+        DataSet.Free;
+        raise;
+      end;
+    end;
+  end
+  else
+   Result := nil;
+end;
+
+//получение из файла JSONObject-объекта
+function TDBHTTP.ToJSONObject(AJSON: string): TJSONObject;
+var
+ JsonStream: TStringStream;
+ jsObject: TJSONObject;
+begin
+ try
+    JsonStream := TStringStream.Create;
+    //загружаем данные из файла
+    JsonStream.LoadFromFile(AJSON);
+    //создаем объект TJSONObject
+    jsObject := TJSONObject.ParseJSONValue(JsonStream.DataString) as TJSONObject;
+    if Assigned(jsObject) then
+    begin
+      Result := jsObject;
+    end;
+ finally
+    JsonStream.Free;
+ end;
+end;
+
+//получение из Stream JSONObject-объекта
+function TDBHTTP.ToJSONObject(AJSON: TStream): TJSONObject;
+var
+ JsonStream: TStringStream;
+ jsObject: TJSONObject;
+begin
+ try
+  JsonStream := TStringStream.Create;
+  //загружаем данные из файла
+  JsonStream.LoadFromStream(AJSON);
+  //создаем объект TJSONObject
+  jsObject := TJSONObject.ParseJSONValue(JsonStream.DataString) as TJSONObject;
+  if Assigned(jsObject) then
+    Result := jsObject
+  else
+    Result := nil;
+ finally
+    JsonStream.Free;
+ end;
+end;
+
+function TDBHTTP.GetMaxtUid: Integer;
+begin
+  Result := FMaxUid;
+end;
+
+end.

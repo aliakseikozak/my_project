@@ -1,0 +1,134 @@
+unit uSocLegalAdd;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufmBaseForm, Data.DB,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, System.Actions, Vcl.ActnList,
+  dxBar, cxClasses, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, cxContainer, cxEdit, Vcl.ComCtrls, dxCore, cxDateUtils,
+  dxLayoutcxEditAdapters, Vcl.StdCtrls, Vcl.ExtCtrls, dxLayoutContainer,
+  cxTextEdit, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
+  cxMaskEdit, cxCalendar, dxLayoutControl, uResource, uExchDB,
+  uExchDBData;
+
+type
+  TfmSocLegalAdd = class(TfmBaseForm)
+    dxLayoutControl1: TdxLayoutControl;
+    cxDateEdit1: TcxDateEdit;
+    cxLookupComboBox1: TcxLookupComboBox;
+    cxTextEdit1: TcxTextEdit;
+    cxLookupComboBox2: TcxLookupComboBox;
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutItem2: TdxLayoutItem;
+    dxLayoutItem7: TdxLayoutItem;
+    dxLayoutItem4: TdxLayoutItem;
+    dxLayoutItem5: TdxLayoutItem;
+    Panel2: TPanel;
+    btnOk: TButton;
+    btnCancel: TButton;
+    dxLayoutItem1: TdxLayoutItem;
+    cxLookupComboBox3: TcxLookupComboBox;
+    dxLayoutItem6: TdxLayoutItem;
+    cxLookupComboBox4: TcxLookupComboBox;
+    dxLayoutItem8: TdxLayoutItem;
+    cxLookupComboBox5: TcxLookupComboBox;
+    dxLayoutItem9: TdxLayoutItem;
+    cxLookupComboBox6: TcxLookupComboBox;
+    dsReabReriod: TDataSource;
+    dsUpr: TDataSource;
+    dsAge: TDataSource;
+    dsRegion: TDataSource;
+    dsCommunication: TDataSource;
+    dsAlcohol: TDataSource;
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+    FMode: integer;
+    FID: Variant;
+    FDB: TDBData;
+    dbIU: TDBData;
+    dbReabReriod: TDBData;
+    dbUpr: TDBData;
+    dbAge: TDBData;
+    dbRegion: TDBData;
+    dbCommunication: TDBData;
+    dbAlcohol: TDBData;
+    procedure InitForm;
+  public
+    { Public declarations }
+    procedure SetData(pDb: TDBData; pMode: integer; pID: Variant);
+  end;
+
+var
+  fmSocLegalAdd: TfmSocLegalAdd;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfmSocLegalAdd.FormShow(Sender: TObject);
+var
+  Columns: string;
+  Params: string;
+  Operations: string;
+begin
+  InitForm;
+   if (FMode = 1) and (not FDB.DataSet.IsEmpty) then
+   begin
+      with FDB.DataSet do
+      begin
+        cxLookupComboBox1.EditValue := FieldByName('rehabilitation_period_id').Value;
+        cxDateEdit1.EditValue := FieldByName('assessment_date').Value;
+        cxLookupComboBox5.EditValue := FieldByName('upr_id').Value;
+        cxLookupComboBox4.EditValue := FieldByName('age_id').Value;
+        cxLookupComboBox3.EditValue := FieldByName('resident_id').Value;
+        cxLookupComboBox6.EditValue := FieldByName('soc_communication_id').Value;
+        cxLookupComboBox2.EditValue := FieldByName('administrative_alcohol_id').Value;
+        cxTextEdit1.Text := FieldByName('add_information').Value;
+      end;
+   end;
+end;
+
+procedure TfmSocLegalAdd.SetData(pDb: TDBData; pMode: integer; pID: Variant);
+begin
+  FDB := pDb;
+  FID := pID;
+  FMode := pMode;
+end;
+
+procedure TfmSocLegalAdd.InitForm;
+begin
+  dbReabReriod := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+   '   FROM soc_rehabilitation_period AS s  ' , []);
+  dsReabReriod.DataSet := dbReabReriod.DataSet;
+
+  dbUpr := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+   '   FROM upr AS s  ' , []);
+  dsUpr.DataSet := dbUpr.DataSet;
+
+  dbAge := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+   '   FROM age AS s  ' , []);
+  dsAge.DataSet := dbAge.DataSet;
+
+  dbRegion := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+   '   FROM region AS s  ' , []);
+  dsRegion.DataSet := dbRegion.DataSet;
+
+  dbCommunication := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+   '   FROM soc_rehabilitation_period AS s  ' , []);
+  dsCommunication.DataSet := dbCommunication.DataSet;
+
+  dbAlcohol := TDBData.Create(Resource.sessionInfo, TDBHTTP.TypeRequest, TDBHTTP.TypeQuerySQL,
+   ' SELECT s.id, s.name  '+
+   '   FROM administrative_alcohol AS s  ' , []);
+  dsAlcohol.DataSet := dbAlcohol.DataSet;
+end;
+
+end.

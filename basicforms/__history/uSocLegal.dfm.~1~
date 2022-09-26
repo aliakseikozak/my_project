@@ -1,0 +1,41 @@
+inherited fmSocLegal: TfmSocLegal
+  Caption = #1054#1094#1077#1085#1082#1072' '#1089#1086#1094#1080#1072#1083#1100#1085#1086'-'#1087#1088#1072#1074#1086#1074#1086#1075#1086' '#1082#1088#1080#1090#1077#1088#1080#1103
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited pnParam: TPanel
+    TabOrder = 2
+    inherited lbParam: TcxLabel
+      Style.IsFontAssigned = True
+    end
+  end
+  inherited pnSelect: TPanel
+    TabOrder = 4
+    inherited dxLCPnlSelect: TdxLayoutControl
+      inherited dxLCPnlSelectGroup_Root: TdxLayoutGroup
+        Index = -1
+      end
+      inherited dxLIbtnCancel: TdxLayoutItem
+        Index = 1
+      end
+      inherited dxLIbtnSelect: TdxLayoutItem
+        Index = 0
+      end
+    end
+  end
+  inherited gbGridBase: TPanel
+    ExplicitWidth = 904
+    inherited grBase: TcxGrid
+      ExplicitWidth = 902
+    end
+  end
+  inherited cxspltrParam: TcxSplitter
+    ExplicitWidth = 904
+  end
+  inherited BarManager: TdxBarManager
+    DockControlHeights = (
+      0
+      0
+      24
+      0)
+  end
+end
